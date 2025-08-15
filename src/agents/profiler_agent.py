@@ -406,21 +406,21 @@ class ProfilerAgent(AnalysisAgent):
                 )
         
         return agent_profile
-    
+
     def _format_data_for_llm(self, collected_data: Dict[str, Any]) -> str:
-        """Форматирование собранных данных для анализа LLM"""
-        
+        """Форматирование собранных данных для анализа LLM и сохранение в файл"""
+
         formatted_parts = []
-        
+
         # 1. Информация из документов
         if collected_data.get("documents"):
             formatted_parts.append("=== ДОКУМЕНТАЦИЯ ===")
-            
+
             for doc in collected_data["documents"]:
                 if doc["success"]:
                     formatted_parts.append(f"\nФайл: {Path(doc['file_path']).name}")
                     formatted_parts.append(f"Тип: {doc['file_type']}")
-                    
+
                     # Секции документа
                     for section_name, section_content in doc["sections"].items():
                         if section_content.strip():
@@ -428,11 +428,11 @@ class ProfilerAgent(AnalysisAgent):
                             # Ограничиваем длину секции
                             content = section_content[:1000] + "..." if len(section_content) > 1000 else section_content
                             formatted_parts.append(content)
-                    
+
                     # Таблицы
                     if doc["tables"]:
                         formatted_parts.append(f"\nТаблиц найдено: {len(doc['tables'])}")
-        
+
         # 2. Анализ кода
         if collected_data.get("code_analysis"):
             code_data = collected_data["code_analysis"]
@@ -441,7 +441,7 @@ class ProfilerAgent(AnalysisAgent):
             formatted_parts.append(f"Файлов: {code_data['total_files']}")
             formatted_parts.append(f"Строк кода: {code_data['total_lines']}")
             formatted_parts.append(f"Языки: {', '.join(code_data['languages'].keys())}")
-            
+
             if code_data.get("dependencies"):
                 formatted_parts.append(f"\nЗависимости:")
                 dep_count = 0
@@ -449,46 +449,59 @@ class ProfilerAgent(AnalysisAgent):
                     if dep_count < 20:  # Ограничиваем количество
                         formatted_parts.append(f"  {Path(file_path).name}: {', '.join(deps[:5])}")
                         dep_count += len(deps)
-            
+
             if code_data.get("entry_points"):
                 formatted_parts.append(f"\nТочки входа: {', '.join(code_data['entry_points'])}")
-            
+
             # Безопасность и сложность
             security = code_data.get("security_summary", {})
             complexity = code_data.get("complexity_summary", {})
-            
+
             formatted_parts.append(f"\nБезопасность: {security.get('total_issues', 0)} проблем")
             formatted_parts.append(f"Средняя сложность: {complexity.get('average_complexity', 0):.1f}")
-        
+
         # 3. Анализ промптов
         if collected_data.get("prompt_analysis"):
             prompt_data = collected_data["prompt_analysis"]
             formatted_parts.append("\n\n=== АНАЛИЗ ПРОМПТОВ ===")
             formatted_parts.append(f"Всего промптов: {prompt_data['total_prompts']}")
-            
+
             if prompt_data.get("system_prompts"):
                 formatted_parts.append(f"\nСистемные промпты:")
                 for i, prompt in enumerate(prompt_data["system_prompts"][:3]):  # Первые 3
-                    formatted_parts.append(f"  {i+1}. {prompt[:200]}...")
-            
+                    formatted_parts.append(f"  {i + 1}. {prompt[:200]}...")
+
             if prompt_data.get("guardrails"):
                 formatted_parts.append(f"\nОграничения:")
                 for i, guardrail in enumerate(prompt_data["guardrails"][:3]):
-                    formatted_parts.append(f"  {i+1}. {guardrail[:200]}...")
-            
+                    formatted_parts.append(f"  {i + 1}. {guardrail[:200]}...")
+
             if prompt_data.get("capabilities"):
                 formatted_parts.append(f"\nВозможности: {', '.join(prompt_data['capabilities'])}")
-            
+
             if prompt_data.get("risk_indicators"):
                 formatted_parts.append(f"Индикаторы риска: {', '.join(prompt_data['risk_indicators'])}")
-        
+
         # 4. Ошибки (если есть)
         if collected_data.get("errors"):
             formatted_parts.append(f"\n\n=== ОШИБКИ СБОРА ДАННЫХ ===")
             for error in collected_data["errors"]:
                 formatted_parts.append(f"- {error}")
-        
-        return "\n".join(formatted_parts)
+
+        formatted_output = "\n".join(formatted_parts)
+
+        # Сохранение в файл
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_file = f"llm_data_{timestamp}.txt"
+        try:
+            with open(output_file, 'w', encoding='utf-8') as f:
+                f.write(formatted_output)
+        except Exception as e:
+            formatted_parts.append(f"\n\n=== ОШИБКА ПРИ СОХРАНЕНИИ ===")
+            formatted_parts.append(f"- Не удалось сохранить файл: {str(e)}")
+            formatted_output = "\n".join(formatted_parts)
+
+        return formatted_output
     
     def _validate_and_fix_profile_data(
         self, 

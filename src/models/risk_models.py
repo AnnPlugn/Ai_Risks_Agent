@@ -116,6 +116,12 @@ class AgentProfile(BaseModel):
             return datetime.now()
         return v
 
+class ThreatAssessment(BaseModel):
+    """Модель для оценки отдельной угрозы"""
+    risk_level: str = Field(..., description="Уровень риска угрозы: низкая, средняя, высокая")
+    probability_score: int = Field(..., ge=1, le=5, description="Вероятность угрозы (1-5)")
+    impact_score: int = Field(..., ge=1, le=5, description="Воздействие угрозы (1-5)")
+    reasoning: str = Field(..., description="Детальное обоснование оценки угрозы")
 
 # src/models/risk_models.py - КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ RiskEvaluation
 
@@ -143,7 +149,11 @@ class RiskEvaluation(BaseModel):
     # Метаданные
     confidence_level: float = Field(default=0.7, ge=0.0, le=1.0, description="Уровень уверенности")
     timestamp: datetime = Field(default_factory=datetime.now)
-    
+    # НОВОЕ ПОЛЕ ДЛЯ ДЕТАЛЬНЫХ УГРОЗ
+    threat_assessments: Optional[Dict[str, ThreatAssessment]] = Field(
+        default=None, 
+        description="Детальная оценка отдельных угроз (для EthicalRiskEvaluator)"
+    )
     def __init__(self, **data):
         # Автовычисление total_score если не задан
         if 'total_score' not in data or data['total_score'] is None:
@@ -170,53 +180,119 @@ class RiskEvaluation(BaseModel):
         evaluator_agent: str,
         raw_data: Dict[str, Any]
     ) -> 'RiskEvaluation':
-        """
-        БЕЗОПАСНОЕ создание с гарантированной валидностью
-        """
+        """ОБНОВЛЕННОЕ безопасное создание RiskEvaluation с поддержкой threat_assessments"""
         
-        # Извлекаем и валидируем обязательные поля
-        prob_score = cls._safe_extract_int(raw_data.get("probability_score"), 3, 1, 5)
-        impact_score = cls._safe_extract_int(raw_data.get("impact_score"), 3, 1, 5)
+        try:
+            # Извлекаем основные поля (существующий код)
+            probability_score = int(raw_data.get("probability_score", 3))
+            impact_score = int(raw_data.get("impact_score", 3))
+            total_score = int(raw_data.get("total_score", probability_score * impact_score))
+            
+            # Определяем уровень риска
+            if total_score <= 6:
+                risk_level = RiskLevel.LOW
+            elif total_score <= 14:
+                risk_level = RiskLevel.MEDIUM
+            else:
+                risk_level = RiskLevel.HIGH
+            
+            # НОВАЯ ЛОГИКА: Обработка threat_assessments
+            threat_assessments = None
+            if "threat_assessments" in raw_data:
+                threat_data = raw_data["threat_assessments"]
+                if isinstance(threat_data, dict):
+                    threat_assessments = {}
+                    for threat_name, threat_info in threat_data.items():
+                        if isinstance(threat_info, dict):
+                            try:
+                                threat_assessments[threat_name] = ThreatAssessment(
+                                    risk_level=threat_info.get("risk_level", "средняя"),
+                                    probability_score=int(threat_info.get("probability_score", 3)),
+                                    impact_score=int(threat_info.get("impact_score", 3)),
+                                    reasoning=str(threat_info.get("reasoning", "Обоснование отсутствует"))
+                                )
+                            except Exception as e:
+                                print(f"⚠️ Ошибка парсинга угрозы {threat_name}: {e}")
+                                # Создаем fallback для конкретной угрозы
+                                threat_assessments[threat_name] = ThreatAssessment(
+                                    risk_level="средняя",
+                                    probability_score=3,
+                                    impact_score=3,
+                                    reasoning=f"Fallback для угрозы {threat_name} из-за ошибки парсинга"
+                                )
+            
+            # Создаем объект с новым полем
+            return cls(
+                risk_type=risk_type,
+                evaluator_agent=evaluator_agent,
+                probability_score=probability_score,
+                impact_score=impact_score,
+                total_score=total_score,
+                risk_level=risk_level,
+                probability_reasoning=raw_data.get("probability_reasoning", "Обоснование отсутствует"),
+                impact_reasoning=raw_data.get("impact_reasoning", "Обоснование отсутствует"),
+                key_factors=raw_data.get("key_factors", []),
+                recommendations=raw_data.get("recommendations", []),
+                confidence_level=float(raw_data.get("confidence_level", 0.7)),
+                timestamp=datetime.now(),
+                threat_assessments=threat_assessments  # НОВОЕ ПОЛЕ
+            )
+            
+        except Exception as e:
+            # Логируем ошибку и создаем fallback объект
+            print(f"❌ Ошибка создания RiskEvaluation: {e}")
+            
+            return cls._create_fallback(risk_type, evaluator_agent, raw_data)
+    
+    @classmethod
+    def _create_fallback(
+        cls,
+        risk_type: RiskType,
+        evaluator_agent: str,
+        raw_data: Dict[str, Any]
+    ) -> 'RiskEvaluation':
+        """Создание fallback объекта при ошибках"""
         
-        # Извлекаем строковые поля
-        prob_reasoning = cls._safe_extract_string(
-            raw_data.get("probability_reasoning"), 
-            "Обоснование вероятности не предоставлено LLM"
-        )
-        impact_reasoning = cls._safe_extract_string(
-            raw_data.get("impact_reasoning"),
-            "Обоснование воздействия не предоставлено LLM"
-        )
+        # Создаем fallback threat_assessments для EthicalRiskEvaluator
+        threat_assessments = None
+        if evaluator_agent == "EthicalRiskEvaluator":
+            threat_assessments = {
+                "галлюцинации_и_зацикливание": ThreatAssessment(
+                    risk_level="средняя",
+                    probability_score=3,
+                    impact_score=3,
+                    reasoning="Fallback оценка: средний риск галлюцинаций из-за отсутствия данных"
+                ),
+                "дезинформация": ThreatAssessment(
+                    risk_level="средняя",
+                    probability_score=3,
+                    impact_score=3,
+                    reasoning="Fallback оценка: средний риск дезинформации из-за отсутствия данных"
+                ),
+                "токсичность_и_дискриминация": ThreatAssessment(
+                    risk_level="средняя",
+                    probability_score=3,
+                    impact_score=3,
+                    reasoning="Fallback оценка: средний риск токсичности из-за отсутствия данных"
+                )
+            }
         
-        # Вычисляемые поля
-        total_score = prob_score * impact_score
-        if total_score <= 6:
-            risk_level = RiskLevel.LOW
-        elif total_score <= 14:
-            risk_level = RiskLevel.MEDIUM
-        else:
-            risk_level = RiskLevel.HIGH
-        
-        # Дополнительные поля
-        confidence = cls._safe_extract_float(raw_data.get("confidence_level"), 0.7, 0.0, 1.0)
-        recommendations = cls._safe_extract_list(raw_data.get("recommendations", []))
-        key_factors = cls._safe_extract_list(raw_data.get("key_factors", []))
-        
-        # Создаем с ПОЛНЫМИ данными
         return cls(
             risk_type=risk_type,
             evaluator_agent=evaluator_agent,
-            probability_score=prob_score,
-            impact_score=impact_score,
-            total_score=total_score,
-            risk_level=risk_level,
-            probability_reasoning=prob_reasoning,
-            impact_reasoning=impact_reasoning,
-            identified_risks=key_factors,
-            recommendations=recommendations,
-            confidence_level=confidence
+            probability_score=3,
+            impact_score=3,
+            total_score=9,
+            risk_level=RiskLevel.MEDIUM,
+            probability_reasoning=f"Fallback для {evaluator_agent}",
+            impact_reasoning=f"Fallback для {evaluator_agent}",
+            key_factors=["Ошибка получения данных"],
+            recommendations=["Повторить оценку"],
+            confidence_level=0.3,
+            timestamp=datetime.now(),
+            threat_assessments=threat_assessments
         )
-    
+
     @staticmethod
     def _safe_extract_int(value: Any, default: int, min_val: int, max_val: int) -> int:
         """Безопасное извлечение int"""
@@ -442,6 +518,7 @@ class AgentTaskResult(BaseModel):
     start_time: datetime = Field(default_factory=datetime.now)
     end_time: Optional[datetime] = Field(None)
     execution_time_seconds: Optional[float] = Field(None)
+    assessment_id: Optional[str] = Field (None, description ="ID оценки")
     
     @validator('execution_time_seconds', always=True)
     def calculate_execution_time(cls, v, values):
