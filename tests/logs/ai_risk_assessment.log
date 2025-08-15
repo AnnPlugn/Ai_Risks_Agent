@@ -1,0 +1,16 @@
+2025-08-15 13:00:25 | INFO     | src.utils.logger:__enter__:434 | test_001 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 13:00:25 | ERROR    | src.utils.logger:__exit__:446 | test_001 | profiler_agent | ❌ Ошибка в profile_agent: 'dict' object has no attribute 'dict'
+2025-08-15 13:00:27 | INFO     | src.utils.logger:__enter__:434 | test_002 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 13:00:27 | ERROR    | src.utils.logger:__exit__:446 | test_002 | profiler_agent | ❌ Ошибка в profile_agent: Не предоставлены файлы для анализа
+2025-08-15 13:00:29 | INFO     | src.agents.profiler_agent:_collect_all_data:168 | test_003 | profiler_agent | 📄 Парсинг 0 файлов
+2025-08-15 13:00:29 | INFO     | src.tools.document_parser:parse_multiple_documents:916 | document_parser | document_parser | 📊 Парсинг завершен: 0 успешно, 0 ошибок
+2025-08-15 13:00:29 | INFO     | src.agents.profiler_agent:_collect_all_data:196 | test_003 | profiler_agent | 💻 Анализ кода в 0 директориях
+2025-08-15 13:00:29 | INFO     | src.agents.profiler_agent:_collect_all_data:221 | test_003 | profiler_agent | 🔍 Анализ промптов и инструкций
+2025-08-15 13:00:50 | INFO     | src.utils.logger:__enter__:434 | test_001 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 13:00:50 | ERROR    | src.utils.logger:__exit__:446 | test_001 | profiler_agent | ❌ Ошибка в profile_agent: 'dict' object has no attribute 'dict'
+2025-08-15 13:00:52 | INFO     | src.utils.logger:__enter__:434 | test_002 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 13:00:52 | ERROR    | src.utils.logger:__exit__:446 | test_002 | profiler_agent | ❌ Ошибка в profile_agent: Не предоставлены файлы для анализа
+2025-08-15 13:00:53 | INFO     | src.agents.profiler_agent:_collect_all_data:168 | test_003 | profiler_agent | 📄 Парсинг 0 файлов
+2025-08-15 13:00:53 | INFO     | src.tools.document_parser:parse_multiple_documents:916 | document_parser | document_parser | 📊 Парсинг завершен: 0 успешно, 0 ошибок
+2025-08-15 13:00:53 | INFO     | src.agents.profiler_agent:_collect_all_data:196 | test_003 | profiler_agent | 💻 Анализ кода в 0 директориях
+2025-08-15 13:00:53 | INFO     | src.agents.profiler_agent:_collect_all_data:221 | test_003 | profiler_agent | 🔍 Анализ промптов и инструкций

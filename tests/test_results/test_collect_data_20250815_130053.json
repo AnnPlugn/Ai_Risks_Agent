@@ -1,0 +1,18 @@
+{
+  "documents": [],
+  "code_analysis": null,
+  "prompt_analysis": null,
+  "source_files": [
+    "Lawdigest_bot/main.py"
+  ],
+  "errors": [],
+  "document_agent_info": {
+    "name": "",
+    "description": "",
+    "technical_specs": {},
+    "prompts": [],
+    "guardrails": [],
+    "business_context": {},
+    "source_files": []
+  }
+}

@@ -1,0 +1,887 @@
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_graph_start:462 | profiler_test_20250815_132359 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_agent_start:133 | profiler_test_20250815_132359 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_132359 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 13:23:59 | INFO     | src.agents.profiler_agent:_collect_all_data:168 | profiler_test_20250815_132359 | profiler_agent | 📄 Парсинг 24 файлов
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: main.py (TextDocumentParser)
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\main.py ✅
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 25258 символов, 4 секций
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_registry.py (TextDocumentParser)
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\agent_registry.py ✅
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 8100 символов, 4 секций
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: analyzer.py (TextDocumentParser)
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\analyzer.py ✅
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 18290 символов, 4 секций
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: collaborative_crew.py (TextDocumentParser)
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\collaborative_crew.py ✅
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21562 символов, 4 секций
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: context_manager.py (TextDocumentParser)
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\context_manager.py ✅
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 11785 символов, 4 секций
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: critic.py (TextDocumentParser)
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\critic.py ✅
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21169 символов, 4 секций
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: data_collector.py (TextDocumentParser)
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:23:59 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\data_collector.py ✅
+2025-08-15 13:23:59 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 43895 символов, 4 секций
+2025-08-15 13:23:59 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: digester.py (TextDocumentParser)
+2025-08-15 13:24:00 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:00 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\digester.py ✅
+2025-08-15 13:24:00 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.03с
+2025-08-15 13:24:00 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 76923 символов, 4 секций
+2025-08-15 13:24:00 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: orchestrator.py (TextDocumentParser)
+2025-08-15 13:24:00 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:00 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\orchestrator.py ✅
+2025-08-15 13:24:00 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:00 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 52974 символов, 4 секций
+2025-08-15 13:24:00 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: logging_config.py (TextDocumentParser)
+2025-08-15 13:24:00 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:00 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\logging_config.py ✅
+2025-08-15 13:24:00 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:00 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1598 символов, 4 секций
+2025-08-15 13:24:00 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: settings.py (TextDocumentParser)
+2025-08-15 13:24:00 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:01 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\settings.py ✅
+2025-08-15 13:24:01 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.88с
+2025-08-15 13:24:01 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 3310 символов, 4 секций
+2025-08-15 13:24:01 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: base_llm.py (TextDocumentParser)
+2025-08-15 13:24:01 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:01 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\base_llm.py ✅
+2025-08-15 13:24:01 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:01 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 5274 символов, 4 секций
+2025-08-15 13:24:01 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: gemma_model.py (TextDocumentParser)
+2025-08-15 13:24:01 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:01 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\gemma_model.py ✅
+2025-08-15 13:24:01 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:01 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2516 символов, 4 секций
+2025-08-15 13:24:01 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: qwen_model.py (TextDocumentParser)
+2025-08-15 13:24:02 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:02 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\qwen_model.py ✅
+2025-08-15 13:24:02 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.03с
+2025-08-15 13:24:02 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2844 символов, 4 секций
+2025-08-15 13:24:02 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: bot.py (TextDocumentParser)
+2025-08-15 13:24:02 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:02 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\bot.py ✅
+2025-08-15 13:24:02 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:02 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 4922 символов, 4 секций
+2025-08-15 13:24:02 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_message_handler.py (TextDocumentParser)
+2025-08-15 13:24:02 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:02 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_message_handler.py ✅
+2025-08-15 13:24:02 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:02 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6654 символов, 4 секций
+2025-08-15 13:24:02 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_view_digest.py (TextDocumentParser)
+2025-08-15 13:24:02 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:02 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_view_digest.py ✅
+2025-08-15 13:24:02 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:02 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 20065 символов, 4 секций
+2025-08-15 13:24:03 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: period_command.py (TextDocumentParser)
+2025-08-15 13:24:03 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:03 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\period_command.py ✅
+2025-08-15 13:24:03 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:03 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 29608 символов, 4 секций
+2025-08-15 13:24:03 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: helpers.py (TextDocumentParser)
+2025-08-15 13:24:03 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:03 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\helpers.py ✅
+2025-08-15 13:24:03 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:03 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2021 символов, 4 секций
+2025-08-15 13:24:05 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: learning_manager.py (TextDocumentParser)
+2025-08-15 13:24:05 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:05 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\learning_manager.py ✅
+2025-08-15 13:24:05 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:05 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 10878 символов, 4 секций
+2025-08-15 13:24:05 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: text_utils.py (TextDocumentParser)
+2025-08-15 13:24:05 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:05 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\text_utils.py ✅
+2025-08-15 13:24:05 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:05 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1726 символов, 4 секций
+2025-08-15 13:24:05 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: test_agent.txt (TextDocumentParser)
+2025-08-15 13:24:05 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:05 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.txt): Lawdigest_bot\test_agent.txt ✅
+2025-08-15 13:24:05 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.00с
+2025-08-15 13:24:07 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 272 символов, 1 секций
+2025-08-15 13:24:07 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: README.md (TextDocumentParser)
+2025-08-15 13:24:07 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:07 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.md): Lawdigest_bot\README.md ✅
+2025-08-15 13:24:07 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 13:24:07 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6929 символов, 57 секций
+2025-08-15 13:24:07 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_config.json (TextDocumentParser)
+2025-08-15 13:24:07 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 13:24:07 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.json): Lawdigest_bot\agent_config.json ✅
+2025-08-15 13:24:07 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.00с
+2025-08-15 13:24:07 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 229 символов, 2 секций
+2025-08-15 13:24:07 | INFO     | src.tools.document_parser:parse_multiple_documents:916 | document_parser | document_parser | 📊 Парсинг завершен: 24 успешно, 0 ошибок
+2025-08-15 13:24:07 | INFO     | src.agents.profiler_agent:_collect_all_data:196 | profiler_test_20250815_132359 | profiler_agent | 💻 Анализ кода в 0 директориях
+2025-08-15 13:24:07 | INFO     | src.agents.profiler_agent:_collect_all_data:221 | profiler_test_20250815_132359 | profiler_agent | 🔍 Анализ промптов и инструкций
+2025-08-15 13:24:10 | INFO     | src.utils.logger:__enter__:434 | prompt_analyzer | prompt_analyzer | 🔄 Начало: analyze_prompts
+2025-08-15 13:24:10 | INFO     | src.tools.prompt_analyzer:analyze_prompts:546 | prompt_analyzer | prompt_analyzer | ✅ Анализ промптов завершен: 9 промптов найдено
+2025-08-15 13:24:10 | INFO     | src.utils.logger:__exit__:444 | prompt_analyzer | prompt_analyzer | ✅ Завершено: analyze_prompts за 0.02с
+2025-08-15 13:24:10 | INFO     | src.agents.base_agent:call_llm_structured:255 | profiler_test_20250815_132359 | profiler_agent | 📏 Длина системного промпта: 2780 символов
+2025-08-15 13:24:10 | INFO     | src.agents.base_agent:call_llm_structured:256 | profiler_test_20250815_132359 | profiler_agent | 📏 Длина данных для анализа: 51823 символов
+2025-08-15 13:24:10 | INFO     | src.agents.base_agent:call_llm_structured:257 | profiler_test_20250815_132359 | profiler_agent | 📏 Общий размер контекста: 54603 символов
+2025-08-15 13:24:10 | WARNING  | src.agents.base_agent:call_llm_structured:260 | profiler_test_20250815_132359 | profiler_agent | ⚠️ Системный промпт может быть слишком коротким для детальных требований
+2025-08-15 13:24:10 | WARNING  | src.agents.base_agent:call_llm_structured:268 | profiler_test_20250815_132359 | profiler_agent | ⚠️ В промпте НЕ найдены требования к длине рассуждений
+2025-08-15 13:24:33 | INFO     | src.agents.base_agent:call_llm_structured:281 | profiler_test_20250815_132359 | profiler_agent | ✅ LLM вернул структурированный результат с 9 полями
+2025-08-15 13:24:33 | INFO     | src.agents.base_agent:call_llm_structured:290 | profiler_test_20250815_132359 | profiler_agent | 📊 probability_reasoning: 351 символов
+2025-08-15 13:24:33 | WARNING  | src.agents.base_agent:call_llm_structured:292 | profiler_test_20250815_132359 | profiler_agent | ⚠️ probability_reasoning слишком короткий: 351 < 500
+2025-08-15 13:24:33 | INFO     | src.agents.base_agent:call_llm_structured:300 | profiler_test_20250815_132359 | profiler_agent | 📊 impact_reasoning: 351 символов
+2025-08-15 13:24:33 | WARNING  | src.agents.base_agent:call_llm_structured:302 | profiler_test_20250815_132359 | profiler_agent | ⚠️ impact_reasoning слишком короткий: 351 < 500
+2025-08-15 13:24:33 | WARNING  | src.agents.profiler_agent:_analyze_and_create_profile:394 | profiler_test_20250815_132359 | profiler_agent | ⚠️ Детальное саммари НЕ создано профайлером
+2025-08-15 13:24:33 | WARNING  | src.agents.profiler_agent:_analyze_and_create_profile:404 | profiler_test_20250815_132359 | profiler_agent | ⚠️ Поле detailed_summary равно None - проверьте промпт и ответ LLM
+2025-08-15 13:24:33 | INFO     | src.utils.logger:__exit__:444 | profiler_test_20250815_132359 | profiler_agent | ✅ Завершено: profile_agent за 34.09с
+2025-08-15 13:24:33 | INFO     | src.utils.logger:log_agent_success:138 | profiler_test_20250815_132359 | profiler_agent | ✅ Агент завершил задачу: profiler за 34.09с
+2025-08-15 13:24:33 | INFO     | src.utils.logger:log_graph_completion:487 | profiler_test_20250815_132359 | langgraph | 🏁 LangGraph завершен: 1 узлов за 34.10с
+2025-08-15 13:24:33 | INFO     | __main__:assess:109 | profiler_test_20250815_132359 | cli | ✅ Профилирование завершено: profiler_test_20250815_132359
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_graph_start:462 | profiler_test_20250815_154111 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_agent_start:133 | profiler_test_20250815_154111 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_154111 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 15:41:11 | INFO     | src.agents.profiler_agent:_collect_all_data:168 | profiler_test_20250815_154111 | profiler_agent | 📄 Парсинг 24 файлов
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: main.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\main.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 25258 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_registry.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\agent_registry.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 8100 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: analyzer.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\analyzer.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 18290 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: collaborative_crew.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\collaborative_crew.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21562 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: context_manager.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\context_manager.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 11785 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: critic.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\critic.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21169 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: data_collector.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\data_collector.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 43895 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: digester.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\digester.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.03с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 76923 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: orchestrator.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\orchestrator.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.03с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 52974 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: logging_config.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\logging_config.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1598 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: settings.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\settings.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 3310 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: base_llm.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\base_llm.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 5274 символов, 4 секций
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: gemma_model.py (TextDocumentParser)
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:11 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\gemma_model.py ✅
+2025-08-15 15:41:11 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:11 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2516 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: qwen_model.py (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\qwen_model.py ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2844 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: bot.py (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\bot.py ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 4922 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_message_handler.py (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_message_handler.py ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6654 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_view_digest.py (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_view_digest.py ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 20065 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: period_command.py (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\period_command.py ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.04с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 29608 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: helpers.py (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\helpers.py ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2021 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: learning_manager.py (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\learning_manager.py ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.03с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 10878 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: text_utils.py (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\text_utils.py ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.34с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1726 символов, 4 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: test_agent.txt (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.txt): Lawdigest_bot\test_agent.txt ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 272 символов, 1 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: README.md (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.md): Lawdigest_bot\README.md ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6929 символов, 57 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_config.json (TextDocumentParser)
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 15:41:12 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.json): Lawdigest_bot\agent_config.json ✅
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 229 символов, 2 секций
+2025-08-15 15:41:12 | INFO     | src.tools.document_parser:parse_multiple_documents:916 | document_parser | document_parser | 📊 Парсинг завершен: 24 успешно, 0 ошибок
+2025-08-15 15:41:12 | INFO     | src.agents.profiler_agent:_collect_all_data:196 | profiler_test_20250815_154111 | profiler_agent | 💻 Анализ кода в 0 директориях
+2025-08-15 15:41:12 | INFO     | src.agents.profiler_agent:_collect_all_data:221 | profiler_test_20250815_154111 | profiler_agent | 🔍 Анализ промптов и инструкций
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__enter__:434 | prompt_analyzer | prompt_analyzer | 🔄 Начало: analyze_prompts
+2025-08-15 15:41:12 | INFO     | src.tools.prompt_analyzer:analyze_prompts:546 | prompt_analyzer | prompt_analyzer | ✅ Анализ промптов завершен: 9 промптов найдено
+2025-08-15 15:41:12 | INFO     | src.utils.logger:__exit__:444 | prompt_analyzer | prompt_analyzer | ✅ Завершено: analyze_prompts за 0.02с
+2025-08-15 15:41:12 | INFO     | src.agents.base_agent:call_llm_structured:255 | profiler_test_20250815_154111 | profiler_agent | 📏 Длина системного промпта: 2780 символов
+2025-08-15 15:41:12 | INFO     | src.agents.base_agent:call_llm_structured:256 | profiler_test_20250815_154111 | profiler_agent | 📏 Длина данных для анализа: 51823 символов
+2025-08-15 15:41:12 | INFO     | src.agents.base_agent:call_llm_structured:257 | profiler_test_20250815_154111 | profiler_agent | 📏 Общий размер контекста: 54603 символов
+2025-08-15 15:41:12 | WARNING  | src.agents.base_agent:call_llm_structured:260 | profiler_test_20250815_154111 | profiler_agent | ⚠️ Системный промпт может быть слишком коротким для детальных требований
+2025-08-15 15:41:12 | WARNING  | src.agents.base_agent:call_llm_structured:268 | profiler_test_20250815_154111 | profiler_agent | ⚠️ В промпте НЕ найдены требования к длине рассуждений
+2025-08-15 15:41:35 | INFO     | src.agents.base_agent:call_llm_structured:281 | profiler_test_20250815_154111 | profiler_agent | ✅ LLM вернул структурированный результат с 9 полями
+2025-08-15 15:41:35 | INFO     | src.agents.base_agent:call_llm_structured:290 | profiler_test_20250815_154111 | profiler_agent | 📊 probability_reasoning: 351 символов
+2025-08-15 15:41:35 | WARNING  | src.agents.base_agent:call_llm_structured:292 | profiler_test_20250815_154111 | profiler_agent | ⚠️ probability_reasoning слишком короткий: 351 < 500
+2025-08-15 15:41:35 | INFO     | src.agents.base_agent:call_llm_structured:300 | profiler_test_20250815_154111 | profiler_agent | 📊 impact_reasoning: 351 символов
+2025-08-15 15:41:35 | WARNING  | src.agents.base_agent:call_llm_structured:302 | profiler_test_20250815_154111 | profiler_agent | ⚠️ impact_reasoning слишком короткий: 351 < 500
+2025-08-15 15:41:35 | WARNING  | src.agents.profiler_agent:_analyze_and_create_profile:394 | profiler_test_20250815_154111 | profiler_agent | ⚠️ Детальное саммари НЕ создано профайлером
+2025-08-15 15:41:35 | WARNING  | src.agents.profiler_agent:_analyze_and_create_profile:404 | profiler_test_20250815_154111 | profiler_agent | ⚠️ Поле detailed_summary равно None - проверьте промпт и ответ LLM
+2025-08-15 15:41:35 | INFO     | src.utils.logger:__exit__:444 | profiler_test_20250815_154111 | profiler_agent | ✅ Завершено: profile_agent за 24.25с
+2025-08-15 15:41:35 | INFO     | src.utils.logger:log_agent_success:138 | profiler_test_20250815_154111 | profiler_agent | ✅ Агент завершил задачу: profiler за 24.25с
+2025-08-15 15:41:35 | INFO     | src.utils.logger:log_graph_completion:487 | profiler_test_20250815_154111 | langgraph | 🏁 LangGraph завершен: 1 узлов за 24.27с
+2025-08-15 15:41:35 | INFO     | __main__:assess:109 | profiler_test_20250815_154111 | cli | ✅ Профилирование завершено: profiler_test_20250815_154111
+2025-08-15 15:58:19 | INFO     | src.utils.logger:log_graph_start:462 | profiler_test_20250815_155819 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 15:58:20 | INFO     | src.utils.logger:log_agent_start:133 | profiler_test_20250815_155819 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 15:58:20 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_155819 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 15:58:20 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_155819 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 15:58:20 | WARNING  | src.utils.logger:log_agent_retry:148 | profiler_test_20250815_155819 | profiler_agent | 🔄 Повторная попытка агента: profiler (попытка 1)
+2025-08-15 15:58:21 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_155819 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 15:58:21 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_155819 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 15:58:21 | WARNING  | src.utils.logger:log_agent_retry:148 | profiler_test_20250815_155819 | profiler_agent | 🔄 Повторная попытка агента: profiler (попытка 2)
+2025-08-15 15:58:23 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_155819 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 15:58:23 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_155819 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 15:58:23 | ERROR    | src.utils.logger:log_agent_error:143 | profiler_test_20250815_155819 | profiler_agent | ❌ Ошибка агента при выполнении profiler: Ошибка выполнения: 'RiskAssessmentLogger' object has no attribute 'error'
+2025-08-15 15:58:23 | INFO     | src.utils.logger:log_graph_completion:487 | profiler_test_20250815_155819 | langgraph | 🏁 LangGraph завершен: 0 узлов за 3.17с
+2025-08-15 15:58:23 | ERROR    | __main__:assess:117 | profiler_test_20250815_155819 | cli | Ошибка CLI: 'NoneType' object has no attribute 'get'
+2025-08-15 15:59:23 | INFO     | src.utils.logger:log_graph_start:462 | profiler_test_20250815_155923 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 15:59:23 | INFO     | src.utils.logger:log_agent_start:133 | profiler_test_20250815_155923 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 15:59:23 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_155923 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 15:59:23 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_155923 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 15:59:23 | WARNING  | src.utils.logger:log_agent_retry:148 | profiler_test_20250815_155923 | profiler_agent | 🔄 Повторная попытка агента: profiler (попытка 1)
+2025-08-15 15:59:24 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_155923 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 15:59:24 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_155923 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 15:59:24 | WARNING  | src.utils.logger:log_agent_retry:148 | profiler_test_20250815_155923 | profiler_agent | 🔄 Повторная попытка агента: profiler (попытка 2)
+2025-08-15 15:59:26 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_155923 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 15:59:26 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_155923 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 15:59:26 | ERROR    | src.utils.logger:log_agent_error:143 | profiler_test_20250815_155923 | profiler_agent | ❌ Ошибка агента при выполнении profiler: Ошибка выполнения: 'RiskAssessmentLogger' object has no attribute 'error'
+2025-08-15 15:59:26 | INFO     | src.utils.logger:log_graph_completion:487 | profiler_test_20250815_155923 | langgraph | 🏁 LangGraph завершен: 0 узлов за 3.07с
+2025-08-15 15:59:26 | ERROR    | __main__:assess:117 | profiler_test_20250815_155923 | cli | Ошибка CLI: 'NoneType' object has no attribute 'get'
+2025-08-15 16:00:03 | INFO     | src.utils.logger:log_graph_start:462 | profiler_test_20250815_160003 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 16:00:03 | INFO     | src.utils.logger:log_agent_start:133 | profiler_test_20250815_160003 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 16:00:03 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_160003 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 16:00:03 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_160003 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 16:00:03 | WARNING  | src.utils.logger:log_agent_retry:148 | profiler_test_20250815_160003 | profiler_agent | 🔄 Повторная попытка агента: profiler (попытка 1)
+2025-08-15 16:00:04 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_160003 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 16:00:04 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_160003 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 16:00:04 | WARNING  | src.utils.logger:log_agent_retry:148 | profiler_test_20250815_160003 | profiler_agent | 🔄 Повторная попытка агента: profiler (попытка 2)
+2025-08-15 16:00:06 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_160003 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 16:00:06 | ERROR    | src.utils.logger:__exit__:446 | profiler_test_20250815_160003 | profiler_agent | ❌ Ошибка в profile_agent: 'RiskAssessmentLogger' object has no attribute 'info'
+2025-08-15 16:00:06 | ERROR    | src.utils.logger:log_agent_error:143 | profiler_test_20250815_160003 | profiler_agent | ❌ Ошибка агента при выполнении profiler: Ошибка выполнения: 'RiskAssessmentLogger' object has no attribute 'error'
+2025-08-15 16:00:06 | INFO     | src.utils.logger:log_graph_completion:487 | profiler_test_20250815_160003 | langgraph | 🏁 LangGraph завершен: 0 узлов за 3.05с
+2025-08-15 16:00:06 | ERROR    | __main__:assess:117 | profiler_test_20250815_160003 | cli | Ошибка CLI: 'NoneType' object has no attribute 'get'
+2025-08-15 16:00:30 | INFO     | src.utils.logger:log_graph_start:462 | profiler_test_20250815_160030 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 16:00:30 | INFO     | src.utils.logger:log_agent_start:133 | profiler_test_20250815_160030 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 16:00:30 | INFO     | src.utils.logger:__enter__:434 | profiler_test_20250815_160030 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 16:00:30 | INFO     | src.agents.profiler_agent:_collect_all_data:168 | profiler_test_20250815_160030 | profiler_agent | 📄 Парсинг 24 файлов
+2025-08-15 16:00:30 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: main.py (TextDocumentParser)
+2025-08-15 16:00:30 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:30 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\main.py ✅
+2025-08-15 16:00:30 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:00:30 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 25258 символов, 4 секций
+2025-08-15 16:00:30 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_registry.py (TextDocumentParser)
+2025-08-15 16:00:30 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\agent_registry.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 8100 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: analyzer.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\analyzer.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 18290 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: collaborative_crew.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\collaborative_crew.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21562 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: context_manager.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\context_manager.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 11785 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: critic.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\critic.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21169 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: data_collector.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\data_collector.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 43895 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: digester.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\digester.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 76923 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: orchestrator.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\orchestrator.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 52974 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: logging_config.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\logging_config.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1598 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: settings.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\settings.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 3310 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: base_llm.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\base_llm.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 5274 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: gemma_model.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\gemma_model.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2516 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: qwen_model.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\qwen_model.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2844 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: bot.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\bot.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 4922 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_message_handler.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_message_handler.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6654 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_view_digest.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_view_digest.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 20065 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: period_command.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\period_command.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 29608 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: helpers.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\helpers.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2021 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: learning_manager.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\learning_manager.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 10878 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: text_utils.py (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\text_utils.py ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1726 символов, 4 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: test_agent.txt (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.txt): Lawdigest_bot\test_agent.txt ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 272 символов, 1 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: README.md (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.md): Lawdigest_bot\README.md ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6929 символов, 57 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_config.json (TextDocumentParser)
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:00:31 | INFO     | src.utils.logger:log_document_parsing:255 | document_parser | profiler | 📄 Парсинг Text(.json): Lawdigest_bot\agent_config.json ✅
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 229 символов, 2 секций
+2025-08-15 16:00:31 | INFO     | src.tools.document_parser:parse_multiple_documents:916 | document_parser | document_parser | 📊 Парсинг завершен: 24 успешно, 0 ошибок
+2025-08-15 16:00:31 | INFO     | src.agents.profiler_agent:_collect_all_data:196 | profiler_test_20250815_160030 | profiler_agent | 💻 Анализ кода в 0 директориях
+2025-08-15 16:00:31 | INFO     | src.agents.profiler_agent:_collect_all_data:221 | profiler_test_20250815_160030 | profiler_agent | 🔍 Анализ промптов и инструкций
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__enter__:434 | prompt_analyzer | prompt_analyzer | 🔄 Начало: analyze_prompts
+2025-08-15 16:00:31 | INFO     | src.tools.prompt_analyzer:analyze_prompts:546 | prompt_analyzer | prompt_analyzer | ✅ Анализ промптов завершен: 9 промптов найдено
+2025-08-15 16:00:31 | INFO     | src.utils.logger:__exit__:444 | prompt_analyzer | prompt_analyzer | ✅ Завершено: analyze_prompts за 0.04с
+2025-08-15 16:00:31 | INFO     | src.agents.base_agent:call_llm_structured:255 | profiler_test_20250815_160030 | profiler_agent | 📏 Длина системного промпта: 2780 символов
+2025-08-15 16:00:31 | INFO     | src.agents.base_agent:call_llm_structured:256 | profiler_test_20250815_160030 | profiler_agent | 📏 Длина данных для анализа: 51823 символов
+2025-08-15 16:00:31 | INFO     | src.agents.base_agent:call_llm_structured:257 | profiler_test_20250815_160030 | profiler_agent | 📏 Общий размер контекста: 54603 символов
+2025-08-15 16:00:31 | WARNING  | src.agents.base_agent:call_llm_structured:260 | profiler_test_20250815_160030 | profiler_agent | ⚠️ Системный промпт может быть слишком коротким для детальных требований
+2025-08-15 16:00:31 | WARNING  | src.agents.base_agent:call_llm_structured:268 | profiler_test_20250815_160030 | profiler_agent | ⚠️ В промпте НЕ найдены требования к длине рассуждений
+2025-08-15 16:00:56 | INFO     | src.agents.base_agent:call_llm_structured:281 | profiler_test_20250815_160030 | profiler_agent | ✅ LLM вернул структурированный результат с 9 полями
+2025-08-15 16:00:56 | INFO     | src.agents.base_agent:call_llm_structured:290 | profiler_test_20250815_160030 | profiler_agent | 📊 probability_reasoning: 351 символов
+2025-08-15 16:00:56 | WARNING  | src.agents.base_agent:call_llm_structured:292 | profiler_test_20250815_160030 | profiler_agent | ⚠️ probability_reasoning слишком короткий: 351 < 500
+2025-08-15 16:00:56 | INFO     | src.agents.base_agent:call_llm_structured:300 | profiler_test_20250815_160030 | profiler_agent | 📊 impact_reasoning: 351 символов
+2025-08-15 16:00:56 | WARNING  | src.agents.base_agent:call_llm_structured:302 | profiler_test_20250815_160030 | profiler_agent | ⚠️ impact_reasoning слишком короткий: 351 < 500
+2025-08-15 16:00:56 | WARNING  | src.agents.profiler_agent:_analyze_and_create_profile:394 | profiler_test_20250815_160030 | profiler_agent | ⚠️ Детальное саммари НЕ создано профайлером
+2025-08-15 16:00:56 | WARNING  | src.agents.profiler_agent:_analyze_and_create_profile:404 | profiler_test_20250815_160030 | profiler_agent | ⚠️ Поле detailed_summary равно None - проверьте промпт и ответ LLM
+2025-08-15 16:00:56 | INFO     | src.utils.logger:__exit__:444 | profiler_test_20250815_160030 | profiler_agent | ✅ Завершено: profile_agent за 25.22с
+2025-08-15 16:00:56 | INFO     | src.utils.logger:log_agent_success:138 | profiler_test_20250815_160030 | profiler_agent | ✅ Агент завершил задачу: profiler за 25.22с
+2025-08-15 16:00:56 | INFO     | src.utils.logger:log_graph_completion:487 | profiler_test_20250815_160030 | langgraph | 🏁 LangGraph завершен: 1 узлов за 25.23с
+2025-08-15 16:00:56 | INFO     | __main__:assess:109 | profiler_test_20250815_160030 | cli | ✅ Профилирование завершено: profiler_test_20250815_160030
+2025-08-15 16:07:09 | INFO     | src.utils.logger:log_graph_start:367 | profiler_test_20250815_160709 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 16:07:09 | INFO     | src.utils.logger:log_agent_start:109 | profiler_test_20250815_160709 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 16:07:09 | INFO     | src.utils.logger:__enter__:346 | profiler_test_20250815_160709 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 16:07:09 | INFO     | src.agents.profiler_agent:_collect_all_data:143 | profiler_test_20250815_160709 | profiler_agent | 📄 Парсинг 24 файлов
+2025-08-15 16:07:09 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: main.py (TextDocumentParser)
+2025-08-15 16:07:09 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:09 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\main.py ✅
+2025-08-15 16:07:09 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:07:09 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 25258 символов, 4 секций
+2025-08-15 16:07:09 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_registry.py (TextDocumentParser)
+2025-08-15 16:07:09 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:09 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\agent_registry.py ✅
+2025-08-15 16:07:09 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:09 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 8100 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: analyzer.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\analyzer.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 18290 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: collaborative_crew.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\collaborative_crew.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21562 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: context_manager.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\context_manager.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 11785 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: critic.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\critic.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21169 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: data_collector.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\data_collector.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.04с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 43895 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: digester.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\digester.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 76923 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: orchestrator.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\orchestrator.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 52974 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: logging_config.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\logging_config.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1598 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: settings.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\settings.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 3310 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: base_llm.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\base_llm.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 5274 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: gemma_model.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\gemma_model.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2516 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: qwen_model.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\qwen_model.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2844 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: bot.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\bot.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 4922 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_message_handler.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_message_handler.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6654 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_view_digest.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_view_digest.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 20065 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: period_command.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\period_command.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 29608 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: helpers.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\helpers.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2021 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: learning_manager.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\learning_manager.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 10878 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: text_utils.py (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\text_utils.py ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1726 символов, 4 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: test_agent.txt (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.txt): Lawdigest_bot\test_agent.txt ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 272 символов, 1 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: README.md (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.md): Lawdigest_bot\README.md ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6929 символов, 57 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_config.json (TextDocumentParser)
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.json): Lawdigest_bot\agent_config.json ✅
+2025-08-15 16:07:10 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 229 символов, 2 секций
+2025-08-15 16:07:10 | INFO     | src.tools.document_parser:parse_multiple_documents:916 | document_parser | document_parser | 📊 Парсинг завершен: 24 успешно, 0 ошибок
+2025-08-15 16:07:10 | INFO     | src.agents.profiler_agent:_collect_all_data:170 | profiler_test_20250815_160709 | profiler_agent | 💻 Анализ кода в 0 директориях
+2025-08-15 16:07:10 | INFO     | src.agents.profiler_agent:_collect_all_data:195 | profiler_test_20250815_160709 | profiler_agent | 🔍 Анализ промптов и инструкций
+2025-08-15 16:07:10 | ERROR    | src.utils.logger:__exit__:358 | profiler_test_20250815_160709 | profiler_agent | ❌ Ошибка в profile_agent: BaseAgent.call_llm_structured() got an unexpected keyword argument 'max_retries'
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_agent_success:113 | profiler_test_20250815_160709 | profiler_agent | ✅ Агент завершил задачу: profiler за 0.58с
+2025-08-15 16:07:10 | INFO     | src.utils.logger:log_graph_completion:387 | profiler_test_20250815_160709 | langgraph | 🏁 LangGraph завершен: 0 узлов за 0.60с
+2025-08-15 16:07:10 | ERROR    | __main__:assess:117 | profiler_test_20250815_160709 | cli | Ошибка CLI: 'NoneType' object has no attribute 'get'
+2025-08-15 16:13:24 | INFO     | src.utils.logger:log_graph_start:367 | profiler_test_20250815_161324 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 16:13:24 | INFO     | src.utils.logger:log_agent_start:109 | profiler_test_20250815_161324 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 16:13:24 | INFO     | src.utils.logger:__enter__:346 | profiler_test_20250815_161324 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 16:13:24 | INFO     | src.agents.profiler_agent:_collect_all_data:143 | profiler_test_20250815_161324 | profiler_agent | 📄 Парсинг 24 файлов
+2025-08-15 16:13:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: main.py (TextDocumentParser)
+2025-08-15 16:13:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\main.py ✅
+2025-08-15 16:13:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:13:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 25258 символов, 4 секций
+2025-08-15 16:13:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_registry.py (TextDocumentParser)
+2025-08-15 16:13:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\agent_registry.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 8100 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: analyzer.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\analyzer.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 18290 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: collaborative_crew.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\collaborative_crew.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21562 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: context_manager.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\context_manager.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 11785 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: critic.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\critic.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21169 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: data_collector.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\data_collector.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 43895 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: digester.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\digester.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 76923 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: orchestrator.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\orchestrator.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 52974 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: logging_config.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\logging_config.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1598 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: settings.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\settings.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 3310 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: base_llm.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\base_llm.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 5274 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: gemma_model.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\gemma_model.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2516 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: qwen_model.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\qwen_model.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2844 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: bot.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\bot.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 4922 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_message_handler.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_message_handler.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6654 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_view_digest.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_view_digest.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 20065 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: period_command.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\period_command.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 29608 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: helpers.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\helpers.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2021 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: learning_manager.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\learning_manager.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 10878 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: text_utils.py (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\text_utils.py ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1726 символов, 4 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: test_agent.txt (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.txt): Lawdigest_bot\test_agent.txt ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 272 символов, 1 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: README.md (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.md): Lawdigest_bot\README.md ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6929 символов, 57 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_config.json (TextDocumentParser)
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:13:25 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.json): Lawdigest_bot\agent_config.json ✅
+2025-08-15 16:13:25 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 229 символов, 2 секций
+2025-08-15 16:13:25 | INFO     | src.tools.document_parser:parse_multiple_documents:916 | document_parser | document_parser | 📊 Парсинг завершен: 24 успешно, 0 ошибок
+2025-08-15 16:13:25 | INFO     | src.agents.profiler_agent:_collect_all_data:170 | profiler_test_20250815_161324 | profiler_agent | 💻 Анализ кода в 0 директориях
+2025-08-15 16:13:25 | INFO     | src.agents.profiler_agent:_collect_all_data:195 | profiler_test_20250815_161324 | profiler_agent | 🔍 Анализ промптов и инструкций
+2025-08-15 16:13:25 | INFO     | src.agents.base_agent:call_llm_structured:255 | profiler_test_20250815_161324 | profiler_agent | 📏 Длина системного промпта: 2829 символов
+2025-08-15 16:13:25 | INFO     | src.agents.base_agent:call_llm_structured:256 | profiler_test_20250815_161324 | profiler_agent | 📏 Длина данных для анализа: 108 символов
+2025-08-15 16:13:25 | INFO     | src.agents.base_agent:call_llm_structured:257 | profiler_test_20250815_161324 | profiler_agent | 📏 Общий размер контекста: 2937 символов
+2025-08-15 16:13:25 | WARNING  | src.agents.base_agent:call_llm_structured:260 | profiler_test_20250815_161324 | profiler_agent | ⚠️ Системный промпт может быть слишком коротким для детальных требований
+2025-08-15 16:13:25 | WARNING  | src.agents.base_agent:call_llm_structured:268 | profiler_test_20250815_161324 | profiler_agent | ⚠️ В промпте НЕ найдены требования к длине рассуждений
+2025-08-15 16:16:56 | ERROR    | src.utils.logger:__exit__:358 | profiler_test_20250815_161324 | profiler_agent | ❌ Ошибка в profile_agent: 
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_graph_start:367 | profiler_test_20250815_162123 | langgraph | 🔄 Запуск LangGraph: profiler_workflow
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_agent_start:109 | profiler_test_20250815_162123 | profiler_agent | 🚀 Запуск агента для задачи: profiler
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | profiler_test_20250815_162123 | profiler_agent | 🔄 Начало: profile_agent
+2025-08-15 16:21:23 | INFO     | src.agents.profiler_agent:_collect_all_data:168 | profiler_test_20250815_162123 | profiler_agent | 📄 Парсинг 24 файлов
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: main.py (TextDocumentParser)
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\main.py ✅
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 25258 символов, 4 секций
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_registry.py (TextDocumentParser)
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\agent_registry.py ✅
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 8100 символов, 4 секций
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: analyzer.py (TextDocumentParser)
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\analyzer.py ✅
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 18290 символов, 4 секций
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: collaborative_crew.py (TextDocumentParser)
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\collaborative_crew.py ✅
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21562 символов, 4 секций
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: context_manager.py (TextDocumentParser)
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\context_manager.py ✅
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 11785 символов, 4 секций
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: critic.py (TextDocumentParser)
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\critic.py ✅
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 21169 символов, 4 секций
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: data_collector.py (TextDocumentParser)
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:23 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\data_collector.py ✅
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 43895 символов, 4 секций
+2025-08-15 16:21:23 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: digester.py (TextDocumentParser)
+2025-08-15 16:21:23 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\digester.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.03с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 76923 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: orchestrator.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\agents\orchestrator.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 52974 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: logging_config.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\logging_config.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1598 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: settings.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\config\settings.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 3310 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: base_llm.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\base_llm.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 5274 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: gemma_model.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\gemma_model.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2516 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: qwen_model.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\llm\qwen_model.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2844 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: bot.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\bot.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 4922 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_message_handler.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_message_handler.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6654 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: improved_view_digest.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\improved_view_digest.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 20065 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: period_command.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\telegram_bot\period_command.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.02с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 29608 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: helpers.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\helpers.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 2021 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: learning_manager.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\learning_manager.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 10878 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: text_utils.py (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.py): Lawdigest_bot\utils\text_utils.py ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 1726 символов, 4 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: test_agent.txt (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.txt): Lawdigest_bot\test_agent.txt ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 272 символов, 1 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: README.md (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.md): Lawdigest_bot\README.md ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 6929 символов, 57 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:880 | document_parser | document_parser | 📄 Парсинг файла: agent_config.json (TextDocumentParser)
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | document_parser | document_parser | 🔄 Начало: parse_text_document
+2025-08-15 16:21:24 | INFO     | src.utils.logger:log_document_parsing:227 | document_parser | profiler | 📄 Парсинг Text(.json): Lawdigest_bot\agent_config.json ✅
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | document_parser | document_parser | ✅ Завершено: parse_text_document за 0.01с
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_document:885 | document_parser | document_parser | ✅ Файл распарсен: 229 символов, 2 секций
+2025-08-15 16:21:24 | INFO     | src.tools.document_parser:parse_multiple_documents:916 | document_parser | document_parser | 📊 Парсинг завершен: 24 успешно, 0 ошибок
+2025-08-15 16:21:24 | INFO     | src.agents.profiler_agent:_collect_all_data:196 | profiler_test_20250815_162123 | profiler_agent | 💻 Анализ кода в 0 директориях
+2025-08-15 16:21:24 | INFO     | src.agents.profiler_agent:_collect_all_data:221 | profiler_test_20250815_162123 | profiler_agent | 🔍 Анализ промптов и инструкций
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__enter__:346 | prompt_analyzer | prompt_analyzer | 🔄 Начало: analyze_prompts
+2025-08-15 16:21:24 | INFO     | src.tools.prompt_analyzer:analyze_prompts:546 | prompt_analyzer | prompt_analyzer | ✅ Анализ промптов завершен: 9 промптов найдено
+2025-08-15 16:21:24 | INFO     | src.utils.logger:__exit__:356 | prompt_analyzer | prompt_analyzer | ✅ Завершено: analyze_prompts за 0.04с
+2025-08-15 16:21:24 | INFO     | src.agents.base_agent:call_llm_structured:255 | profiler_test_20250815_162123 | profiler_agent | 📏 Длина системного промпта: 2780 символов
+2025-08-15 16:21:24 | INFO     | src.agents.base_agent:call_llm_structured:256 | profiler_test_20250815_162123 | profiler_agent | 📏 Длина данных для анализа: 51823 символов
+2025-08-15 16:21:24 | INFO     | src.agents.base_agent:call_llm_structured:257 | profiler_test_20250815_162123 | profiler_agent | 📏 Общий размер контекста: 54603 символов
+2025-08-15 16:21:24 | WARNING  | src.agents.base_agent:call_llm_structured:260 | profiler_test_20250815_162123 | profiler_agent | ⚠️ Системный промпт может быть слишком коротким для детальных требований
+2025-08-15 16:21:24 | WARNING  | src.agents.base_agent:call_llm_structured:268 | profiler_test_20250815_162123 | profiler_agent | ⚠️ В промпте НЕ найдены требования к длине рассуждений
+2025-08-15 16:21:48 | INFO     | src.agents.base_agent:call_llm_structured:281 | profiler_test_20250815_162123 | profiler_agent | ✅ LLM вернул структурированный результат с 9 полями
+2025-08-15 16:21:48 | INFO     | src.agents.base_agent:call_llm_structured:290 | profiler_test_20250815_162123 | profiler_agent | 📊 probability_reasoning: 351 символов
+2025-08-15 16:21:48 | WARNING  | src.agents.base_agent:call_llm_structured:292 | profiler_test_20250815_162123 | profiler_agent | ⚠️ probability_reasoning слишком короткий: 351 < 500
+2025-08-15 16:21:48 | INFO     | src.agents.base_agent:call_llm_structured:300 | profiler_test_20250815_162123 | profiler_agent | 📊 impact_reasoning: 351 символов
+2025-08-15 16:21:48 | WARNING  | src.agents.base_agent:call_llm_structured:302 | profiler_test_20250815_162123 | profiler_agent | ⚠️ impact_reasoning слишком короткий: 351 < 500
+2025-08-15 16:21:48 | WARNING  | src.agents.profiler_agent:_analyze_and_create_profile:394 | profiler_test_20250815_162123 | profiler_agent | ⚠️ Детальное саммари НЕ создано профайлером
+2025-08-15 16:21:48 | WARNING  | src.agents.profiler_agent:_analyze_and_create_profile:404 | profiler_test_20250815_162123 | profiler_agent | ⚠️ Поле detailed_summary равно None - проверьте промпт и ответ LLM
+2025-08-15 16:21:48 | INFO     | src.utils.logger:__exit__:356 | profiler_test_20250815_162123 | profiler_agent | ✅ Завершено: profile_agent за 24.58с
+2025-08-15 16:21:48 | INFO     | src.utils.logger:log_agent_success:113 | profiler_test_20250815_162123 | profiler_agent | ✅ Агент завершил задачу: profiler за 24.58с
+2025-08-15 16:21:48 | INFO     | src.utils.logger:log_graph_completion:387 | profiler_test_20250815_162123 | langgraph | 🏁 LangGraph завершен: 1 узлов за 24.60с
+2025-08-15 16:21:48 | INFO     | __main__:assess:109 | profiler_test_20250815_162123 | cli | ✅ Профилирование завершено: profiler_test_20250815_162123

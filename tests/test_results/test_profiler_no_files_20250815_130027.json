@@ -1,0 +1,7 @@
+{
+  "agent_name": "profiler_agent",
+  "task_type": "profiling",
+  "status": "failed",
+  "result_data": null,
+  "error_message": "Не предоставлены файлы для анализа",
+  "start_time": 

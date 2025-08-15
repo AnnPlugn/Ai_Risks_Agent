@@ -1,0 +1,6 @@
+2025-06-22 22:35:18 | INFO     | __main__:test_logging:205 | test_assessment_123 | test_agent | Тестирование базового логирования
+2025-06-22 22:35:18 | INFO     | src.utils.logger:log_agent_start:133 | test_assessment_123 | test_agent | 🚀 Запуск агента для задачи: unit_test
+2025-06-22 22:35:18 | INFO     | src.utils.logger:log_risk_evaluation:160 | test_assessment_123 | test_agent | 📊 Оценка риска ethical: 6 баллов (medium)
+2025-06-22 22:35:18 | INFO     | src.utils.logger:log_agent_success:138 | test_assessment_123 | test_agent | ✅ Агент завершил задачу: unit_test за 1.50с
+2025-06-22 22:35:18 | INFO     | src.utils.logger:__enter__:370 | test_assessment_123 | test_agent | 🔄 Начало: test_operation
+2025-06-22 22:35:18 | INFO     | src.utils.logger:__exit__:380 | test_assessment_123 | test_agent | ✅ Завершено: test_operation за 0.10с

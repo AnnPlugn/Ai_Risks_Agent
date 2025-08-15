@@ -1,0 +1,51 @@
+{
+  "assessment_id": "profiler_test_20250815_132359",
+  "agent_profile": {
+    "name": "Law",
+    "description": "ИИ-агент (описание не найдено)",
+    "version": "1.0",
+    "agent_type": "other",
+    "llm_model": "unknown",
+    "autonomy_level": "supervised",
+    "data_access": [
+      "internal"
+    ],
+    "external_apis": [],
+    "target_audience": "Пользователи системы",
+    "operations_per_hour": null,
+    "revenue_per_operation": null,
+    "system_prompts": [],
+    "guardrails": [],
+    "source_files": [
+      "Lawdigest_bot\\main.py",
+      "Lawdigest_bot\\agents\\agent_registry.py",
+      "Lawdigest_bot\\agents\\analyzer.py",
+      "Lawdigest_bot\\agents\\collaborative_crew.py",
+      "Lawdigest_bot\\agents\\context_manager.py",
+      "Lawdigest_bot\\agents\\critic.py",
+      "Lawdigest_bot\\agents\\data_collector.py",
+      "Lawdigest_bot\\agents\\digester.py",
+      "Lawdigest_bot\\agents\\orchestrator.py",
+      "Lawdigest_bot\\config\\logging_config.py",
+      "Lawdigest_bot\\config\\settings.py",
+      "Lawdigest_bot\\llm\\base_llm.py",
+      "Lawdigest_bot\\llm\\gemma_model.py",
+      "Lawdigest_bot\\llm\\qwen_model.py",
+      "Lawdigest_bot\\telegram_bot\\bot.py",
+      "Lawdigest_bot\\telegram_bot\\improved_message_handler.py",
+      "Lawdigest_bot\\telegram_bot\\improved_view_digest.py",
+      "Lawdigest_bot\\telegram_bot\\period_command.py",
+      "Lawdigest_bot\\utils\\helpers.py",
+      "Lawdigest_bot\\utils\\learning_manager.py",
+      "Lawdigest_bot\\utils\\text_utils.py",
+      "Lawdigest_bot\\test_agent.txt",
+      "Lawdigest_bot\\README.md",
+      "Lawdigest_bot\\agent_config.json"
+    ],
+    "detailed_summary": null,
+    "created_at": "2025-08-15 13:24:33.373853",
+    "updated_at": "2025-08-15 13:24:33.373853"
+  },
+  "processing_time_seconds": 34.102132,
+  "status": "completed"
+}
