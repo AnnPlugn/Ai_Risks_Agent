@@ -32,33 +32,46 @@
 ### Архитектура Profiler Agent
 ```mermaid
 graph TD
+    subgraph "User Interface"
+        A[CLI Input] -->|Triggers| B[Profiler Controller]
+    end
     subgraph "Input Processing"
-        A[File System Crawler] -->|Scans Files| B[Code Parser]
-        A -->|Scans Docs| C[Doc Parser]
+        C[File System] -->|Files| D[File Crawler]
+        D -->|Code| E[Code Parser]
+        D -->|Docs| F[Document Parser]
+        D -->|Configs| G[Config Parser]
     end
     subgraph "Data Analysis"
-        B -->|Parsed Code| D[Context-Aware Chunker]
-        C -->|Parsed Docs| D
-    end
-    subgraph "Orchestration"
-        D -->|Chunked Data| E[LLM Orchestrator LangGraph]
+        E -->|AST| H[Code Analyzer]
+        F -->|Text| I[Document Analyzer]
+        G -->|Structured Data| J[Config Analyzer]
+        H --> K[Context Chunker]
+        I --> K
+        J --> K
     end
     subgraph "Output Generation"
-        E -->|Processed Data| F[Output Generator]
-        F -->|Results| G[Summary Report]
-        F -->|Visualization| H[Architecture Graph]
-        F -->|Structured Data| I[Detailed JSON]
+        K -->|Chunks| L[LLM Processor]
+        L --> M[Structured JSON]
+        L --> N[Summary Report]
+        L --> O[Visual Graph]
+    end
+    subgraph "Quality Control"
+        M -->|Validates| P[Data Validator]
+        N -->|Checks| P
+        P -->|Feedback| L
     end
 
+    classDef ui fill:#f0f0ff,stroke:#3333cc,stroke-width:2px;
     classDef input fill:#d1e7ff,stroke:#005f99,stroke-width:2px;
     classDef analysis fill:#e6f3e6,stroke:#006600,stroke-width:2px;
-    classDef orchestration fill:#fff4cc,stroke:#cc9900,stroke-width:2px;
     classDef output fill:#ffe6e6,stroke:#990000,stroke-width:2px;
+    classDef quality fill:#fff4cc,stroke:#cc9900,stroke-width:2px;
 
-    class A,B,C input;
-    class D analysis;
-    class E orchestration;
-    class F,G,H,I output;
+    class A,B ui;
+    class C,D,E,F,G input;
+    class H,I,J,K analysis;
+    class L,M,N,O output;
+    class P quality;
 ```
 
 ### Общая архитектура системы
