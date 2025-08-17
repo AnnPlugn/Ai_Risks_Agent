@@ -26,36 +26,8 @@
 
 ### Архитектура Profiler Agent
 
-```mermaid
-graph TD
-    subgraph "Input Processing"
-        A[File System Crawler] -->|Scans Files| B[Code Parser]
-        A -->|Scans Docs| C[Doc Parser]
-    end
-    subgraph "Data Analysis"
-        B -->|Parsed Code| D[Context-Aware Chunker]
-        C -->|Parsed Docs| D
-    end
-    subgraph "Orchestration"
-        D -->|Chunked Data| E[LLM Orchestrator LangGraph]
-    end
-    subgraph "Output Generation"
-        E -->|Processed Data| F[Output Generator]
-        F -->|Results| G[Summary Report]
-        F -->|Visualization| H[Architecture Graph]
-        F -->|Structured Data| I[Detailed JSON]
-    end
+<img width="573" height="475" alt="image" src="https://github.com/user-attachments/assets/a6ecec88-7161-4a0f-9577-587bc882d045" />
 
-    classDef input fill:#d1e7ff,stroke:#005f99,stroke-width:2px;
-    classDef analysis fill:#e6f3e6,stroke:#006600,stroke-width:2px;
-    classDef orchestration fill:#fff4cc,stroke:#cc9900,stroke-width:2px;
-    classDef output fill:#ffe6e6,stroke:#990000,stroke-width:2px;
-
-    class A,B,C input;
-    class D analysis;
-    class E orchestration;
-    class F,G,H,I output;
-```
 
 ### Общая архитектура
 ```
