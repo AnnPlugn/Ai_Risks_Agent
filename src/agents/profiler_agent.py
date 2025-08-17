@@ -2547,34 +2547,238 @@ class EnhancedProfilerAgent(AnalysisAgent):
 
         return profile_data
 
-    def _create_fallback_detailed_summary(self, profile_data: Dict[str, Any], parsed_data: Dict[str, Any]) -> Dict[
-        str, str]:
-        """Создание fallback детального саммари"""
+    def _create_agent_profile(self, profile_data: Dict[str, Any]) -> AgentProfile:
+            """ИСПРАВЛЕННОЕ создание объекта AgentProfile"""
 
-        agent_name = profile_data.get("name", "ИИ-агент")
-        agent_type = profile_data.get("agent_type", "other")
+            try:
+                # Преобразуем строковые значения в enum'ы
+                agent_type = AgentType(profile_data.get("agent_type", "other"))
+                autonomy_level = AutonomyLevel(profile_data.get("autonomy_level", "supervised"))
 
-        return {
-            "overview": f"""
-            {agent_name} представляет собой {agent_type}-систему, разработанную для автоматизации 
-            различных задач. На основе анализа предоставленных файлов и данных, агент демонстрирует 
-            возможности обработки информации и взаимодействия с пользователями. Целевая аудитория 
-            включает {profile_data.get('target_audience', 'широкий круг пользователей')}. 
-            Архитектура агента основана на использовании {profile_data.get('llm_model', 'LLM технологий')} 
-            с уровнем автономности {profile_data.get('autonomy_level', 'под наблюдением')}. 
-            Система спроектирована с учетом современных требований к безопасности и производительности.
-            """,
+                # Преобразуем data_access в enum'ы
+                data_access_list = []
+                for da in profile_data.get("data_access", ["internal"]):
+                    try:
+                        data_access_list.append(DataSensitivity(da))
+                    except ValueError:
+                        data_access_list.append(DataSensitivity.INTERNAL)
 
-            "technical_architecture": f"""
-            Техническая архитектура агента построена с использованием современного стека технологий. 
-            В основе лежит {profile_data.get('llm_model', 'языковая модель')}, которая обеспечивает 
-            обработку естественного языка и генерацию ответов. Система имеет доступ к данным типов: 
-            {', '.join(profile_data.get('data_access', []))}, что определяет области её применения. 
-            {'Интеграция с внешними API включает: ' + ', '.join(profile_data.get('external_apis', [])) if profile_data.get('external_apis') else 'Внешние интеграции не обнаружены.'}
-            Архитектура обеспечивает масштабируемость и надежность работы системы.
-            """,
+                return AgentProfile(
+                    name=profile_data.get("name", "Unknown Agent"),
+                    version=profile_data.get("version", "1.0"),
+                    description=profile_data.get("description", "Автоматически сгенерированное описание"),
+                    agent_type=agent_type,
+                    llm_model=profile_data.get("llm_model", "unknown"),
+                    autonomy_level=autonomy_level,
+                    data_access=data_access_list,
+                    external_apis=profile_data.get("external_apis", []),
+                    target_audience=profile_data.get("target_audience", "Общая аудитория"),
+                    operations_per_hour=profile_data.get("operations_per_hour"),
+                    revenue_per_operation=profile_data.get("revenue_per_operation"),
+                    system_prompts=profile_data.get("system_prompts", []),
+                    guardrails=profile_data.get("guardrails", []),
+                    source_files=profile_data.get("source_files", []),
+                    detailed_summary=profile_data.get("detailed_summary"),
+                    created_at=datetime.now(),
+                    updated_at=datetime.now()
+                )
 
-            "operational_model": f"""
-            Операционная модель агента характеризуется уровнем автономности 
-            {profile_data.get('autonomy_level', 'supervised')}. Это означает, что система 
-            {'работает под постоянным контролем' if profile_data.get('
+            except Exception as e:
+                self.logger.bind_context("unknown", self.name).error(
+                    f"Ошибка создания AgentProfile: {e}"
+                )
+
+                # Fallback профиль
+                return AgentProfile(
+                    name=profile_data.get("name", "Unknown Agent"),
+                    version="1.0",
+                    description="Fallback профиль из-за ошибки создания",
+                    agent_type=AgentType.OTHER,
+                    llm_model="unknown",
+                    autonomy_level=AutonomyLevel.SUPERVISED,
+                    data_access=[DataSensitivity.INTERNAL],
+                    external_apis=[],
+                    target_audience="Общая аудитория",
+                    system_prompts=[],
+                    guardrails=[],
+                    source_files=[],
+                    created_at=datetime.now(),
+                    updated_at=datetime.now()
+                    )
+
+        def _serialize_agent_profile_for_result(self, agent_profile: AgentProfile) -> Dict[str, Any]:
+            """Сериализация AgentProfile для результата"""
+            return {
+                "name": agent_profile.name,
+                "version": agent_profile.version,
+                "description": agent_profile.description,
+                "agent_type": agent_profile.agent_type.value,
+                "llm_model": agent_profile.llm_model,
+                "autonomy_level": agent_profile.autonomy_level.value,
+                "data_access": [ds.value for ds in agent_profile.data_access],
+                "external_apis": agent_profile.external_apis,
+                "target_audience": agent_profile.target_audience,
+                "operations_per_hour": agent_profile.operations_per_hour,
+                "revenue_per_operation": agent_profile.revenue_per_operation,
+                "system_prompts": agent_profile.system_prompts,
+                "guardrails": agent_profile.guardrails,
+                "source_files": agent_profile.source_files,
+                "detailed_summary": agent_profile.detailed_summary,
+                "created_at": agent_profile.created_at.isoformat() if agent_profile.created_at else None,
+                "updated_at": agent_profile.updated_at.isoformat() if agent_profile.updated_at else None
+            }
+
+        async def _save_outputs(self, outputs: Dict[str, str], assessment_id: str) -> List[str]:
+            """Сохранение выходных файлов"""
+            saved_files = []
+
+            try:
+                # Создаем директорию для результатов
+                output_dir = Path(f"outputs/{assessment_id}")
+                output_dir.mkdir(parents=True, exist_ok=True)
+
+                # Сохраняем каждый тип выхода
+                for output_type, content in outputs.items():
+                    if not content:
+                        continue
+
+                    if output_type == "summary_report":
+                        file_path = output_dir / "summary_report.md"
+                        with open(file_path, 'w', encoding='utf-8') as f:
+                            f.write(content)
+                        saved_files.append(str(file_path))
+
+                    elif output_type == "architecture_graph":
+                        file_path = output_dir / "architecture.mermaid"
+                        with open(file_path, 'w', encoding='utf-8') as f:
+                            f.write(content)
+                        saved_files.append(str(file_path))
+
+                    elif output_type == "detailed_json":
+                        file_path = output_dir / "detailed_analysis.json"
+                        with open(file_path, 'w', encoding='utf-8') as f:
+                            f.write(content)
+                        saved_files.append(str(file_path))
+
+                    elif output_type == "processing_log":
+                        file_path = output_dir / "processing_log.txt"
+                        with open(file_path, 'w', encoding='utf-8') as f:
+                            f.write(content)
+                        saved_files.append(str(file_path))
+
+                self.logger.bind_context(assessment_id, self.name).info(
+                    f"📁 Сохранено {len(saved_files)} файлов результатов"
+                )
+
+            except Exception as e:
+                self.logger.bind_context(assessment_id, self.name).error(
+                    f"Ошибка сохранения результатов: {e}"
+                )
+
+            return saved_files
+
+        def _calculate_performance_metrics(self) -> Dict[str, Any]:
+            """Расчет метрик производительности"""
+            total_time = sum(
+                (stage.end_time - stage.start_time).total_seconds()
+                for stage in self.processing_stages
+                if stage.end_time
+            )
+
+            return {
+                "total_stages": len(self.processing_stages),
+                "successful_stages": len([s for s in self.processing_stages if s.status == "completed"]),
+                "failed_stages": len([s for s in self.processing_stages if s.status == "failed"]),
+                "total_processing_time": total_time,
+                "avg_stage_time": total_time / len(self.processing_stages) if self.processing_stages else 0,
+                "cache_hits": len(self.llm_orchestrator.processing_cache),
+                "chunks_processed": sum(
+                    stage.metrics.get("chunks_created", 0)
+                    for stage in self.processing_stages
+                    if stage.metrics
+                )
+            }
+
+    # ===============================
+    # Фабричные функции для создания профайлера
+    # ===============================
+
+def create_profiler_from_env() -> EnhancedProfilerAgent:
+        """Создание профайлера из переменных окружения"""
+    from .base_agent import create_default_config_from_env
+
+    config = create_default_config_from_env()
+    config.name = "enhanced_profiler"
+    config.description = "Улучшенный профайлер ИИ-агентов с новой архитектурой"
+
+    return EnhancedProfilerAgent(config)
+
+def create_profiler_node_function(profiler: EnhancedProfilerAgent):
+        """Создание функции узла для LangGraph"""
+
+    async def profiler_node(state: WorkflowState) -> WorkflowState:
+            """Узел профилирования для LangGraph"""
+
+                            try:
+                                assessment_id = state.get("assessment_id", "unknown")
+                                source_files = state.get("source_files", [])
+                                agent_name = state.get("preliminary_agent_name", "Unknown Agent")
+
+                                if not source_files:
+                                    state.update({
+                                        "current_step": "error",
+                                        "error_message": "Не предоставлены файлы для анализа"
+                                    })
+                                    return state
+
+                                # Подготавливаем входные данные для профайлера
+                                input_data = {
+                                    "source_files": source_files,
+                                    "agent_name": agent_name
+                                }
+
+                                # Запускаем профилирование
+                                result = await profiler.process(input_data, assessment_id)
+
+                                if result.status == ProcessingStatus.COMPLETED:
+                                    # Извлекаем профиль агента из результата
+                                    agent_profile_data = result.result_data.get("agent_profile", {})
+
+                                    state.update({
+                                        "agent_profile": agent_profile_data,
+                                        "profiling_result": result.result_data,
+                                        "current_step": "finalization"
+                                    })
+                                else:
+                                    state.update({
+                                        "current_step": "error",
+                                        "error_message": result.error_message or "Ошибка профилирования"
+                                    })
+
+                                return state
+
+                            except Exception as e:
+                                state.update({
+                                    "current_step": "error",
+                                    "error_message": f"Исключение в профайлере: {str(e)}"
+                                })
+                                return state
+
+                        return profiler_node
+
+    # ===============================
+    # Экспорт
+    # ===============================
+
+__all__ = [
+        "EnhancedProfilerAgent",
+        "FileSystemCrawler",
+        "ContextAwareChunker",
+        "LLMOrchestrator",
+        "OutputGenerator",
+        "FileMetadata",
+        "ContextChunk",
+        "ProcessingStage",
+        "create_profiler_from_env",
+        "create_profiler_node_function"
+    ]
