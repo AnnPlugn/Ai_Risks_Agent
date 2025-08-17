@@ -3,7 +3,7 @@
 Улучшенный профайлер-агент для сбора и анализа данных об ИИ-агенте
 Новая архитектура с контекстно-осознанным чанкингом и LangGraph оркестрацией
 """
-
+import os
 import json
 import asyncio
 import hashlib
@@ -15,7 +15,7 @@ from enum import Enum
 
 from .base_agent import AnalysisAgent, AgentConfig
 from ..models.risk_models import AgentProfile, AgentTaskResult, ProcessingStatus, AgentType, AutonomyLevel, \
-    DataSensitivity
+    DataSensitivity, WorkflowState
 from ..tools.document_parser import create_document_parser, parse_agent_documents
 from ..tools.code_analyzer import create_code_analyzer, analyze_agent_codebase
 from ..tools.prompt_analyzer import create_prompt_analyzer, analyze_agent_prompts
@@ -438,10 +438,17 @@ class ContextAwareChunker:
         if not context_data['data']:
             return []
 
+        # Получаем функцию анализатора, используя 'default' как запасной вариант
         analyzer_func = self.context_analyzers.get(context_data.get('analyzer', 'default'))
 
         # Анализируем контекст для определения стратегии чанкинга
-        analysis_result = analyzer_func(context_data['data']) if analyzer_func else {}
+        analysis_result = {}
+        if analyzer_func and 'data' in context_data:
+            try:
+                analysis_result = analyzer_func(context_data['data'])
+            except Exception as e:
+                # Можно добавить логирование ошибки
+                print(f"Ошибка при анализе контекста: {e}")
 
         # Собираем контент
         content_sections = []
@@ -709,11 +716,6 @@ class LLMOrchestrator:
         self.agent = agent
         self.logger = agent.logger
         self.processing_cache = {}
-        self.retry_strategies = {
-            'simple_retry': self._simple_retry_strategy,
-            'prompt_modification': self._prompt_modification_strategy,
-            'chunk_splitting': self._chunk_splitting_strategy
-        }
 
     async def process_chunks(self, chunks: List[ContextChunk], assessment_id: str) -> Dict[str, Any]:
         """Оркестрация обработки чанков через LLM"""
@@ -1867,13 +1869,41 @@ class EnhancedProfilerAgent(AnalysisAgent):
                     "prompt_files_parsed": len(parsed_data.get("prompt_files", {}))
                 })
 
+                def custom_serializer(obj):
+                    """Преобразует неподдерживаемые JSON типы, такие как datetime, в сериализуемый формат."""
+                    if isinstance(obj, datetime):
+                        return obj.isoformat()  # Преобразует datetime в строку в формате ISO 8601
+                    raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
+
+                # Предполагается, что parsed_data - это словарь
+                with open('parsed_data.txt', 'w', encoding='utf-8') as f:
+                    json.dump(parsed_data, f, ensure_ascii=False, indent=4, default=custom_serializer)
+
+
                 # Этап 3: Контекстно-осознанный чанкинг
                 await self._start_stage("context_aware_chunking", assessment_id)
                 chunks = await self.chunker.create_chunks(files_metadata, parsed_data)
+
+                output_dir = "chunk_data"
+                os.makedirs(output_dir, exist_ok=True)
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                output_file = os.path.join(output_dir, f"chunks_{assessment_id}_{timestamp}.json")
+
+                chunks_data = [{
+                    "chunk_id": i,
+                    "context_type": c.context_type,
+                    "size_tokens": c.size_tokens,
+                    "content": c.content
+                } for i, c in enumerate(chunks)]
+
+                with open(output_file, 'w', encoding='utf-8') as f:
+                    json.dump(chunks_data, f, ensure_ascii=False, indent=2)
+
                 await self._complete_stage(metrics={
                     "chunks_created": len(chunks),
                     "contexts_identified": len(set(c.context_type for c in chunks)),
-                    "avg_chunk_size": sum(c.size_tokens for c in chunks) / len(chunks) if chunks else 0
+                    "avg_chunk_size": sum(c.size_tokens for c in chunks) / len(chunks) if chunks else 0,
+                    "output_file": output_file
                 })
 
                 # Этап 4: LLM оркестрация
@@ -2265,6 +2295,65 @@ class EnhancedProfilerAgent(AnalysisAgent):
 
         return summary
 
+    def _construct_agent_profile(self, profile_data: Dict[str, Any]) -> AgentProfile:
+        """ИСПРАВЛЕННОЕ создание объекта AgentProfile"""
+
+        try:
+            # Преобразуем строковые значения в enum'ы
+            agent_type = AgentType(profile_data.get("agent_type", "other"))
+            autonomy_level = AutonomyLevel(profile_data.get("autonomy_level", "supervised"))
+
+            # Преобразуем data_access в enum'ы
+            data_access_list = []
+            for da in profile_data.get("data_access", ["internal"]):
+                try:
+                    data_access_list.append(DataSensitivity(da))
+                except ValueError:
+                    data_access_list.append(DataSensitivity.INTERNAL)
+
+            return AgentProfile(
+                name=profile_data.get("name", "Unknown Agent"),
+                version=profile_data.get("version", "1.0"),
+                description=profile_data.get("description", "Автоматически сгенерированное описание"),
+                agent_type=agent_type,
+                llm_model=profile_data.get("llm_model", "unknown"),
+                autonomy_level=autonomy_level,
+                data_access=data_access_list,
+                external_apis=profile_data.get("external_apis", []),
+                target_audience=profile_data.get("target_audience", "Общая аудитория"),
+                operations_per_hour=profile_data.get("operations_per_hour"),
+                revenue_per_operation=profile_data.get("revenue_per_operation"),
+                system_prompts=profile_data.get("system_prompts", []),
+                guardrails=profile_data.get("guardrails", []),
+                source_files=profile_data.get("source_files", []),
+                detailed_summary=profile_data.get("detailed_summary"),
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            )
+
+        except Exception as e:
+            self.logger.bind_context("unknown", self.name).error(
+                f"Ошибка создания AgentProfile: {e}"
+            )
+
+            # Fallback профиль
+            return AgentProfile(
+                name=profile_data.get("name", "Unknown Agent"),
+                version="1.0",
+                description="Fallback профиль из-за ошибки создания",
+                agent_type=AgentType.OTHER,
+                llm_model="unknown",
+                autonomy_level=AutonomyLevel.SUPERVISED,
+                data_access=[DataSensitivity.INTERNAL],
+                external_apis=[],
+                target_audience="Общая аудитория",
+                system_prompts=[],
+                guardrails=[],
+                source_files=[],
+                created_at=datetime.now(),
+                updated_at=datetime.now()
+            )
+
     async def _create_prompt_summary(self, parsed_data: Dict[str, Any]) -> Dict[str, Any]:
         """Создание саммари анализа промптов"""
         prompt_sources = []
@@ -2474,14 +2563,14 @@ class EnhancedProfilerAgent(AnalysisAgent):
                 llm_result[key] = default_value
 
         # Улучшаем данные на основе parsed_data
-        self._enhance_with_parsed_data(llm_result, parsed_data)
+        #self._enhance_with_parsed_data(llm_result, parsed_data)
 
         # Валидация енумов
-        llm_result = self._validate_enum_fields(llm_result)
+        #llm_result = self._validate_enum_fields(llm_result)
 
         # Обеспечиваем detailed_summary
-        if 'detailed_summary' not in llm_result or not llm_result['detailed_summary']:
-            llm_result['detailed_summary'] = self._create_fallback_detailed_summary(llm_result, parsed_data)
+        #if 'detailed_summary' not in llm_result or not llm_result['detailed_summary']:
+            #llm_result['detailed_summary'] = self._create_fallback_detailed_summary(llm_result, parsed_data)
 
         return llm_result
 
@@ -2526,17 +2615,17 @@ class EnhancedProfilerAgent(AnalysisAgent):
         """Валидация полей с енумами"""
 
         # Валидация agent_type
-        valid_agent_types = [e.value for e in AgentType]
+        valid_agent_types = [e for e in AgentType]
         if profile_data["agent_type"] not in valid_agent_types:
             profile_data["agent_type"] = "other"
 
         # Валидация autonomy_level
-        valid_autonomy_levels = [e.value for e in AutonomyLevel]
+        valid_autonomy_levels = [e for e in AutonomyLevel]
         if profile_data["autonomy_level"] not in valid_autonomy_levels:
             profile_data["autonomy_level"] = "supervised"
 
         # Валидация data_access
-        valid_data_sensitivities = [e.value for e in DataSensitivity]
+        valid_data_sensitivities = [e for e in DataSensitivity]
         validated_data_access = []
         for da in profile_data.get("data_access", []):
             if da in valid_data_sensitivities:
@@ -2606,105 +2695,105 @@ class EnhancedProfilerAgent(AnalysisAgent):
                     updated_at=datetime.now()
                     )
 
-        def _serialize_agent_profile_for_result(self, agent_profile: AgentProfile) -> Dict[str, Any]:
-            """Сериализация AgentProfile для результата"""
-            return {
-                "name": agent_profile.name,
-                "version": agent_profile.version,
-                "description": agent_profile.description,
-                "agent_type": agent_profile.agent_type.value,
-                "llm_model": agent_profile.llm_model,
-                "autonomy_level": agent_profile.autonomy_level.value,
-                "data_access": [ds.value for ds in agent_profile.data_access],
-                "external_apis": agent_profile.external_apis,
-                "target_audience": agent_profile.target_audience,
-                "operations_per_hour": agent_profile.operations_per_hour,
-                "revenue_per_operation": agent_profile.revenue_per_operation,
-                "system_prompts": agent_profile.system_prompts,
-                "guardrails": agent_profile.guardrails,
-                "source_files": agent_profile.source_files,
-                "detailed_summary": agent_profile.detailed_summary,
-                "created_at": agent_profile.created_at.isoformat() if agent_profile.created_at else None,
-                "updated_at": agent_profile.updated_at.isoformat() if agent_profile.updated_at else None
-            }
+    def _serialize_agent_profile_for_result(self, agent_profile: AgentProfile) -> Dict[str, Any]:
+        """Сериализация AgentProfile для результата"""
+        return {
+            "name": agent_profile.name,
+            "version": agent_profile.version,
+            "description": agent_profile.description,
+            "agent_type": agent_profile.agent_type.value,
+            "llm_model": agent_profile.llm_model,
+            "autonomy_level": agent_profile.autonomy_level.value,
+            "data_access": [ds.value for ds in agent_profile.data_access],
+            "external_apis": agent_profile.external_apis,
+            "target_audience": agent_profile.target_audience,
+            "operations_per_hour": agent_profile.operations_per_hour,
+            "revenue_per_operation": agent_profile.revenue_per_operation,
+            "system_prompts": agent_profile.system_prompts,
+            "guardrails": agent_profile.guardrails,
+            "source_files": agent_profile.source_files,
+            "detailed_summary": agent_profile.detailed_summary,
+            "created_at": agent_profile.created_at.isoformat() if agent_profile.created_at else None,
+            "updated_at": agent_profile.updated_at.isoformat() if agent_profile.updated_at else None
+        }
 
-        async def _save_outputs(self, outputs: Dict[str, str], assessment_id: str) -> List[str]:
-            """Сохранение выходных файлов"""
-            saved_files = []
+    async def _save_outputs(self, outputs: Dict[str, str], assessment_id: str) -> List[str]:
+        """Сохранение выходных файлов"""
+        saved_files = []
 
-            try:
+        try:
                 # Создаем директорию для результатов
-                output_dir = Path(f"outputs/{assessment_id}")
-                output_dir.mkdir(parents=True, exist_ok=True)
+            output_dir = Path(f"outputs/{assessment_id}")
+            output_dir.mkdir(parents=True, exist_ok=True)
 
                 # Сохраняем каждый тип выхода
-                for output_type, content in outputs.items():
-                    if not content:
-                        continue
+            for output_type, content in outputs.items():
+                if not content:
+                    continue
 
-                    if output_type == "summary_report":
-                        file_path = output_dir / "summary_report.md"
-                        with open(file_path, 'w', encoding='utf-8') as f:
-                            f.write(content)
-                        saved_files.append(str(file_path))
+                if output_type == "summary_report":
+                    file_path = output_dir / "summary_report.md"
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(content)
+                    saved_files.append(str(file_path))
 
-                    elif output_type == "architecture_graph":
-                        file_path = output_dir / "architecture.mermaid"
-                        with open(file_path, 'w', encoding='utf-8') as f:
-                            f.write(content)
-                        saved_files.append(str(file_path))
+                elif output_type == "architecture_graph":
+                    file_path = output_dir / "architecture.mermaid"
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(content)
+                    saved_files.append(str(file_path))
 
-                    elif output_type == "detailed_json":
-                        file_path = output_dir / "detailed_analysis.json"
-                        with open(file_path, 'w', encoding='utf-8') as f:
-                            f.write(content)
-                        saved_files.append(str(file_path))
+                elif output_type == "detailed_json":
+                    file_path = output_dir / "detailed_analysis.json"
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(content)
+                    saved_files.append(str(file_path))
 
-                    elif output_type == "processing_log":
-                        file_path = output_dir / "processing_log.txt"
-                        with open(file_path, 'w', encoding='utf-8') as f:
-                            f.write(content)
-                        saved_files.append(str(file_path))
+                elif output_type == "processing_log":
+                    file_path = output_dir / "processing_log.txt"
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(content)
+                    saved_files.append(str(file_path))
 
-                self.logger.bind_context(assessment_id, self.name).info(
-                    f"📁 Сохранено {len(saved_files)} файлов результатов"
-                )
-
-            except Exception as e:
-                self.logger.bind_context(assessment_id, self.name).error(
-                    f"Ошибка сохранения результатов: {e}"
-                )
-
-            return saved_files
-
-        def _calculate_performance_metrics(self) -> Dict[str, Any]:
-            """Расчет метрик производительности"""
-            total_time = sum(
-                (stage.end_time - stage.start_time).total_seconds()
-                for stage in self.processing_stages
-                if stage.end_time
+            self.logger.bind_context(assessment_id, self.name).info(
+                f"📁 Сохранено {len(saved_files)} файлов результатов"
             )
 
-            return {
-                "total_stages": len(self.processing_stages),
-                "successful_stages": len([s for s in self.processing_stages if s.status == "completed"]),
-                "failed_stages": len([s for s in self.processing_stages if s.status == "failed"]),
-                "total_processing_time": total_time,
-                "avg_stage_time": total_time / len(self.processing_stages) if self.processing_stages else 0,
-                "cache_hits": len(self.llm_orchestrator.processing_cache),
-                "chunks_processed": sum(
-                    stage.metrics.get("chunks_created", 0)
-                    for stage in self.processing_stages
-                    if stage.metrics
-                )
-            }
+        except Exception as e:
+            self.logger.bind_context(assessment_id, self.name).error(
+                f"Ошибка сохранения результатов: {e}"
+            )
+
+        return saved_files
+
+    def _calculate_performance_metrics(self) -> Dict[str, Any]:
+        """Расчет метрик производительности"""
+        total_time = sum(
+            (stage.end_time - stage.start_time).total_seconds()
+            for stage in self.processing_stages
+            if stage.end_time
+        )
+
+        return {
+            "total_stages": len(self.processing_stages),
+            "successful_stages": len([s for s in self.processing_stages if s.status == "completed"]),
+            "failed_stages": len([s for s in self.processing_stages if s.status == "failed"]),
+            "total_processing_time": total_time,
+            "avg_stage_time": total_time / len(self.processing_stages) if self.processing_stages else 0,
+            "cache_hits": len(self.llm_orchestrator.processing_cache),
+            "chunks_processed": sum(
+                stage.metrics.get("chunks_created", 0)
+                for stage in self.processing_stages
+                if stage.metrics
+            )
+        }
 
     # ===============================
     # Фабричные функции для создания профайлера
-    # ===============================
+
 
 def create_profiler_from_env() -> EnhancedProfilerAgent:
-        """Создание профайлера из переменных окружения"""
+    """Создание профайлера из переменных окружения"""
     from .base_agent import create_default_config_from_env
 
     config = create_default_config_from_env()
@@ -2714,58 +2803,57 @@ def create_profiler_from_env() -> EnhancedProfilerAgent:
     return EnhancedProfilerAgent(config)
 
 def create_profiler_node_function(profiler: EnhancedProfilerAgent):
-        """Создание функции узла для LangGraph"""
+    """Создание функции узла для LangGraph"""
 
     async def profiler_node(state: WorkflowState) -> WorkflowState:
-            """Узел профилирования для LangGraph"""
+        """Узел профилирования для LangGraph"""
 
-                            try:
-                                assessment_id = state.get("assessment_id", "unknown")
-                                source_files = state.get("source_files", [])
-                                agent_name = state.get("preliminary_agent_name", "Unknown Agent")
+        try:
+            assessment_id = state.get("assessment_id", "unknown")
+            source_files = state.get("source_files", [])
+            agent_name = state.get("preliminary_agent_name", "Unknown Agent")
 
-                                if not source_files:
-                                    state.update({
-                                        "current_step": "error",
-                                        "error_message": "Не предоставлены файлы для анализа"
-                                    })
-                                    return state
+            if not source_files:
+                state.update({
+                    "current_step": "error",
+                    "error_message": "Не предоставлены файлы для анализа"
+                })
+                return state
 
-                                # Подготавливаем входные данные для профайлера
-                                input_data = {
-                                    "source_files": source_files,
-                                    "agent_name": agent_name
-                                }
+            # Подготавливаем входные данные для профайлера
+            input_data = {
+                "source_files": source_files,
+                "agent_name": agent_name
+            }
 
-                                # Запускаем профилирование
-                                result = await profiler.process(input_data, assessment_id)
+            # Запускаем профилирование
+            result = await profiler.process(input_data, assessment_id)
 
-                                if result.status == ProcessingStatus.COMPLETED:
-                                    # Извлекаем профиль агента из результата
-                                    agent_profile_data = result.result_data.get("agent_profile", {})
+            if result.status == ProcessingStatus.COMPLETED:
+                # Извлекаем профиль агента из результата
+                agent_profile_data = result.result_data.get("agent_profile", {})
 
-                                    state.update({
-                                        "agent_profile": agent_profile_data,
-                                        "profiling_result": result.result_data,
-                                        "current_step": "finalization"
-                                    })
-                                else:
-                                    state.update({
-                                        "current_step": "error",
-                                        "error_message": result.error_message or "Ошибка профилирования"
-                                    })
+                state.update({
+                    "agent_profile": agent_profile_data,
+                    "profiling_result": result.result_data,
+                    "current_step": "finalization"
+                })
+            else:
+                state.update({
+                    "current_step": "error",
+                    "error_message": result.error_message or "Ошибка профилирования"
+                })
 
-                                return state
+            return state
 
-                            except Exception as e:
-                                state.update({
-                                    "current_step": "error",
-                                    "error_message": f"Исключение в профайлере: {str(e)}"
-                                })
-                                return state
+        except Exception as e:
+            state.update({
+                "current_step": "error",
+                "error_message": f"Исключение в профайлере: {str(e)}"
+            })
+            return state
 
-                        return profiler_node
-
+    return profiler_node
     # ===============================
     # Экспорт
     # ===============================
