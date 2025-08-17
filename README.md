@@ -26,8 +26,7 @@
 
 ### Архитектура Profiler Agent
 
-<img width="573" height="475" alt="image" src="https://github.com/user-attachments/assets/a6ecec88-7161-4a0f-9577-587bc882d045" />
-
+![image](https://github.com/user-attachments/assets/a6ecec88-7161-4a0f-9577-587bc882d045){width=573 height=475}
 
 ### Общая архитектура
 ```
