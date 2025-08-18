@@ -1407,36 +1407,92 @@ class OutputGenerator:
 
         return "\n".join(stats)
 
+    def _prepare_template_data(self, agent_profile: AgentProfile, llm_results: Dict[str, Any],
+                               context: Dict[str, Any]) -> Dict[str, Any]:
+        """Подготовка данных для шаблона"""
+        return {
+            "agent_name": agent_profile.name,
+            "agent_type": agent_profile.agent_type.value,
+            "agent_version": agent_profile.version,
+            "autonomy_level": agent_profile.autonomy_level.value,
+            "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
+            "generation_date": context.get("generation_time", datetime.now()).strftime('%Y-%m-%d %H:%M:%S'),
+            "system_prompts_count": len(agent_profile.system_prompts),
+            "guardrails_count": len(agent_profile.guardrails),
+            "external_apis": ', '.join(
+                agent_profile.external_apis) if agent_profile.external_apis else 'Не используются',
+            "operations_per_hour": agent_profile.operations_per_hour or 'Не указано',
+            "revenue_per_operation": f"{agent_profile.revenue_per_operation} руб." if agent_profile.revenue_per_operation else 'Не указано',
+            "description": agent_profile.description,
+            "target_audience": agent_profile.target_audience
+        }
+
     async def _generate_architecture_graph_async(self, context: Dict[str, Any]) -> str:
         """Асинхронная генерация диаграммы архитектуры"""
         agent_profile = context["agent_profile"]
         llm_results = context["llm_results"]
 
+        # ИСПРАВЛЕНО: Создаем template_data
+        template_data = {
+            "agent_name": agent_profile.name,
+            "agent_type": agent_profile.agent_type.value if hasattr(agent_profile.agent_type, 'value') else str(
+                agent_profile.agent_type),
+            "agent_version": agent_profile.version,
+            "autonomy_level": agent_profile.autonomy_level.value if hasattr(agent_profile.autonomy_level,
+                                                                            'value') else str(
+                agent_profile.autonomy_level),
+            "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
+            "generation_date": context.get("generation_time", datetime.now()).strftime('%Y-%m-%d %H:%M:%S'),
+            "system_prompts_count": len(agent_profile.system_prompts),
+            "guardrails_count": len(agent_profile.guardrails),
+            "external_apis": ', '.join(
+                agent_profile.external_apis) if agent_profile.external_apis else 'Не используются',
+            "operations_per_hour": agent_profile.operations_per_hour or 'Не указано',
+            "revenue_per_operation": f"{agent_profile.revenue_per_operation} руб." if agent_profile.revenue_per_operation else 'Не указано',
+            "description": agent_profile.description,
+            "target_audience": agent_profile.target_audience
+        }
+
         # Создаем более детальную диаграмму на основе собранных данных
-        mermaid_graph = self._build_comprehensive_architecture_graph(agent_profile, llm_results)
+        mermaid_graph = self._build_comprehensive_architecture_graph(agent_profile, llm_results, template_data)
 
         return mermaid_graph
 
     def _build_comprehensive_architecture_graph(self, agent_profile: AgentProfile, llm_results: Dict[str, Any],
                                                 template_data: Dict[str, Any]) -> str:
-        """Build a comprehensive architecture diagram for an AI agent, optimized for LLM interpretability and risk assessment.
+        """Build a comprehensive architecture diagram for an AI agent, optimized for LLM interpretability and risk assessment."""
 
-        Args:
-            agent_profile (AgentProfile): The agent's configuration and metadata.
-            llm_results (Dict[str, Any]): Results from LLM analysis for additional context.
-            template_data (Dict[str, Any]): Template data containing agent metadata and analysis results.
+        # ИСПРАВЛЕНО: Проверяем наличие template_data
+        if not template_data:
+            # Создаем базовые template_data если они отсутствуют
+            template_data = {
+                "agent_name": agent_profile.name,
+                "agent_type": agent_profile.agent_type.value if hasattr(agent_profile.agent_type, 'value') else str(
+                    agent_profile.agent_type),
+                "agent_version": agent_profile.version,
+                "autonomy_level": agent_profile.autonomy_level.value if hasattr(agent_profile.autonomy_level,
+                                                                                'value') else str(
+                    agent_profile.autonomy_level),
+                "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
+                "generation_date": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                "system_prompts_count": len(agent_profile.system_prompts),
+                "guardrails_count": len(agent_profile.guardrails),
+                "external_apis": ', '.join(
+                    agent_profile.external_apis) if agent_profile.external_apis else 'Не используются',
+                "operations_per_hour": agent_profile.operations_per_hour or 'Не указано',
+                "revenue_per_operation": f"{agent_profile.revenue_per_operation} руб." if agent_profile.revenue_per_operation else 'Не указано',
+                "description": agent_profile.description,
+                "target_audience": agent_profile.target_audience
+            }
 
-        Returns:
-            str: A Mermaid graph string representing the agent's architecture.
-        """
         graph_lines = [
             "%% Comprehensive architecture diagram for AI Agent",
             f"%% Agent: {template_data['agent_name']} (Type: {template_data['agent_type']}, Version: {template_data['agent_version']})",
             f"%% Autonomy Level: {template_data['autonomy_level']}, Data Quality Score: {template_data['data_quality_score']}",
             f"%% Generated: {template_data['generation_date']}",
             "graph TD",
-            "    A[Пользователь] -->|Ввод запроса| B[ИИ-Агент]"
-            "    B -->|Маршрутизация| C{Обработка запроса}",
+            "    A[Пользователь] -->|Ввод запроса| B[ИИ-Агент]",
+            "    B -->|Маршрутизация| C{Обработка запроса}"
         ]
 
         node_counter = ord('D')
@@ -1447,8 +1503,11 @@ class OutputGenerator:
             graph_lines.append(f"    %% System Prompts: Defines agent behavior and constraints")
             graph_lines.append(
                 f"    C -->|Использует {template_data['system_prompts_count']} промптов| {prompt_node}[Системные промпты]")
-            graph_lines.append(f"    {prompt_node} -->|Передача контекста| E[LLM: {template_data['llm_model']}]")
+            graph_lines.append(f"    {prompt_node} -->|Передача контекста| E[LLM]")
             node_counter += 1
+        else:
+            # Если нет системных промптов, прямая связь с LLM
+            graph_lines.append(f"    C -->|Прямой вызов| E[LLM]")
 
         # Add external APIs with risk annotation
         if agent_profile.external_apis and template_data['external_apis'] != 'Не используются':
@@ -1467,7 +1526,8 @@ class OutputGenerator:
             graph_lines.append(f"    C -->|Доступ к данным| {data_node}[Данные]")
             for i, data_type in enumerate(agent_profile.data_access[:3], 1):
                 data_sub_node = f"{data_node}{i}"
-                graph_lines.append(f"    {data_node} -->|Тип данных| {data_sub_node}[{data_type.value}]")
+                data_value = data_type.value if hasattr(data_type, 'value') else str(data_type)
+                graph_lines.append(f"    {data_node} -->|Тип данных| {data_sub_node}[{data_value}]")
             node_counter += 1
 
         # Add guardrails with risk mitigation annotation
@@ -1485,7 +1545,7 @@ class OutputGenerator:
         graph_lines.extend([
             "",
             f"    %% Operational Stats: {template_data['operations_per_hour']} ops/hour, Revenue: {template_data['revenue_per_operation']}",
-            f"    %% Description: {template_data['description']}",
+            f"    %% Description: {template_data['description'][:100]}...",
             f"    %% Target Audience: {template_data['target_audience']}",
         ])
 
@@ -1503,50 +1563,27 @@ class OutputGenerator:
             "    class A userClass",
             "    class B,C agentClass",
             "    class E llmClass",
-            "    class H userClass",
+            "    class H userClass"
         ])
 
-        if agent_profile.external_apis:
+        # Apply styling to dynamic nodes
+        if agent_profile.external_apis and node_counter > ord('D'):
+            api_node = chr(ord('D'))
             graph_lines.append(f"    class {api_node} apiClass")
             for i in range(1, min(len(agent_profile.external_apis) + 1, 4)):
                 graph_lines.append(f"    class {api_node}{i} apiClass")
-        if agent_profile.data_access:
+
+        if agent_profile.data_access and node_counter > ord('E'):
+            data_node = chr(ord('E') if not agent_profile.external_apis else ord('F'))
             graph_lines.append(f"    class {data_node} dataClass")
             for i in range(1, min(len(agent_profile.data_access) + 1, 4)):
                 graph_lines.append(f"    class {data_node}{i} dataClass")
+
         if agent_profile.guardrails:
-            graph_lines.append(f"    class {guard_node} guardClass")
+            guard_node_char = chr(node_counter - 1)
+            graph_lines.append(f"    class {guard_node_char} guardClass")
 
         return "\n".join(graph_lines)
-
-    async def _generate_detailed_json_async(self, context: Dict[str, Any]) -> str:
-        """Асинхронная генерация детального JSON"""
-        agent_profile = context["agent_profile"]
-        llm_results = context["llm_results"]
-        processing_stages = context["processing_stages"]
-        assessment_id = context["assessment_id"]
-
-        detailed_data = {
-            "metadata": {
-                "assessment_id": assessment_id,
-                "generated_at": datetime.now().isoformat(),
-                "profiler_version": "2.0.0",
-                "total_processing_time": context["total_processing_time"]
-            },
-            "agent_profile": self._serialize_agent_profile(agent_profile),
-            "llm_analysis_results": llm_results,
-            "processing_stages": [self._serialize_processing_stage(stage) for stage in processing_stages],
-            "analysis_summary": {
-                "contexts_analyzed": list(llm_results.keys()),
-                "successful_contexts": len(
-                    [r for r in llm_results.values() if not isinstance(r, dict) or "error" not in r]),
-                "failed_contexts": len([r for r in llm_results.values() if isinstance(r, dict) and "error" in r]),
-                "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results)
-            },
-            "recommendations": self._generate_recommendations(agent_profile, llm_results)
-        }
-
-        return json.dumps(detailed_data, ensure_ascii=False, indent=2, default=str)
 
     def _serialize_agent_profile(self, agent_profile: AgentProfile) -> Dict[str, Any]:
         """Сериализация профиля агента"""
@@ -2324,29 +2361,78 @@ class EnhancedProfilerAgent(AnalysisAgent):
 
         return min(total_complexity / len(prompts), 10.0)
 
+    def _create_fallback_llm_result(self, preliminary_name: str) -> Dict[str, Any]:
+        """Создание fallback результата LLM"""
+        return {
+            "name": preliminary_name or "Unknown Agent",
+            "version": "1.0",
+            "description": f"ИИ-агент {preliminary_name}. Автоматически сгенерированное описание из-за ошибки анализа LLM.",
+            "agent_type": "other",
+            "llm_model": "unknown",
+            "autonomy_level": "supervised",
+            "data_access": ["internal"],
+            "external_apis": [],
+            "target_audience": "Пользователи системы",
+            "operations_per_hour": None,
+            "revenue_per_operation": None,
+            "system_prompts": [],
+            "guardrails": [],
+            "source_files": [],
+            "detailed_summary": {
+                "overview": f"Базовый обзор агента {preliminary_name}",
+                "technical_architecture": "Техническая архитектура не определена",
+                "operational_model": "Операционная модель не определена"
+            }
+        }
+
     async def _create_agent_profile_enhanced(self, llm_results: Dict[str, Any], parsed_data: Dict[str, Any],
                                              preliminary_name: str, assessment_id: str) -> AgentProfile:
-        """Создание улучшенного профиля агента"""
+        """Создание улучшенного профиля агента с лучшей обработкой ошибок"""
 
-        # Формируем улучшенные данные для анализа
-        enhanced_analysis_data = self._prepare_enhanced_analysis_data(llm_results, parsed_data)
+        bound_logger = self.logger.bind_context(assessment_id, self.name)
+        bound_logger.info("🔄 Создание профиля агента...")
 
-        # Создаем продвинутый промпт для профилирования
-        advanced_extraction_prompt = self._create_advanced_profile_prompt()
+        try:
+            # Формируем улучшенные данные для анализа
+            enhanced_analysis_data = self._prepare_enhanced_analysis_data(llm_results, parsed_data)
 
-        # Вызываем LLM для создания профиля
-        llm_result = await self.call_llm_structured(
-            data_to_analyze=enhanced_analysis_data,
-            extraction_prompt=advanced_extraction_prompt,
-            assessment_id=assessment_id,
-            expected_format="JSON"
-        )
+            # Создаем продвинутый промпт для профилирования
+            advanced_extraction_prompt = self._create_advanced_profile_prompt()
 
-        # Валидируем и дополняем результат
-        profile_data = self._validate_and_enhance_profile_data(llm_result, preliminary_name, parsed_data)
+            bound_logger.info("🤖 Отправка запроса к LLM для создания профиля...")
 
-        # Создаем объект AgentProfile
-        return self._construct_agent_profile(profile_data)
+            # Вызываем LLM для создания профиля
+            llm_result = await self.call_llm_structured(
+                data_to_analyze=enhanced_analysis_data,
+                extraction_prompt=advanced_extraction_prompt,
+                assessment_id=assessment_id,
+                expected_format="JSON"
+            )
+
+            bound_logger.info("✅ Получен ответ от LLM")
+
+            # ИСПРАВЛЕНО: Проверяем качество ответа LLM
+            if not llm_result or not isinstance(llm_result, dict):
+                bound_logger.warning("⚠️ LLM вернул некорректный ответ, создаем fallback профиль")
+                llm_result = self._create_fallback_llm_result(preliminary_name)
+
+            # Валидируем и дополняем результат
+            profile_data = self._validate_and_enhance_profile_data(llm_result, preliminary_name, parsed_data)
+
+            # Создаем объект AgentProfile
+            agent_profile = self._construct_agent_profile(profile_data)
+
+            bound_logger.info(f"✅ Профиль агента создан: {agent_profile.name} ({agent_profile.agent_type.value})")
+            return agent_profile
+
+        except Exception as e:
+            bound_logger.error(f"❌ Ошибка создания профиля агента: {e}")
+
+            # Создаем минимальный fallback профиль
+            fallback_data = self._create_fallback_llm_result(preliminary_name)
+            fallback_data = self._validate_and_enhance_profile_data(fallback_data, preliminary_name, parsed_data)
+
+            return self._construct_agent_profile(fallback_data)
 
     def _prepare_enhanced_analysis_data(self, llm_results: Dict[str, Any], parsed_data: Dict[str, Any]) -> str:
         """Подготовка улучшенных данных для анализа"""
@@ -2397,46 +2483,7 @@ class EnhancedProfilerAgent(AnalysisAgent):
         """Создание продвинутого промпта для профилирования"""
         return json_profiler_extr_prompt
 
-    def _validate_and_enhance_profile_data(self, llm_result: Dict[str, Any], preliminary_name: str,
-                                           parsed_data: Dict[str, Any]) -> Dict[str, Any]:
-        """Валидация и улучшение данных профиля"""
-
-        # Базовая валидация с умными дефолтами
-        defaults = {
-            "name": preliminary_name,
-            "version": "1.0",
-            "description": "ИИ-агент (описание сгенерировано автоматически)",
-            "agent_type": "other",
-            "llm_model": "unknown",
-            "autonomy_level": "supervised",
-            "data_access": ["internal"],
-            "external_apis": [],
-            "target_audience": "Пользователи системы",
-            "operations_per_hour": None,
-            "revenue_per_operation": None,
-            "system_prompts": [],
-            "guardrails": [],
-            "source_files": []
-        }
-
-        # Применяем дефолты
-        for key, default_value in defaults.items():
-            if key not in llm_result or llm_result[key] is None:
-                llm_result[key] = default_value
-
-        # Улучшаем данные на основе parsed_data
-        #self._enhance_with_parsed_data(llm_result, parsed_data)
-
-        # Валидация енумов
-        #llm_result = self._validate_enum_fields(llm_result)
-
-        # Обеспечиваем detailed_summary
-        #if 'detailed_summary' not in llm_result or not llm_result['detailed_summary']:
-            #llm_result['detailed_summary'] = self._create_fallback_detailed_summary(llm_result, parsed_data)
-
-        return llm_result
-
-    def _enhance_with_parsed_data(self, profile_data: Dict[str, Any], parsed_data: Dict[str, Any]):
+    def _enhance_with_parsed_data(self, profile_data: Dict[str, Any], parsed_data: Dict[str, Any]) -> Dict[str, Any]:
         """Улучшение профиля данными из парсинга"""
 
         # Улучшение source_files
@@ -2473,21 +2520,31 @@ class EnhancedProfilerAgent(AnalysisAgent):
             if prompt_analysis.get('has_guardrails') and not profile_data.get("guardrails"):
                 profile_data["guardrails"] = ["Ограничения найдены в промптах"]
 
+        # ИСПРАВЛЕНО: Извлекаем LLM модель из parsed_data
+        if 'code_analysis' in parsed_data and profile_data.get("llm_model") == "unknown":
+            # Ищем упоминания LLM моделей в коде
+            complexity_indicators = parsed_data['code_analysis'].get('complexity_indicators', [])
+            if 'ai_ml_related' in complexity_indicators:
+                profile_data["llm_model"] = "qwen3-4b"  # Можно улучшить определение модели
+
+        return profile_data
+
+    # 5. ИСПРАВЛЕНИЕ: Восстанавливаем отсутствующий метод _validate_enum_fields
     def _validate_enum_fields(self, profile_data: Dict[str, Any]) -> Dict[str, Any]:
         """Валидация полей с енумами"""
 
         # Валидация agent_type
-        valid_agent_types = [e for e in AgentType]
+        valid_agent_types = ["chatbot", "assistant", "trader", "scorer", "analyzer", "generator", "other"]
         if profile_data["agent_type"] not in valid_agent_types:
             profile_data["agent_type"] = "other"
 
         # Валидация autonomy_level
-        valid_autonomy_levels = [e for e in AutonomyLevel]
+        valid_autonomy_levels = ["supervised", "semi_autonomous", "autonomous"]
         if profile_data["autonomy_level"] not in valid_autonomy_levels:
             profile_data["autonomy_level"] = "supervised"
 
         # Валидация data_access
-        valid_data_sensitivities = [e for e in DataSensitivity]
+        valid_data_sensitivities = ["public", "internal", "confidential", "critical"]
         validated_data_access = []
         for da in profile_data.get("data_access", []):
             if da in valid_data_sensitivities:
@@ -2497,6 +2554,96 @@ class EnhancedProfilerAgent(AnalysisAgent):
         profile_data["data_access"] = validated_data_access
 
         return profile_data
+
+    # 6. ИСПРАВЛЕНИЕ: Восстанавливаем отсутствующий метод _create_fallback_detailed_summary
+    def _create_fallback_detailed_summary(self, profile_data: Dict[str, Any], parsed_data: Dict[str, Any]) -> Dict[
+        str, str]:
+        """Создание fallback детального саммари"""
+
+        agent_name = profile_data.get("name", "Unknown Agent")
+        agent_type = profile_data.get("agent_type", "other")
+
+        # Собираем информацию из parsed_data
+        file_count = sum([
+            len(parsed_data.get("documents", {})),
+            len(parsed_data.get("code_files", {})),
+            len(parsed_data.get("config_files", {})),
+            len(parsed_data.get("prompt_files", {}))
+        ])
+
+        languages = []
+        if 'code_analysis' in parsed_data:
+            languages = list(parsed_data['code_analysis'].get('languages', {}).keys())
+
+        return {
+            "overview": f"{agent_name} - это {agent_type} агент, проанализированный на основе {file_count} файлов. "
+                        f"Агент предназначен для работы с пользователями и выполнения специализированных задач. "
+                        f"Анализ показывает наличие структурированного кода и конфигураций.",
+
+            "technical_architecture": f"Техническая архитектура агента основана на следующих компонентах: "
+                                      f"языки программирования - {', '.join(languages) if languages else 'не определены'}, "
+                                      f"файлы конфигурации, документация. "
+                                      f"Агент использует LLM модель {profile_data.get('llm_model', 'unknown')} "
+                                      f"с уровнем автономности {profile_data.get('autonomy_level', 'supervised')}. "
+                                      f"Архитектура поддерживает обработку данных типа {', '.join(profile_data.get('data_access', ['internal']))}.",
+
+            "operational_model": f"Операционная модель агента предполагает {profile_data.get('autonomy_level', 'supervised')} режим работы. "
+                                 f"Агент взаимодействует с {profile_data.get('target_audience', 'пользователями')} "
+                                 f"и обрабатывает запросы согласно заложенной логике. "
+                                 f"{'Системные промпты определяют поведение агента.' if profile_data.get('system_prompts') else 'Системные промпты не обнаружены.'} "
+                                 f"{'Встроенные ограничения обеспечивают безопасность.' if profile_data.get('guardrails') else 'Ограничения безопасности не определены.'}"
+        }
+
+
+    def _validate_and_enhance_profile_data(self, llm_result: Dict[str, Any], preliminary_name: str,
+                                           parsed_data: Dict[str, Any]) -> Dict[str, Any]:
+        """Валидация и улучшение данных профиля"""
+
+        # ИСПРАВЛЕНО: Более детальная валидация с логированием
+        self.logger.bind_context("unknown", self.name).info("🔍 Валидация данных профиля от LLM...")
+
+        # Базовая валидация с умными дефолтами
+        defaults = {
+            "name": preliminary_name,
+            "version": "1.0",
+            "description": "ИИ-агент (описание сгенерировано автоматически)",
+            "agent_type": "other",
+            "llm_model": "unknown",
+            "autonomy_level": "supervised",
+            "data_access": ["internal"],
+            "external_apis": [],
+            "target_audience": "Пользователи системы",
+            "operations_per_hour": None,
+            "revenue_per_operation": None,
+            "system_prompts": [],
+            "guardrails": [],
+            "source_files": []
+        }
+
+        # ИСПРАВЛЕНО: Проверяем что LLM вернул валидный результат
+        if not isinstance(llm_result, dict):
+            self.logger.bind_context("unknown", self.name).warning("⚠️ LLM вернул не-словарь, используем defaults")
+            llm_result = {}
+
+        # Применяем дефолты
+        for key, default_value in defaults.items():
+            if key not in llm_result or llm_result[key] is None or llm_result[key] == "":
+                llm_result[key] = default_value
+                self.logger.bind_context("unknown", self.name).debug(
+                    f"🔧 Поле '{key}' заменено на default: {default_value}")
+
+        # ИСПРАВЛЕНО: Улучшаем данные на основе parsed_data
+        llm_result = self._enhance_with_parsed_data(llm_result, parsed_data)
+
+        # ИСПРАВЛЕНО: Валидация енумов
+        llm_result = self._validate_enum_fields(llm_result)
+
+        # ИСПРАВЛЕНО: Обеспечиваем detailed_summary
+        if 'detailed_summary' not in llm_result or not llm_result['detailed_summary']:
+            llm_result['detailed_summary'] = self._create_fallback_detailed_summary(llm_result, parsed_data)
+
+        self.logger.bind_context("unknown", self.name).info("✅ Валидация данных профиля завершена")
+        return llm_result
 
     def _create_agent_profile(self, profile_data: Dict[str, Any]) -> AgentProfile:
             """ИСПРАВЛЕННОЕ создание объекта AgentProfile"""

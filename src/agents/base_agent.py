@@ -224,131 +224,211 @@ class BaseAgent(ABC):
         )
         
         return response.content
-    
+
+    def _create_structured_fallback(self, expected_format: str, error_message: str) -> Dict[str, Any]:
+        """Создание fallback результата для структурированных данных"""
+
+        if expected_format.upper() == "JSON":
+            # Проверяем контекст по ошибке или классу агента
+            if "профил" in error_message.lower() or "profile" in error_message.lower() or self.name == "enhanced_profiler":
+                return {
+                    "name": "Unknown Agent",
+                    "version": "1.0",
+                    "description": f"ИИ-агент с автоматически сгенерированным описанием. Причина: {error_message[:100]}",
+                    "agent_type": "other",
+                    "llm_model": "unknown",
+                    "autonomy_level": "supervised",
+                    "data_access": ["internal"],
+                    "external_apis": [],
+                    "target_audience": "Пользователи системы",
+                    "operations_per_hour": None,
+                    "revenue_per_operation": None,
+                    "system_prompts": [],
+                    "guardrails": [],
+                    "source_files": [],
+                    "detailed_summary": {
+                        "overview": f"Базовый обзор агента. Ошибка анализа: {error_message[:100]}",
+                        "technical_architecture": f"Техническая архитектура не определена из-за ошибки LLM: {error_message[:100]}",
+                        "operational_model": f"Операционная модель не определена из-за ошибки LLM: {error_message[:100]}"
+                    }
+                }
+            elif "риск" in error_message.lower() or "risk" in error_message.lower():
+                return {
+                    "probability_score": 3,
+                    "impact_score": 3,
+                    "total_score": 9,
+                    "risk_level": "medium",
+                    "probability_reasoning": f"Fallback оценка из-за ошибки LLM: {error_message[:200]}",
+                    "impact_reasoning": f"Fallback оценка из-за ошибки LLM: {error_message[:200]}",
+                    "key_factors": ["Ошибка получения данных от LLM"],
+                    "recommendations": ["Проверить качество промпта", "Повторить оценку", "Проверить настройки LLM"],
+                    "confidence_level": 0.1
+                }
+            else:
+                # Общий fallback
+                return {
+                    "error": "Ошибка парсинга LLM ответа",
+                    "error_message": error_message,
+                    "fallback_response": True,
+                    "timestamp": datetime.now().isoformat()
+                }
+
+        return {"error": f"Неподдерживаемый формат: {expected_format}"}
+
+    def _validate_structured_result(self, result: Any, expected_format: str, logger) -> bool:
+        """Валидация структурированного результата от LLM"""
+
+        if not result:
+            logger.warning("❌ Пустой результат от LLM")
+            return False
+
+        if expected_format.upper() == "JSON":
+            if not isinstance(result, dict):
+                logger.warning(f"❌ Ожидался dict, получен {type(result)}")
+                return False
+
+            # Проверяем основные поля для профилирования
+            if "name" in result:  # Это профиль агента
+                required_fields = ["name", "description", "agent_type"]
+                missing_fields = [field for field in required_fields if field not in result]
+                if missing_fields:
+                    logger.warning(f"❌ Отсутствуют обязательные поля: {missing_fields}")
+                    return False
+
+                # Проверяем длину описания
+                description = result.get("description", "")
+                if len(str(description)) < 100:
+                    logger.warning(f"❌ Слишком короткое описание: {len(str(description))} символов")
+                    return False
+
+            # Проверяем для оценки рисков
+            elif "probability_score" in result:  # Это оценка риска
+                required_fields = ["probability_score", "impact_score", "risk_level"]
+                missing_fields = [field for field in required_fields if field not in result]
+                if missing_fields:
+                    logger.warning(f"❌ Отсутствуют обязательные поля оценки: {missing_fields}")
+                    return False
+
+        logger.info("✅ Структурированный результат прошел валидацию")
+        return True
+
+    # 3. ИСПРАВЛЕНИЕ: Логирование статистики результата
+    def _log_result_statistics(self, result: Dict[str, Any], logger):
+        """Логирование статистики результата"""
+
+        if not isinstance(result, dict):
+            return
+
+        # Общие статистики
+        logger.info(f"📊 Получен результат с {len(result)} полями")
+
+        # Статистики для профиля агента
+        if "description" in result:
+            desc_len = len(str(result["description"]))
+            logger.info(f"📝 Длина описания: {desc_len} символов")
+
+            if desc_len < 200:
+                logger.warning(f"⚠️ Короткое описание: {desc_len} < 200 символов")
+            elif desc_len >= 500:
+                logger.info(f"🎯 Отличная длина описания: {desc_len} >= 500 символов")
+
+        # Статистики для detailed_summary
+        if "detailed_summary" in result and isinstance(result["detailed_summary"], dict):
+            summary = result["detailed_summary"]
+            for section, content in summary.items():
+                content_len = len(str(content))
+                logger.info(f"📋 {section}: {content_len} символов")
+
+                if content_len < 100:
+                    logger.warning(f"⚠️ Короткая секция {section}: {content_len} < 100")
+
+        # Статистики для списков
+        for field in ["system_prompts", "guardrails", "external_apis"]:
+            if field in result and isinstance(result[field], list):
+                count = len(result[field])
+                logger.info(f"📋 {field}: {count} элементов")
+
     async def call_llm_structured(
-        self,
-        data_to_analyze: str,
-        extraction_prompt: str,
-        assessment_id: str,
-        expected_format: str = "JSON"
+            self,
+            data_to_analyze: str,
+            extraction_prompt: str,
+            assessment_id: str,
+            expected_format: str = "JSON"
     ) -> Dict[str, Any]:
-        """
-        Вызов LLM для получения структурированных данных
-       
-        Args:
-            data_to_analyze: Данные для анализа
-            extraction_prompt: Промпт для извлечения
-            assessment_id: ID оценки
-            expected_format: Ожидаемый формат ответа
-           
-        Returns:
-            Структурированные данные
-        """
+        """Вызов LLM для получения структурированных данных с улучшенной обработкой ошибок"""
+
         if not isinstance(self.llm_client, (LLMClient, RiskAnalysisLLMClient)):
             raise ValueError("LLM клиент не поддерживает структурированные запросы")
-        
+
         # 🔍 ДИАГНОСТИКА: Проверяем длину промпта
         prompt_length = len(extraction_prompt)
         data_length = len(data_to_analyze)
         bound_logger = self.logger.bind_context(assessment_id, self.name)
-        
+
         bound_logger.info(f"📏 Длина системного промпта: {prompt_length} символов")
         bound_logger.info(f"📏 Длина данных для анализа: {data_length} символов")
         bound_logger.info(f"📏 Общий размер контекста: {prompt_length + data_length} символов")
-        
+
+        # Проверяем качество промпта
         if prompt_length < 3000:
             bound_logger.warning(f"⚠️ Системный промпт может быть слишком коротким для детальных требований")
         else:
             bound_logger.info(f"✅ Системный промпт достаточно длинный для детальных требований")
-        
+
         # Проверяем требования к длине в промпте
-        if "МИНИМУМ 1000 символов" in extraction_prompt or "МИНИМУМ 800 символов" in extraction_prompt:
+        if "МИНИМУМ" in extraction_prompt and ("символов" in extraction_prompt or "слов" in extraction_prompt):
             bound_logger.info("✅ В промпте найдены требования к минимальной длине рассуждений")
         else:
             bound_logger.warning("⚠️ В промпте НЕ найдены требования к длине рассуждений")
-       
-        # ВАШ СУЩЕСТВУЮЩИЙ ВЫЗОВ
-        result = await self.llm_client.extract_structured_data(
-            data_to_analyze=data_to_analyze,
-            extraction_prompt=extraction_prompt,
-            expected_format=expected_format
-        )
-        
-        # 🔍 ДИАГНОСТИКА: Проверяем результат
-        if result:
-            # Логируем общую информацию о результате
-            if isinstance(result, dict):
-                bound_logger.info(f"✅ LLM вернул структурированный результат с {len(result)} полями")
-                
-                # Специальная проверка для JSON с reasoning полями
-                if expected_format.upper() == "JSON":
-                    prob_reasoning = result.get("probability_reasoning", "")
-                    impact_reasoning = result.get("impact_reasoning", "")
-                    
-                    if prob_reasoning:
-                        prob_len = len(str(prob_reasoning))
-                        bound_logger.info(f"📊 probability_reasoning: {prob_len} символов")
-                        if prob_len < 500:
-                            bound_logger.warning(f"⚠️ probability_reasoning слишком короткий: {prob_len} < 500")
-                        elif prob_len >= 1000:
-                            bound_logger.info(f"🎯 probability_reasoning отличной длины: {prob_len} >= 1000")
-                        else:
-                            bound_logger.info(f"✅ probability_reasoning нормальной длины: {prob_len}")
-                    
-                    if impact_reasoning:
-                        impact_len = len(str(impact_reasoning))
-                        bound_logger.info(f"📊 impact_reasoning: {impact_len} символов")
-                        if impact_len < 500:
-                            bound_logger.warning(f"⚠️ impact_reasoning слишком короткий: {impact_len} < 500")
-                        elif impact_len >= 1000:
-                            bound_logger.info(f"🎯 impact_reasoning отличной длины: {impact_len} >= 1000")
-                        else:
-                            bound_logger.info(f"✅ impact_reasoning нормальной длины: {impact_len}")
-                    
-                    # Проверяем другие поля
-                    for field_name in ["key_factors", "recommendations", "risk_level", "total_score"]:
-                        if field_name in result:
-                            field_value = result[field_name]
-                            bound_logger.debug(f"🔍 {field_name}: {type(field_value).__name__} = {field_value}")
-            
-            elif isinstance(result, str):
-                result_length = len(result)
-                bound_logger.info(f"📏 LLM вернул строку длиной: {result_length} символов")
-                
-                # Пытаемся парсить JSON из строки для дополнительной диагностики
-                try:
-                    import json
-                    parsed_result = json.loads(result)
-                    bound_logger.info(f"✅ Строка успешно парсится как JSON с {len(parsed_result)} полями")
-                    
-                    # Повторяем проверки для распарсенного JSON
-                    prob_reasoning = parsed_result.get("probability_reasoning", "")
-                    impact_reasoning = parsed_result.get("impact_reasoning", "")
-                    
-                    if prob_reasoning:
-                        prob_len = len(str(prob_reasoning))
-                        bound_logger.info(f"📊 (из строки) probability_reasoning: {prob_len} символов")
-                    
-                    if impact_reasoning:
-                        impact_len = len(str(impact_reasoning))
-                        bound_logger.info(f"📊 (из строки) impact_reasoning: {impact_len} символов")
-                        
-                except json.JSONDecodeError as e:
-                    bound_logger.warning(f"⚠️ Результат-строка не является валидным JSON: {e}")
-                except Exception as e:
-                    bound_logger.debug(f"Ошибка при парсинге JSON: {e}")
-        else:
-            bound_logger.error("❌ LLM вернул пустой или None результат")
-       
-        # ВАШ СУЩЕСТВУЮЩИЙ КОД ЛОГИРОВАНИЯ
-        self.logger.log_llm_request(
-            self.name,
-            assessment_id,
-            self.llm_client.config.model,
-            0  # Токены уже залогированы внутри extract_structured_data
-        )
-       
-        return result
+
+        # ИСПРАВЛЕНО: Множественные попытки с разными стратегиями
+        max_attempts = 3
+        last_error = None
+
+        for attempt in range(max_attempts):
+            try:
+                bound_logger.info(f"🤖 LLM запрос (попытка {attempt + 1}/{max_attempts})...")
+
+                # Вариация температуры и промпта для повторных попыток
+                temperature = 0.05 if attempt == 0 else 0.1 if attempt == 1 else 0.15
+
+                # Для повторных попыток добавляем усиления в промпт
+                enhanced_prompt = extraction_prompt
+                if attempt > 0:
+                    enhanced_prompt += f"\n\n❗ ВНИМАНИЕ: Попытка {attempt + 1}. Предыдущие попытки не удались. ОБЯЗАТЕЛЬНО верни валидный JSON без ошибок!"
+
+                result = await self.llm_client.extract_structured_data(
+                    data_to_analyze=data_to_analyze,
+                    extraction_prompt=enhanced_prompt,
+                    expected_format=expected_format
+                )
+
+                # ИСПРАВЛЕНО: Дополнительная валидация результата
+                if self._validate_structured_result(result, expected_format, bound_logger):
+                    bound_logger.info(f"✅ LLM вернул валидный результат на попытке {attempt + 1}")
+
+                    # Логируем статистику контента
+                    self._log_result_statistics(result, bound_logger)
+
+                    return result
+                else:
+                    raise ValueError(f"LLM вернул невалидную структуру данных на попытке {attempt + 1}")
+
+            except Exception as e:
+                last_error = e
+                bound_logger.warning(f"⚠️ Попытка {attempt + 1} не удалась: {str(e)[:100]}...")
+
+                if attempt < max_attempts - 1:
+                    import asyncio
+                    await asyncio.sleep(1 + attempt)  # Прогрессивная задержка
+
+        # Все попытки не удались - создаем fallback результат
+        bound_logger.error(f"❌ Все {max_attempts} попыток LLM запроса не удались. Последняя ошибка: {last_error}")
+
+        fallback_result = self._create_structured_fallback(expected_format, str(last_error))
+        bound_logger.warning(f"🔧 Создан fallback результат: {type(fallback_result)}")
+
+        return fallback_result
     
     def validate_result(self, result_data: Dict[str, Any]) -> bool:
         """
