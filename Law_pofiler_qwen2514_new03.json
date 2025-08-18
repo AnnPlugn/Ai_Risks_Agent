@@ -1,0 +1,684 @@
+{
+  "assessment_id": "profiler_test_20250818_114349",
+  "agent_profile": {
+    "name": "LawDigest Bot v2.0",
+    "version": "2.0",
+    "description": "LawDigest Bot v2.0 is an intelligent orchestrator designed for planning and analyzing legal data with adaptive strategies. It supports various operational scenarios including daily analysis, urgent updates, and comprehensive reviews. The agent integrates with CrewAI for decision-making about launching other agents, ensuring detailed logging and system state monitoring. It targets legal professionals, analysts, and developers, providing capabilities like intelligent task planning, context-dependent solutions, adaptive strategies for different scenarios, fallback mechanisms, and automatic recovery.",
+    "agent_type": "analyzer",
+    "llm_model": "GemmaLLM",
+    "autonomy_level": "semi_autonomous",
+    "data_access": [
+      "internal",
+      "confidential"
+    ],
+    "external_apis": [
+      "Telegram API"
+    ],
+    "target_audience": "Юристы, аналитики, разработчики",
+    "operations_per_hour": null,
+    "revenue_per_operation": null,
+    "system_prompts": [],
+    "guardrails": [],
+    "source_files": [
+      "configurations",
+      "documents",
+      "code"
+    ],
+    "detailed_summary": {
+      "overview": "LawDigest Bot v2.0 is a sophisticated AI agent tailored for the legal sector, focusing on the analysis and orchestration of legal data processing tasks. It leverages advanced LLM models like GemmaLLM and QwenLLM to perform tasks such as text generation, classification, summarization, and error handling. The bot is designed to operate semi-autonomously, requiring occasional human intervention, and integrates seamlessly with Telegram for user interactions and data handling.",
+      "technical_architecture": "The technical architecture of LawDigest Bot v2.0 is built on Python, utilizing frameworks such as Telegram Bot API, Telethon, asyncio, threading, and argparse. It employs a semi-autonomous operational model with medium technical complexity, handling data access patterns primarily through database interactions. The system supports asynchronous data processing, thread-safe operations, and caching mechanisms to optimize performance. Integration points include external APIs like Telegram API and internal systems for data storage and LLM model interactions, ensuring robust data handling and task execution.",
+      "operational_model": "The operational model of LawDigest Bot v2.0 involves multi-stage processes including data collection, analysis, categorization, and aggregation. It uses conditional checks and optimized routing for decision-making, with fallback mechanisms in place for error handling. The bot processes messages in batches, classifies them based on predefined criteria, and groups them by categories for further analysis. It supports parallel execution of tasks, sequential validation, and collaborative reviews, ensuring comprehensive data processing and accurate output generation. The system also includes detailed logging and monitoring to track agent status and task metrics."
+    },
+    "created_at": "2025-08-18T11:47:39.449673",
+    "updated_at": "2025-08-18T11:47:39.450186"
+  },
+  "profiling_details": {
+    "agent_profile": {
+      "name": "LawDigest Bot v2.0",
+      "version": "2.0",
+      "description": "LawDigest Bot v2.0 is an intelligent orchestrator designed for planning and analyzing legal data with adaptive strategies. It supports various operational scenarios including daily analysis, urgent updates, and comprehensive reviews. The agent integrates with CrewAI for decision-making about launching other agents, ensuring detailed logging and system state monitoring. It targets legal professionals, analysts, and developers, providing capabilities like intelligent task planning, context-dependent solutions, adaptive strategies for different scenarios, fallback mechanisms, and automatic recovery.",
+      "agent_type": "analyzer",
+      "llm_model": "GemmaLLM",
+      "autonomy_level": "semi_autonomous",
+      "data_access": [
+        "internal",
+        "confidential"
+      ],
+      "external_apis": [
+        "Telegram API"
+      ],
+      "target_audience": "Юристы, аналитики, разработчики",
+      "operations_per_hour": null,
+      "revenue_per_operation": null,
+      "system_prompts": [],
+      "guardrails": [],
+      "source_files": [
+        "configurations",
+        "documents",
+        "code"
+      ],
+      "detailed_summary": {
+        "overview": "LawDigest Bot v2.0 is a sophisticated AI agent tailored for the legal sector, focusing on the analysis and orchestration of legal data processing tasks. It leverages advanced LLM models like GemmaLLM and QwenLLM to perform tasks such as text generation, classification, summarization, and error handling. The bot is designed to operate semi-autonomously, requiring occasional human intervention, and integrates seamlessly with Telegram for user interactions and data handling.",
+        "technical_architecture": "The technical architecture of LawDigest Bot v2.0 is built on Python, utilizing frameworks such as Telegram Bot API, Telethon, asyncio, threading, and argparse. It employs a semi-autonomous operational model with medium technical complexity, handling data access patterns primarily through database interactions. The system supports asynchronous data processing, thread-safe operations, and caching mechanisms to optimize performance. Integration points include external APIs like Telegram API and internal systems for data storage and LLM model interactions, ensuring robust data handling and task execution.",
+        "operational_model": "The operational model of LawDigest Bot v2.0 involves multi-stage processes including data collection, analysis, categorization, and aggregation. It uses conditional checks and optimized routing for decision-making, with fallback mechanisms in place for error handling. The bot processes messages in batches, classifies them based on predefined criteria, and groups them by categories for further analysis. It supports parallel execution of tasks, sequential validation, and collaborative reviews, ensuring comprehensive data processing and accurate output generation. The system also includes detailed logging and monitoring to track agent status and task metrics."
+      },
+      "created_at": "2025-08-18T11:47:39.449673",
+      "updated_at": "2025-08-18T11:47:39.450186"
+    },
+    "llm_analysis_results": {
+      "agent_overview": {
+        "context_type": "agent_overview",
+        "aggregated_analysis": {
+          "agents": [
+            {
+              "agent_name": "LawDigest Bot v2.0",
+              "agent_type": "Intelligent Orchestrator",
+              "primary_purpose": "Умное планирование и анализ юридических данных с адаптивными стратегиями",
+              "target_audience": "Юристы, аналитики, разработчики",
+              "key_capabilities": [
+                "Интеллектуальное планирование задач",
+                "Контекстно-зависимые решения",
+                "Адаптивные стратегии для разных сценариев",
+                "Fallback механизмы при ошибках",
+                "Автоматическое восстановление"
+              ],
+              "description": "Система для анализа юридических данных с использованием CrewAI для принятия решений о запуске агентов. Поддерживает различные сценарии работы, включая ежедневный анализ, срочные обновления и полный анализ. Обеспечивает детальное логирование и мониторинг состояния системы."
+            },
+            {
+              "agent_name": "CriticAgent",
+              "agent_type": "analyzer",
+              "primary_purpose": "Оценка и критика результатов работы других агентов",
+              "target_audience": "Разработчики ИИ-систем, аналитики данных",
+              "key_capabilities": [
+                "анализ качества результатов",
+                "выявление ошибок",
+                "генерация рекомендаций по улучшению"
+              ],
+              "description": "CriticAgent предназначен для автоматической оценки результатов работы других ИИ-агентов в системе. Он анализирует качество, выявляет ошибки и предоставляет рекомендации по улучшению. Агент интегрирован в систему умного планирования и активируется только при необходимости, что повышает общую эффективность работы."
+            }
+          ]
+        },
+        "metadata": {
+          "total_chunks": 2,
+          "successful_chunks": 2,
+          "aggregation_timestamp": "2025-08-18T11:44:05.350219",
+          "aggregation_quality": 1.0
+        }
+      },
+      "technical_architecture": {
+        "context_type": "technical_architecture",
+        "aggregated_analysis": {
+          "llm_model": [
+            "GemmaLLM",
+            "QwenLLM"
+          ],
+          "programming_languages": [
+            "Python"
+          ],
+          "frameworks": [
+            "Telegram Bot API",
+            "Telethon",
+            "asyncio",
+            "threading",
+            "argparse"
+          ],
+          "external_apis": [
+            "Telegram API"
+          ],
+          "data_access_patterns": [
+            "Database Access",
+            "database"
+          ],
+          "autonomy_level": "semi_autonomous",
+          "technical_complexity": "medium"
+        },
+        "metadata": {
+          "total_chunks": 6,
+          "successful_chunks": 6,
+          "aggregation_timestamp": "2025-08-18T11:44:12.400139",
+          "aggregation_quality": 1.0
+        }
+      },
+      "prompts_and_instructions": {
+        "chunk_id": "prompts_and_instructions_complete",
+        "context_type": "prompts_and_instructions",
+        "analysis": {
+          "probability_score": 1,
+          "impact_score": 1,
+          "total_score": 1,
+          "risk_level": "low",
+          "probability_reasoning": "Отсутствие данных для анализа",
+          "impact_reasoning": "Отсутствие данных для анализа",
+          "key_factors": [
+            "нет данных"
+          ],
+          "recommendations": [
+            "добавить данные для анализа"
+          ],
+          "confidence_level": 0.1
+        },
+        "metadata": {
+          "context_type": "prompts_and_instructions",
+          "priority": 8,
+          "files_count": 1,
+          "analysis": {}
+        },
+        "processing_method": "standard"
+      },
+      "business_logic": {
+        "context_type": "business_logic",
+        "aggregated_analysis": {
+          "business_processes": [
+            "генерация текста",
+            "классификация текста",
+            "резюмирование текста",
+            "обработка текста",
+            "обработка входящих сообщений",
+            "генерация ответов с использованием LLM",
+            "обработка ошибок",
+            "управление обучающими примерами",
+            "load_examples",
+            "context_management",
+            "system_monitoring",
+            "agent_status_tracking",
+            "task_metrics_recording",
+            "классификация сообщений",
+            "обучение на примерах",
+            "анализ уверенности",
+            "Обработка сообщений",
+            "анализ сообщений",
+            "генерация дайджестов",
+            "Проверка наличия категории в данных пользователя",
+            "Получение дайджеста из базы данных",
+            "Поиск секции по категории",
+            "Разделение содержимого секции для пагинации",
+            "Отправка содержимого секции с пагинацией или без",
+            "обработка пагинации дайджеста",
+            "просмотр полного текста дайджеста",
+            "экспертная оценка",
+            "categorization",
+            "quality_assurance",
+            "comprehensive_analysis",
+            "legal_review",
+            "consistency_check",
+            "context_analysis",
+            "decision_synthesis",
+            "data_collection",
+            "message_analysis",
+            "digest_creation",
+            "digest_update",
+            "task_orchestration",
+            "сбор контекста системы",
+            "планирование задач",
+            "выполнение плана",
+            "анализ результатов",
+            "categorization_review",
+            "task_collaboration",
+            "Выполнение стандартной задачи",
+            "Проверка необходимости коллаборации",
+            "Выполнение коллаборации при необходимости",
+            "обработка URL в тексте",
+            "извлечение ссылок и заголовков",
+            "генерация краткого обзора по категории",
+            "генерация аннотаций",
+            "parallel_processing_of_categories",
+            "Поиск существующих дайджестов",
+            "Получение и фильтрация сообщений",
+            "Группировка сообщений по категориям",
+            "группировка сообщений по категориям",
+            "стратегическое планирование дайджеста",
+            "генерация краткого дайджеста",
+            "генерация подробного дайджеста",
+            "получение дайджеста",
+            "обновление дайджеста",
+            "strategy_generation",
+            "category_importance_calculation",
+            "strategy_parsing",
+            "Генерация стратегического обзора категории",
+            "Извлечение приоритетов и стилей из ответа"
+          ],
+          "decision_making_logic": [
+            "использование кэширования для повторяющихся запросов, обработка ошибок с возвратом значений по умолчанию",
+            "использование кэшированных ответов при наличии, генерация новых ответов через API LLM с повторными попытками при ошибках",
+            "логика принятия решений основана на обработке исключений и кэшировании данных",
+            "conditional_checks_and_optimized_routing",
+            "cache_based_with_time_validation",
+            "многошаговый reasoning с оценкой уверенности",
+            "использование enhanced классификации с fallback на простой анализ",
+            "Классификация сообщений на основе текста с возможностью дополнительной проверки критиком",
+            "анализ содержания сообщений и их категоризация на основе предопределенных критериев",
+            "Если категория не найдена в данных пользователя, отправляется сообщение об ошибке. Если дайджест не найден, отправляется сообщение об ошибке. Если секция не найдена, отправляется сообщение об ошибке. Если содержимое секции превышает лимит Telegram, оно разделяется на части и реализуется пагинация.",
+            "логика принятия решений основана на анализе callback_data и текущего состояния пагинации",
+            "использование существующих агентов для анализа и критики сообщения",
+            "sequential_task_execution_with_error_handling",
+            "multi-stage weighted analysis with fallback to default",
+            "многоперспективный анализ (правовая экспертиза, логическая консистентность, контекстный анализ)",
+            "Handles date ranges and digest types based on input arguments, validates periods, checks for existing digests",
+            "логика принятия решений основана на проверке времени последнего обновления дайджеста и типа запрашиваемого дайджеста",
+            "conditional_check_for_message_existence",
+            "автоматический анализ сообщений с возможностью ручной проверки при низкой уверенности",
+            "Automated decision-making based on date ranges and message filtering",
+            "date_range_check_and_message_limit",
+            "conditional_checking",
+            "Анализ существующих данных и определение необходимости заполнения пробелов",
+            "period_days > 7 triggers deep collection mode",
+            "Проверка актуальности данных, фильтрация существующих сообщений, обработка и сохранение новых сообщений",
+            "conditional_checks_based_on_data_and_errors",
+            "priority_based_execution",
+            "priority_based_task_execution",
+            "Использование локальной LLM (GemmaLLM) для анализа состояния системы и принятия решений на основе собранного контекста",
+            "priority_based_on_scenario_and_context",
+            "Condition-based task generation depending on context and keywords in planning text",
+            "priority_based_with_dependencies",
+            "Task execution based on task type and parameters, with error handling and result analysis",
+            "conditional_execution_based_on_task_type_and_context",
+            "Определение необходимости коллаборации на основе типа задачи и контекста выполнения",
+            "Анализ текста на наличие URL и их преобразование в markdown ссылки, если они еще не являются частью markdown. Извлечение ссылок и заголовков из текста с учетом их формата (markdown или обычные URL). Генерация краткого обзора по категории на основе извлеченных данных.",
+            "определение формата вывода на основе наличия URL",
+            "анализ и фильтрация сообщений по категориям, генерация обзора на основе LLM",
+            "determine_date_range_based_on_input_parameters",
+            "Приоритет обновления существующих дайджестов перед созданием новых. Использование фильтров для получения сообщений с возможностью расширения до всех сообщений при отсутствии результатов.",
+            "логика принятия решений основана на анализе категорий сообщений и стратегическом планировании порядка их обработки",
+            "приоритизация категорий сообщений, обработка исключений",
+            "логика принятия решений на основе даты и типа дайджеста",
+            "weighted_scoring_based_on_category_importance_and_keyword_analysis",
+            "Определение приоритета категории на основе стратегии, адаптация промпта в зависимости от типа дайджеста (краткий/подробный), обработка исключений с fallback-механизмом"
+          ],
+          "data_processing": [
+            "текст обрабатывается с использованием регулярных выражений, разбивается на части для удобства передачи, конвертируется между форматами",
+            "кэширование запросов с различным TTL в зависимости от типа запроса, обработка ошибок API с повторными попытками",
+            "данные обрабатываются асинхронно, с использованием потокобезопасных операций и кэширования",
+            "caching_and_selective_field_copying",
+            "contextual_storage_with_expiration",
+            "анализ текста сообщений с использованием LLM и примеров обучения",
+            "парсинг ответов LLM, извлечение reasoning, логирование процесса",
+            "Сообщения обрабатываются пакетами, текст сокращается при превышении длины, классифицируется и сохраняется в БД",
+            "сообщения анализируются, классифицируются и группируются по категориям с подсчетом количества сообщений в каждой категории",
+            "Данные обрабатываются путем проверки наличия категории в данных пользователя, получения дайджеста из базы данных, поиска секции по категории, разделения содержимого секции для пагинации и отправки содержимого секции с пагинацией или без.",
+            "данные обрабатываются через разбор строки callback_data, извлечение параметров и обновление состояния в user_data",
+            "анализ текста сообщения, категоризация на основе правового контекста",
+            "structured_output_parsing_with_confidence_scoring",
+            "sequential LLM prompts with structured parsing",
+            "сбор, анализ, категоризация и агрегация данных",
+            "Parses dates, determines digest type, validates date ranges, checks database for existing digests",
+            "данные обрабатываются путем проверки актуальности, разделения на части и конвертации в HTML",
+            "collect_and_analyze_messages",
+            "сообщения анализируются партиями, результаты сохраняются в БД",
+            "Messages are filtered by date and stored in batches",
+            "filter_messages_by_date_and_limit",
+            "filtering_and_storage",
+            "Сбор сообщений из канала, проверка на наличие текста, сохранение в базу данных",
+            "messages are collected, counted, and saved based on date ranges",
+            "Фильтрация сообщений по дате и идентификатору, нормализация даты, пакетное или пошаговое сохранение",
+            "asynchronous_message_retrieval_and_storage",
+            "sequential_with_error_handling",
+            "sequential_with_dependencies",
+            "Сбор и анализ необработанных сообщений, проверка их категорий и уровня уверенности, анализ дайджестов",
+            "incremental_average_for_category_stats",
+            "Data is collected, analyzed, categorized, and then used to create or update digests",
+            "sequential_with_fallback",
+            "Collects, analyzes, reviews messages, creates and updates digests, then summarizes results",
+            "async_processing_with_error_handling_and_logging",
+            "Обработка данных через специализированных агентов (data_collector, analyzer, critic, digester) в зависимости от типа задачи",
+            "Текст анализируется с использованием регулярных выражений для поиска URL и markdown ссылок. Извлеченные данные структурируются в список словарей с информацией о заголовках, URL и других метаданных. Данные сортируются по дате для формирования итогового отчета.",
+            "очистка текста, удаление URL, нормализация пробелов, разделение на абзацы",
+            "очистка сообщений, извлечение ключевых атрибутов, формирование контекста для LLM",
+            "parallel_execution_with_thread_pool",
+            "Фильтрация сообщений по дате, категории, каналам и ключевым словам. Группировка сообщений по категориям для дальнейшего анализа.",
+            "данные обрабатываются путем группировки сообщений по категориям и последующего формирования дайджеста в соответствии с выбранной стратегией",
+            "сортировка сообщений по категориям, добавление иконок, формирование текста дайджеста",
+            "обработка данных через запросы к базе данных и фильтрацию по параметрам",
+            "parsing_and_logging_strategy_responses_with_fallback_mechanisms",
+            "Обработка сообщений для анализа, извлечение ключевых слов для определения приоритетов, стилей и акцентов, генерация текста с помощью LLM"
+          ],
+          "workflow_patterns": [
+            "кэширование запросов",
+            "обработка ошибок с fallback",
+            "нормализация данных",
+            "кэширование ответов",
+            "обработка ошибок с повторными попытками",
+            "обработка исключений",
+            "кэширование данных",
+            "ротация файлов",
+            "lock_based_synchronization",
+            "context_scoping",
+            "caching",
+            "periodic_cleanup",
+            "metrics_aggregation",
+            "анализ ключевых слов",
+            "сопоставление с категориями",
+            "batch processing",
+            "parallel execution",
+            "Пакетная обработка",
+            "Параллельная обработка",
+            "обработка сообщений",
+            "формирование дайджеста",
+            "Обработка ошибок",
+            "Пагинация",
+            "Разделение текста",
+            "обработка callback-запросов",
+            "пагинация контента",
+            "последовательный анализ",
+            "экспертная оценка",
+            "task_sequencing",
+            "error_fallback",
+            "collaborative_review",
+            "sequential_validation",
+            "fallback_handling",
+            "confidence_weighted_decision",
+            "обработка исключений",
+            "логирование",
+            "асинхронная обработка",
+            "input_validation",
+            "date_processing",
+            "database_query",
+            "проверка актуальности",
+            "обновление данных",
+            "создание нового дайджеста",
+            "conditional_workflow",
+            "retry_pattern",
+            "batch_processing",
+            "feedback_loop",
+            "error_handling",
+            "умный сбор данных",
+            "прямой сбор данных",
+            "exponential_backoff",
+            "hook_execution",
+            "daily_workflow",
+            "urgent_update",
+            "full_analysis",
+            "digest_only",
+            "последовательное выполнение этапов (сбор контекста -> планирование -> выполнение -> анализ)",
+            "обработка ошибок через try-catch блоки",
+            "dependency_resolution",
+            "task_execution",
+            "result_analysis",
+            "recommendation_generation",
+            "async_task_execution",
+            "collaborative_processing",
+            "Стандартное выполнение задачи",
+            "Коллаборативное улучшение результата",
+            "поиск и обработка URL",
+            "структурирование извлеченных данных",
+            "генерация отчета",
+            "обработка сообщений по категориям",
+            "ограничение длины сообщений",
+            "обработка ошибок",
+            "резервное копирование",
+            "parallel_execution",
+            "date_range_calculation",
+            "Проверка существующих дайджестов",
+            "Фильтрация и сбор сообщений",
+            "Группировка данных",
+            "параллельная обработка категорий",
+            "стратегическое упорядочивание категорий",
+            "обработка категорий по порядку значимости",
+            "добавление ссылок между дайджестами",
+            "проверка даты",
+            "фильтрация по типу",
+            "обновление существующих записей",
+            "try_catch_with_fallback",
+            "weighted_scoring",
+            "section_based_parsing",
+            "Адаптивный промпт на основе стратегии",
+            "Fallback-механизм при ошибках"
+          ],
+          "integration_points": [
+            "API модели Gemma",
+            "API модели Qwen",
+            "внешние системы, требующие обработки текста",
+            "API LLM",
+            "база данных для хранения дайджестов и сообщений",
+            "обработка сообщений пользователя",
+            "сохранение обучающих примеров",
+            "database_manager",
+            "file_system",
+            "logging_system",
+            "база данных",
+            "модель LLM",
+            "менеджер обучающих примеров",
+            "LLM сервис",
+            "База данных",
+            "Агент критики",
+            "база данных для хранения дайджестов",
+            "телеграм бот для взаимодействия с пользователем",
+            "Telegram API",
+            "база данных дайджестов",
+            "анализатор",
+            "критик",
+            "crewai_execution_engine",
+            "error_handling",
+            "category_mapping",
+            "внешние API",
+            "телеграм-бот",
+            "message_sending_service",
+            "агент сбора данных",
+            "telegram_channels",
+            "database_manager_for_today_flags",
+            "message_category_processing",
+            "входные текстовые данные",
+            "выходные структурированные данные",
+            "база данных сообщений",
+            "система логирования",
+            "LLM модель",
+            "api_client",
+            "telegram_api",
+            "database",
+            "digester_agent",
+            "agent_registry",
+            "data_collector",
+            "analyzer",
+            "critic",
+            "digester",
+            "crewai_task_integration",
+            "digest_creation_api",
+            "Интеграция с агентами-исполнителями (data_collector, analyzer, critic, digester)",
+            "Интеграция с системой логирования",
+            "local_llm",
+            "telegram_channels",
+            "digest_creation_service",
+            "session_manager",
+            "CollaborativeCrew",
+            "llm_model"
+          ],
+          "probability_score": 4,
+          "impact_score": 4,
+          "total_score": 16,
+          "risk_level": "high",
+          "probability_reasoning": "Complexity of multi-stage processes, LLM dependencies, and conditional workflows increases potential failure points",
+          "impact_reasoning": "Errors in categorization, data processing, or decision making can propagate through the system and affect downstream processes",
+          "key_factors": [
+            "LLM accuracy and availability",
+            "Data consistency and validation",
+            "Error handling robustness",
+            "Task sequencing dependencies",
+            "Performance optimization",
+            "Thread safety",
+            "Input validation",
+            "Fallback mechanisms"
+          ],
+          "recommendations": [
+            "Implement comprehensive input validation",
+            "Enhance error handling and fallback mechanisms",
+            "Add more detailed logging and monitoring",
+            "Optimize database queries and caching",
+            "Implement retry mechanisms for critical operations",
+            "Improve thread safety in concurrent operations",
+            "Add validation layers for LLM outputs",
+            "Monitor and optimize performance metrics"
+          ],
+          "confidence_level": 0.87
+        },
+        "metadata": {
+          "total_chunks": 50,
+          "successful_chunks": 50,
+          "aggregation_timestamp": "2025-08-18T11:46:51.509632",
+          "aggregation_quality": 0.8
+        }
+      },
+      "configurations": {
+        "chunk_id": "configurations_complete",
+        "context_type": "configurations",
+        "analysis": {
+          "configuration_parameters": {
+            "agent_name": "TestAgent",
+            "model": "gpt-4",
+            "temperature": 0.1,
+            "system_prompt": "Ты - банковский ассистент"
+          },
+          "security_settings": [
+            "Не разглашай конфиденциальную информацию",
+            "Всегда проверяй данные клиента"
+          ],
+          "performance_settings": {
+            "maxBytes": 10485760,
+            "backupCount": 5,
+            "collect_interval_minutes": 30,
+            "analyze_interval_minutes": 30
+          },
+          "environment_variables": {
+            "TELEGRAM_BOT_TOKEN": "Telegram bot token from environment",
+            "TELEGRAM_API_ID": "Telegram API ID from environment",
+            "TELEGRAM_API_HASH": "Telegram API hash from environment",
+            "DATABASE_URL": "Database connection URL",
+            "LLM_STUDIO_URL": "URL for LLM studio",
+            "QWEN_API_KEY": "API key for Qwen model",
+            "GEMMA_API_KEY": "API key for Gemma model"
+          },
+          "deployment_config": {
+            "log_file_path": "logs/lawdigest.log",
+            "log_level": "INFO",
+            "telegram_channels": 47,
+            "categories": 4,
+            "digest_time": "18:00"
+          }
+        },
+        "metadata": {
+          "context_type": "configurations",
+          "priority": 6,
+          "files_count": 3,
+          "analysis": {}
+        },
+        "processing_method": "standard"
+      },
+      "supporting_docs": {
+        "chunk_id": "supporting_docs_complete",
+        "context_type": "supporting_docs",
+        "analysis": {
+          "documentation_quality": "medium",
+          "covered_topics": [
+            "банковские операции",
+            "анализ рисков",
+            "рекомендации"
+          ],
+          "missing_documentation": [
+            "интеграция с внешними системами",
+            "обработка ошибок"
+          ],
+          "examples_provided": false,
+          "user_guides": [],
+          "technical_specs": [
+            "test_agent_spec.docx",
+            "agent_params.xlsx"
+          ]
+        },
+        "metadata": {
+          "context_type": "supporting_docs",
+          "priority": 5,
+          "files_count": 4,
+          "analysis": {}
+        },
+        "processing_method": "standard"
+      }
+    },
+    "processing_stages": [
+      {
+        "stage_name": "file_system_crawling",
+        "start_time": "2025-08-18 11:43:49.839962",
+        "end_time": "2025-08-18 11:43:49.888147",
+        "status": "completed",
+        "output_files": [],
+        "metrics": {
+          "files_found": 28,
+          "file_types": 3,
+          "unique_files": 28
+        },
+        "error_details": null
+      },
+      {
+        "stage_name": "comprehensive_parsing",
+        "start_time": "2025-08-18 11:43:49.891175",
+        "end_time": "2025-08-18 11:43:50.130410",
+        "status": "completed",
+        "output_files": [],
+        "metrics": {
+          "documents_parsed": 5,
+          "code_files_parsed": 21,
+          "config_files_parsed": 1,
+          "prompt_files_parsed": 0
+        },
+        "error_details": null
+      },
+      {
+        "stage_name": "context_aware_chunking",
+        "start_time": "2025-08-18 11:43:50.145808",
+        "end_time": "2025-08-18 11:43:50.166431",
+        "status": "completed",
+        "output_files": [],
+        "metrics": {
+          "chunks_created": 61,
+          "contexts_identified": 6,
+          "avg_chunk_size": 1558.639344262295,
+          "output_file": "chunk_data\\chunks_profiler_test_20250818_114349_20250818_114350.json"
+        },
+        "error_details": null
+      },
+      {
+        "stage_name": "llm_orchestration",
+        "start_time": "2025-08-18 11:43:50.169454",
+        "end_time": "2025-08-18 11:47:11.855315",
+        "status": "completed",
+        "output_files": [],
+        "metrics": {
+          "contexts_processed": 6,
+          "successful_contexts": 6,
+          "cache_hits": 61
+        },
+        "error_details": null
+      },
+      {
+        "stage_name": "profile_synthesis",
+        "start_time": "2025-08-18 11:47:11.866353",
+        "end_time": "2025-08-18 11:47:39.470224",
+        "status": "completed",
+        "output_files": [],
+        "metrics": {},
+        "error_details": null
+      },
+      {
+        "stage_name": "output_generation",
+        "start_time": "2025-08-18 11:47:39.476224",
+        "end_time": "2025-08-18 11:47:39.837774",
+        "status": "completed",
+        "output_files": [],
+        "metrics": {},
+        "error_details": null
+      }
+    ],
+    "output_files": [],
+    "performance_metrics": {
+      "total_stages": 6,
+      "successful_stages": 6,
+      "failed_stages": 0,
+      "total_processing_time": 229.95932499999998,
+      "avg_stage_time": 38.32655416666666,
+      "cache_hits": 61,
+      "chunks_processed": 61
+    },
+    "data_quality_score": 75.0
+  },
+  "processing_time_seconds": 230.176813,
+  "timestamp": "2025-08-18T11:47:40.007780",
+  "status": "completed",
+  "workflow_type": "profiling_only"
+}
