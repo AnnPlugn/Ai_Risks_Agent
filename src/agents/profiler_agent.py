@@ -1238,6 +1238,35 @@ class OutputGenerator:
             )
         }
 
+    async def _generate_detailed_json_async(self, context: Dict[str, Any]) -> str:
+        """Генерация детального JSON отчета"""
+        agent_profile = context["agent_profile"]
+        llm_results = context["llm_results"]
+        processing_stages = context["processing_stages"]
+
+        detailed_report = {
+            "metadata": {
+                "assessment_id": context["assessment_id"],
+                "generated_at": datetime.now().isoformat(),
+                "profiler_version": "2.0.0",
+                "total_processing_time": context["total_processing_time"]
+            },
+            "agent_profile": self._serialize_agent_profile(agent_profile),
+            "llm_analysis_results": llm_results,
+            "processing_stages": [self._serialize_processing_stage(stage) for stage in processing_stages],
+            "analysis_summary": {
+                "contexts_analyzed": list(llm_results.keys()),
+                "successful_contexts": len([r for r in llm_results.values()
+                                            if not isinstance(r, dict) or "error" not in r]),
+                "failed_contexts": len([r for r in llm_results.values()
+                                        if isinstance(r, dict) and "error" in r]),
+                "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results)
+            },
+            "recommendations": self._generate_recommendations(agent_profile, llm_results)
+        }
+
+        return json.dumps(detailed_report, ensure_ascii=False, indent=2, default=str)
+
     async def _generate_summary_report_async(self, context: Dict[str, Any]) -> str:
         """Асинхронная генерация итогового отчета"""
         agent_profile = context["agent_profile"]
