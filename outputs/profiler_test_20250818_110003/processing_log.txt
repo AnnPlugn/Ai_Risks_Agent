@@ -1,0 +1,39 @@
+=== ПРОФИЛИРОВАНИЕ ИИ-АГЕНТА: ЛОГ ОБРАБОТКИ ===
+Время начала: 2025-08-18 11:00:04.104906
+
+[11:00:04] 🔄 НАЧАЛО: file_system_crawling
+  📊 files_found: 28
+  📊 file_types: 3
+  📊 unique_files: 28
+[11:00:05] ✅ ЗАВЕРШЕНО: file_system_crawling (0.96с)
+
+[11:00:05] 🔄 НАЧАЛО: comprehensive_parsing
+  📊 documents_parsed: 5
+  📊 code_files_parsed: 21
+  📊 config_files_parsed: 1
+  📊 prompt_files_parsed: 0
+[11:00:05] ✅ ЗАВЕРШЕНО: comprehensive_parsing (0.25с)
+
+[11:00:05] 🔄 НАЧАЛО: context_aware_chunking
+  📊 chunks_created: 61
+  📊 contexts_identified: 6
+  📊 avg_chunk_size: 1558.639344262295
+  📊 output_file: chunk_data\chunks_profiler_test_20250818_110003_20250818_110005.json
+[11:00:05] ✅ ЗАВЕРШЕНО: context_aware_chunking (0.03с)
+
+[11:00:05] 🔄 НАЧАЛО: llm_orchestration
+  📊 contexts_processed: 6
+  📊 successful_contexts: 6
+  📊 cache_hits: 61
+[11:00:52] ✅ ЗАВЕРШЕНО: llm_orchestration (47.23с)
+
+[11:00:52] 🔄 НАЧАЛО: profile_synthesis
+[11:01:09] ✅ ЗАВЕРШЕНО: profile_synthesis (16.77с)
+
+[11:01:09] 🔄 НАЧАЛО: output_generation
+[N/A] ⏳ ЗАВЕРШЕНО: output_generation (0.00с)
+
+=== ИТОГОВАЯ СТАТИСТИКА ===
+Общее время: 65.24 секунд
+Успешных стадий: 5/6
+Процент успеха: 83.3%

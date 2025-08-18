@@ -1,0 +1,412 @@
+{
+  "metadata": {
+    "assessment_id": "profiler_test_20250818_110003",
+    "generated_at": "2025-08-18T11:01:09.375434",
+    "profiler_version": "2.0.0",
+    "total_processing_time": 65.237518
+  },
+  "agent_profile": {
+    "name": "LawDigest Bot v2.0",
+    "description": "Fallback профиль из-за ошибки создания",
+    "agent_type": "other",
+    "llm_model": "unknown",
+    "autonomy_level": "supervised",
+    "data_access": [
+      "internal"
+    ],
+    "external_apis": [],
+    "target_audience": "Общая аудитория",
+    "operations_per_hour": null,
+    "revenue_per_operation": null,
+    "system_prompts": [],
+    "guardrails": [],
+    "source_files": [],
+    "detailed_summary": null,
+    "version": "1.0",
+    "created_at": "2025-08-18T11:01:09.317026",
+    "updated_at": "2025-08-18T11:01:09.317026"
+  },
+  "llm_analysis_results": {
+    "agent_overview": {
+      "context_type": "agent_overview",
+      "aggregated_analysis": {
+        "agents": [
+          {
+            "agent_name": "LawDigest Bot v2.0",
+            "agent_type": "orchestrator",
+            "primary_purpose": "Intelligent planning and execution of legal data analysis workflows",
+            "target_audience": "Legal professionals, data analysts, developers",
+            "key_capabilities": [
+              "Intelligent planning with CrewAI",
+              "Context-aware decision making",
+              "Adaptive execution strategies",
+              "Fallback mechanisms",
+              "Detailed performance monitoring"
+            ],
+            "description": "An advanced orchestrator agent that intelligently plans and executes legal data analysis workflows. It analyzes system context, makes autonomous decisions about which agents to run and in what order, and provides detailed execution metrics. Supports multiple scenarios including daily workflows, urgent updates, full analysis, and digest-only modes. Features robust error handling and automatic recovery mechanisms."
+          },
+          {
+            "agent_name": "CriticAgent",
+            "agent_type": "analyzer",
+            "primary_purpose": "Correct initialization and system performance analysis",
+            "target_audience": "Developers and system administrators",
+            "key_capabilities": [
+              "Error analysis",
+              "Fallback mode switching",
+              "Execution plan optimization"
+            ],
+            "description": "The agent ensures correct system operation, analyzes errors and automatically switches operating modes when necessary. Optimizes performance and provides detailed analytics."
+          }
+        ],
+        "system_overview": {
+          "total_agents": 2,
+          "agent_types": [
+            "orchestrator",
+            "analyzer"
+          ],
+          "common_capabilities": [
+            "Fallback mechanisms",
+            "Performance optimization"
+          ],
+          "collaboration_description": "The system combines intelligent workflow orchestration with critical performance analysis and error handling capabilities to ensure robust legal data processing."
+        }
+      },
+      "metadata": {
+        "total_chunks": 2,
+        "successful_chunks": 2,
+        "aggregation_timestamp": "2025-08-18T11:00:15.039367",
+        "aggregation_quality": 0.8
+      }
+    },
+    "technical_architecture": {
+      "context_type": "technical_architecture",
+      "aggregated_analysis": {
+        "llm_model": [
+          "GemmaLLM",
+          "QwenLLM"
+        ],
+        "programming_languages": [
+          "Python"
+        ],
+        "frameworks": [
+          "Telegram Bot API",
+          "Telethon",
+          "asyncio",
+          "threading"
+        ],
+        "external_apis": [
+          "Telegram API",
+          "Telegram"
+        ],
+        "data_access_patterns": [
+          "database"
+        ],
+        "autonomy_level": "semi_autonomous",
+        "technical_complexity": "medium"
+      },
+      "metadata": {
+        "total_chunks": 6,
+        "successful_chunks": 6,
+        "aggregation_timestamp": "2025-08-18T11:00:19.696106",
+        "aggregation_quality": 1.0
+      }
+    },
+    "prompts_and_instructions": {
+      "chunk_id": "prompts_and_instructions_complete",
+      "context_type": "prompts_and_instructions",
+      "analysis": {
+        "system_prompts": [],
+        "user_instructions": [],
+        "guardrails": [],
+        "personality_traits": [
+          "neutral"
+        ],
+        "response_style": "neutral",
+        "ethical_guidelines": [
+          "avoid harm"
+        ]
+      },
+      "metadata": {
+        "context_type": "prompts_and_instructions",
+        "priority": 8,
+        "files_count": 1,
+        "analysis": {}
+      },
+      "processing_method": "standard"
+    },
+    "business_logic": {
+      "context_type": "business_logic",
+      "aggregated_analysis": {
+        "business_processes": [
+          "text_generation",
+          "text_summarization",
+          "text_classification",
+          "message_processing",
+          "message_categorization",
+          "error_handling",
+          "learning_examples_management",
+          "digest_creation",
+          "digest_update",
+          "data_collection",
+          "historical_data_retrieval",
+          "task_orchestration",
+          "quality_assurance",
+          "content_strategy_development",
+          "category_analysis",
+          "agent_collaboration",
+          "system_monitoring",
+          "context_management",
+          "annotation_generation",
+          "URL_processing"
+        ],
+        "decision_making_logic": [
+          "Uses caching and retry logic for API calls, falls back to default values on errors",
+          "Conditional checks based on time intervals and file size thresholds",
+          "Multi-stage analysis with weighted consensus",
+          "Priority-based task execution with dependency checking",
+          "Parallel processing based on digest type and category count",
+          "Multi-perspective analysis including legal accuracy, logical consistency, and contextual review",
+          "Sequential task execution with expert review",
+          "Weighted scoring based on category importance and keywords"
+        ],
+        "data_processing": [
+          "Processes text through LLM models with caching, handles markdown and HTML conversion, splits long texts",
+          "Data is loaded, categorized, and optimized for performance with selective copying",
+          "Text analysis using LLM with temperature control",
+          "Sequential processing with fallback mechanisms",
+          "Parallel processing with ThreadPoolExecutor, handling different digest types",
+          "Filtering messages by date range and logging results",
+          "Collects and processes messages from Telegram channels, handles errors with retries",
+          "Extraction and analysis of text content to determine priorities and categories"
+        ],
+        "workflow_patterns": [
+          "caching_pattern",
+          "retry_pattern",
+          "fallback_pattern",
+          "batch_processing",
+          "error_handling",
+          "parallel_processing",
+          "sequential_review",
+          "conditional_execution",
+          "content_filtering",
+          "length_constraint_enforcement",
+          "strategic_planning",
+          "dynamic_category_ordering"
+        ],
+        "integration_points": [
+          "LLM_API",
+          "local_cache",
+          "text_processing_utils",
+          "database_manager",
+          "file_system",
+          "logging_system",
+          "Telegram_API",
+          "agent_registry",
+          "crewai_digester",
+          "crewai_critic",
+          "crewai_analyzer",
+          "session_manager",
+          "data_collector",
+          "analyzer",
+          "digester",
+          "content_priorities_integration",
+          "style_guidelines_integration"
+        ]
+      },
+      "metadata": {
+        "total_chunks": 50,
+        "successful_chunks": 50,
+        "aggregation_timestamp": "2025-08-18T11:00:39.636953",
+        "aggregation_quality": 0.8
+      }
+    },
+    "configurations": {
+      "chunk_id": "configurations_complete",
+      "context_type": "configurations",
+      "analysis": {
+        "configuration_parameters": {
+          "agent_name": "TestAgent",
+          "model": "gpt-4",
+          "temperature": 0.1,
+          "system_prompt": "Ты - банковский ассистент"
+        },
+        "security_settings": [
+          "Не разглашай конфиденциальную информацию",
+          "Всегда проверяй данные клиента"
+        ],
+        "performance_settings": {
+          "max_log_size_bytes": 10485760,
+          "log_backup_count": 5
+        },
+        "environment_variables": {
+          "TELEGRAM_BOT_TOKEN": "Токен бота Telegram",
+          "TELEGRAM_API_ID": "ID API Telegram",
+          "TELEGRAM_API_HASH": "Хэш API Telegram",
+          "DATABASE_URL": "URL базы данных",
+          "LLM_STUDIO_URL": "URL студии LLM",
+          "QWEN_API_KEY": "API ключ QWEN",
+          "GEMMA_API_KEY": "API ключ GEMMA"
+        },
+        "deployment_config": {
+          "log_directory": "logs",
+          "log_file": "lawdigest.log",
+          "log_level": "INFO",
+          "telegram_channels": [
+            "@kremlininfo",
+            "@governmentru",
+            "@dumainfo",
+            "@sovfedinfo"
+          ],
+          "categories": [
+            "законодательные инициативы",
+            "новая судебная практика",
+            "новые законы",
+            "поправки к законам"
+          ],
+          "schedule": {
+            "collect_interval_minutes": 30,
+            "analyze_interval_minutes": 30,
+            "digest_time_hour": 18,
+            "digest_time_minute": 0
+          }
+        }
+      },
+      "metadata": {
+        "context_type": "configurations",
+        "priority": 6,
+        "files_count": 3,
+        "analysis": {}
+      },
+      "processing_method": "standard"
+    },
+    "supporting_docs": {
+      "chunk_id": "supporting_docs_complete",
+      "context_type": "supporting_docs",
+      "analysis": {
+        "documentation_quality": "medium",
+        "covered_topics": [
+          "Описание агента",
+          "Функции агента",
+          "Ограничения агента",
+          "Технические характеристики",
+          "Параметры агента"
+        ],
+        "missing_documentation": [
+          "API документация",
+          "Интеграционные руководства",
+          "Примеры кода"
+        ],
+        "examples_provided": false,
+        "user_guides": [],
+        "technical_specs": [
+          "Техническая спецификация TestAgent"
+        ]
+      },
+      "metadata": {
+        "context_type": "supporting_docs",
+        "priority": 5,
+        "files_count": 4,
+        "analysis": {}
+      },
+      "processing_method": "standard"
+    }
+  },
+  "processing_stages": [
+    {
+      "stage_name": "file_system_crawling",
+      "start_time": "2025-08-18T11:00:04.104906",
+      "end_time": "2025-08-18T11:00:05.062005",
+      "status": "completed",
+      "execution_time": 0.957099,
+      "output_files": [],
+      "metrics": {
+        "files_found": 28,
+        "file_types": 3,
+        "unique_files": 28
+      },
+      "error_details": null
+    },
+    {
+      "stage_name": "comprehensive_parsing",
+      "start_time": "2025-08-18T11:00:05.065005",
+      "end_time": "2025-08-18T11:00:05.314442",
+      "status": "completed",
+      "execution_time": 0.249437,
+      "output_files": [],
+      "metrics": {
+        "documents_parsed": 5,
+        "code_files_parsed": 21,
+        "config_files_parsed": 1,
+        "prompt_files_parsed": 0
+      },
+      "error_details": null
+    },
+    {
+      "stage_name": "context_aware_chunking",
+      "start_time": "2025-08-18T11:00:05.327502",
+      "end_time": "2025-08-18T11:00:05.353393",
+      "status": "completed",
+      "execution_time": 0.025891,
+      "output_files": [],
+      "metrics": {
+        "chunks_created": 61,
+        "contexts_identified": 6,
+        "avg_chunk_size": 1558.639344262295,
+        "output_file": "chunk_data\\chunks_profiler_test_20250818_110003_20250818_110005.json"
+      },
+      "error_details": null
+    },
+    {
+      "stage_name": "llm_orchestration",
+      "start_time": "2025-08-18T11:00:05.356560",
+      "end_time": "2025-08-18T11:00:52.586945",
+      "status": "completed",
+      "execution_time": 47.230385,
+      "output_files": [],
+      "metrics": {
+        "contexts_processed": 6,
+        "successful_contexts": 6,
+        "cache_hits": 61
+      },
+      "error_details": null
+    },
+    {
+      "stage_name": "profile_synthesis",
+      "start_time": "2025-08-18T11:00:52.591449",
+      "end_time": "2025-08-18T11:01:09.366155",
+      "status": "completed",
+      "execution_time": 16.774706,
+      "output_files": [],
+      "metrics": {},
+      "error_details": null
+    },
+    {
+      "stage_name": "output_generation",
+      "start_time": "2025-08-18T11:01:09.369617",
+      "end_time": null,
+      "status": "in_progress",
+      "execution_time": null,
+      "output_files": [],
+      "metrics": {},
+      "error_details": null
+    }
+  ],
+  "analysis_summary": {
+    "contexts_analyzed": [
+      "agent_overview",
+      "technical_architecture",
+      "prompts_and_instructions",
+      "business_logic",
+      "configurations",
+      "supporting_docs"
+    ],
+    "successful_contexts": 6,
+    "failed_contexts": 0,
+    "data_quality_score": 47.0
+  },
+  "recommendations": [
+    "Добавить системные промпты для лучшего контроля поведения агента",
+    "Внедрить guardrails для повышения безопасности агента",
+    "Создать детальную документацию агента"
+  ]
+}

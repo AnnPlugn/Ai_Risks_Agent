@@ -20,6 +20,7 @@ from ..tools.document_parser import create_document_parser, parse_agent_document
 from ..tools.code_analyzer import create_code_analyzer, analyze_agent_codebase
 from ..tools.prompt_analyzer import create_prompt_analyzer, analyze_agent_prompts
 from ..utils.logger import LogContext, get_logger
+from ..prompts.profiler_prompts import profiler_system_prompt, json_profiler_extr_prompt, base_prompts_profiler, summary_report_prompt
 
 
 class FileType(Enum):
@@ -936,73 +937,7 @@ class LLMOrchestrator:
 
     def _create_context_specific_prompt(self, chunk: ContextChunk) -> str:
         """Создание контекстно-специфичного промпта"""
-        base_prompts = {
-            'agent_overview': """
-            Проанализируй общую информацию об ИИ-агенте. Извлеки:
-            {
-                "agent_name": "название агента",
-                "agent_type": "тип агента (chatbot/assistant/analyzer/etc)",
-                "primary_purpose": "основное назначение",
-                "target_audience": "целевая аудитория",
-                "key_capabilities": ["возможность1", "возможность2"],
-                "description": "подробное описание"
-            }
-            """,
-            'technical_architecture': """
-            Проанализируй техническую архитектуру агента. Извлеки:
-            {
-                "llm_model": "используемая модель",
-                "programming_languages": ["язык1", "язык2"],
-                "frameworks": ["фреймворк1", "фреймворк2"],
-                "external_apis": ["api1", "api2"],
-                "data_access_patterns": ["тип доступа к данным"],
-                "autonomy_level": "supervised/semi_autonomous/autonomous",
-                "technical_complexity": "low/medium/high"
-            }
-            """,
-            'prompts_and_instructions': """
-            Проанализируй промпты и инструкции агента. Извлеки:
-            {
-                "system_prompts": ["системный промпт 1", "системный промпт 2"],
-                "user_instructions": ["инструкция 1", "инструкция 2"],
-                "guardrails": ["ограничение 1", "ограничение 2"],
-                "personality_traits": ["черта 1", "черта 2"],
-                "response_style": "стиль ответов",
-                "ethical_guidelines": ["этическое правило 1", "этическое правило 2"]
-            }
-            """,
-            'business_logic': """
-            Проанализируй бизнес-логику агента. Извлеки:
-            {
-                "business_processes": ["процесс 1", "процесс 2"],
-                "decision_making_logic": "логика принятия решений",
-                "data_processing": "как обрабатываются данные",
-                "workflow_patterns": ["паттерн 1", "паттерн 2"],
-                "integration_points": ["точка интеграции 1", "точка интеграции 2"]
-            }
-            """,
-            'configurations': """
-            Проанализируй конфигурации агента. Извлеки:
-            {
-                "configuration_parameters": {"параметр": "значение"},
-                "security_settings": ["настройка 1", "настройка 2"],
-                "performance_settings": {"параметр": "значение"},
-                "environment_variables": {"переменная": "описание"},
-                "deployment_config": "конфигурация развертывания"
-            }
-            """,
-            'supporting_docs': """
-            Проанализируй поддерживающую документацию. Извлеки:
-            {
-                "documentation_quality": "high/medium/low",
-                "covered_topics": ["топик 1", "топик 2"],
-                "missing_documentation": ["что отсутствует"],
-                "examples_provided": true/false,
-                "user_guides": ["гайд 1", "гайд 2"],
-                "technical_specs": ["спецификация 1", "спецификация 2"]
-            }
-            """
-        }
+        base_prompts = base_prompts_profiler
 
         base_prompt = base_prompts.get(chunk.context_type, "Проанализируй предоставленные данные.")
 
@@ -1346,56 +1281,7 @@ class OutputGenerator:
     def _get_report_template(self) -> str:
         """Получение шаблона отчета"""
         if "summary_report" not in self.template_cache:
-            self.template_cache["summary_report"] = """# 🤖 ОТЧЕТ ПО ПРОФИЛИРОВАНИЮ ИИ-АГЕНТА
-
-**Assessment ID:** {assessment_id}
-**Дата генерации:** {generation_date}
-**Время обработки:** {total_time} секунд
-
-## 📋 ОБЩАЯ ИНФОРМАЦИЯ
-
-**Название агента:** {agent_name}
-**Тип агента:** {agent_type}
-**Версия:** {agent_version}
-**Уровень автономности:** {autonomy_level}
-
-**Описание:**
-{description}
-
-**Целевая аудитория:** {target_audience}
-
-## 🏗️ ТЕХНИЧЕСКАЯ АРХИТЕКТУРА
-
-**LLM Модель:** {llm_model}
-**Типы данных:** {data_types}
-**Внешние API:** {external_apis}
-
-## 💼 БИЗНЕС-КОНТЕКСТ
-
-**Операций в час:** {operations_per_hour}
-**Доход с операции:** {revenue_per_operation}
-
-## 🛡️ БЕЗОПАСНОСТЬ И ОГРАНИЧЕНИЯ
-
-### Системные промпты ({system_prompts_count}):
-{system_prompts}
-
-### Ограничения (Guardrails) ({guardrails_count}):
-{guardrails}
-
-{detailed_summary}
-
-{llm_analysis}
-
-{processing_stats}
-
-## 📈 ОЦЕНКА КАЧЕСТВА ДАННЫХ
-
-**Балл качества:** {data_quality_score}/100
-
----
-*Отчет сгенерирован автоматически системой профилирования ИИ-агентов*
-"""
+            self.template_cache["summary_report"] = summary_report_prompt
 
         return self.template_cache["summary_report"]
 
@@ -1531,65 +1417,105 @@ class OutputGenerator:
 
         return mermaid_graph
 
-    def _build_comprehensive_architecture_graph(self, agent_profile: AgentProfile, llm_results: Dict[str, Any]) -> str:
-        """Построение комплексной диаграммы архитектуры"""
+    def _build_comprehensive_architecture_graph(self, agent_profile: AgentProfile, llm_results: Dict[str, Any],
+                                                template_data: Dict[str, Any]) -> str:
+        """Build a comprehensive architecture diagram for an AI agent, optimized for LLM interpretability and risk assessment.
 
+        Args:
+            agent_profile (AgentProfile): The agent's configuration and metadata.
+            llm_results (Dict[str, Any]): Results from LLM analysis for additional context.
+            template_data (Dict[str, Any]): Template data containing agent metadata and analysis results.
+
+        Returns:
+            str: A Mermaid graph string representing the agent's architecture.
+        """
         graph_lines = [
+            "%% Comprehensive architecture diagram for AI Agent",
+            f"%% Agent: {template_data['agent_name']} (Type: {template_data['agent_type']}, Version: {template_data['agent_version']})",
+            f"%% Autonomy Level: {template_data['autonomy_level']}, Data Quality Score: {template_data['data_quality_score']}",
+            f"%% Generated: {template_data['generation_date']}",
             "graph TD",
-            "    A[👤 Пользователь] --> B[🤖 ИИ-Агент]",
-            "    B --> C{Обработка запроса}"
+            "    A[Пользователь] -->|Ввод запроса| B[ИИ-Агент]"
+            "    B -->|Маршрутизация| C{Обработка запроса}",
         ]
 
         node_counter = ord('D')
 
-        # Добавляем узлы на основе системных промптов
+        # Add system prompts with context
         if agent_profile.system_prompts:
             prompt_node = chr(node_counter)
-            graph_lines.append(f"    C --> {prompt_node}[📝 Системные промпты]")
-            graph_lines.append(f"    {prompt_node} --> E[🧠 LLM {agent_profile.llm_model}]")
+            graph_lines.append(f"    %% System Prompts: Defines agent behavior and constraints")
+            graph_lines.append(
+                f"    C -->|Использует {template_data['system_prompts_count']} промптов| {prompt_node}[Системные промпты]")
+            graph_lines.append(f"    {prompt_node} -->|Передача контекста| E[LLM: {template_data['llm_model']}]")
             node_counter += 1
 
-        # Добавляем внешние API
-        if agent_profile.external_apis:
+        # Add external APIs with risk annotation
+        if agent_profile.external_apis and template_data['external_apis'] != 'Не используются':
             api_node = chr(node_counter)
-            graph_lines.append(f"    C --> {api_node}[🔌 Внешние API]")
+            graph_lines.append(f"    %% External APIs: Potential risk points for data privacy and reliability")
+            graph_lines.append(f"    C -->|Интеграция| {api_node}[🔌 Внешние API]")
             for i, api in enumerate(agent_profile.external_apis[:3], 1):
                 api_sub_node = f"{api_node}{i}"
-                graph_lines.append(f"    {api_node} --> {api_sub_node}[{api}]")
+                graph_lines.append(f"    {api_node} -->|API вызов| {api_sub_node}[{api}]")
             node_counter += 1
 
-        # Добавляем доступ к данным
+        # Add data access with data quality annotation
         if agent_profile.data_access:
             data_node = chr(node_counter)
-            graph_lines.append(f"    C --> {data_node}[💾 Данные]")
+            graph_lines.append(f"    %% Data Access: Quality Score = {template_data['data_quality_score']}")
+            graph_lines.append(f"    C -->|Доступ к данным| {data_node}[Данные]")
             for i, data_type in enumerate(agent_profile.data_access[:3], 1):
                 data_sub_node = f"{data_node}{i}"
-                graph_lines.append(f"    {data_node} --> {data_sub_node}[{data_type.value}]")
+                graph_lines.append(f"    {data_node} -->|Тип данных| {data_sub_node}[{data_type.value}]")
             node_counter += 1
 
-        # Добавляем guardrails если есть
+        # Add guardrails with risk mitigation annotation
         if agent_profile.guardrails:
             guard_node = chr(node_counter)
-            graph_lines.append(f"    E --> {guard_node}[🛡️ Guardrails]")
-            graph_lines.append(f"    {guard_node} --> H[📤 Ответ]")
+            graph_lines.append(f"    %% Guardrails: Mitigate risks, {template_data['guardrails_count']} configured")
+            graph_lines.append(f"    E -->|Фильтрация| {guard_node}[Guardrails]")
+            graph_lines.append(f"    {guard_node} -->|Безопасный вывод| H[Ответ пользователю]")
             node_counter += 1
         else:
-            graph_lines.append("    E --> H[📤 Ответ]")
+            graph_lines.append(f"    %% No Guardrails: Potential risk point")
+            graph_lines.append(f"    E -->|Прямой вывод| H[Ответ пользователю]")
 
-        # Добавляем стили
+        # Add performance and operational context
         graph_lines.extend([
             "",
-            "    classDef userClass fill:#e1f5fe",
-            "    classDef agentClass fill:#f3e5f5",
-            "    classDef llmClass fill:#e8f5e8",
-            "    classDef apiClass fill:#fff3e0",
-            "    classDef dataClass fill:#fce4ec",
-            "    classDef guardClass fill:#ffebee",
+            f"    %% Operational Stats: {template_data['operations_per_hour']} ops/hour, Revenue: {template_data['revenue_per_operation']}",
+            f"    %% Description: {template_data['description']}",
+            f"    %% Target Audience: {template_data['target_audience']}",
+        ])
+
+        # Add styling for visual clarity
+        graph_lines.extend([
+            "",
+            "    %% Styling for visual distinction",
+            "    classDef userClass fill:#e1f5fe,stroke:#0288d1,stroke-width:2px",
+            "    classDef agentClass fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px",
+            "    classDef llmClass fill:#e8f5e8,stroke:#388e3c,stroke-width:2px",
+            "    classDef apiClass fill:#fff3e0,stroke:#f57c00,stroke-width:2px",
+            "    classDef dataClass fill:#fce4ec,stroke:#d81b60,stroke-width:2px",
+            "    classDef guardClass fill:#ffebee,stroke:#c62828,stroke-width:2px",
             "",
             "    class A userClass",
             "    class B,C agentClass",
-            "    class E llmClass"
+            "    class E llmClass",
+            "    class H userClass",
         ])
+
+        if agent_profile.external_apis:
+            graph_lines.append(f"    class {api_node} apiClass")
+            for i in range(1, min(len(agent_profile.external_apis) + 1, 4)):
+                graph_lines.append(f"    class {api_node}{i} apiClass")
+        if agent_profile.data_access:
+            graph_lines.append(f"    class {data_node} dataClass")
+            for i in range(1, min(len(agent_profile.data_access) + 1, 4)):
+                graph_lines.append(f"    class {data_node}{i} dataClass")
+        if agent_profile.guardrails:
+            graph_lines.append(f"    class {guard_node} guardClass")
 
         return "\n".join(graph_lines)
 
@@ -1810,30 +1736,7 @@ class EnhancedProfilerAgent(AnalysisAgent):
 
     def get_system_prompt(self) -> str:
         """Системный промпт для улучшенного профайлера"""
-        return """Ты - продвинутый эксперт-аналитик по профилированию ИИ-агентов для оценки операционных рисков.
-
-Твоя задача: создавать детальные профили ИИ-агентов на основе всестороннего анализа предоставленных данных.
-
-ПРИНЦИПЫ АНАЛИЗА:
-1. Контекстно-осознанный анализ с сохранением связей между компонентами
-2. Максимальное извлечение информации из всех источников
-3. Структурированное представление результатов
-4. Выявление скрытых паттернов и зависимостей
-5. Создание детального технического и бизнес-профиля
-
-АРХИТЕКТУРНЫЙ ПОДХОД:
-- Анализируй данные по контекстным группам
-- Ищи связи между различными компонентами
-- Создавай целостное представление агента
-- Выявляй потенциальные риски и проблемы
-
-ФОКУС НА КАЧЕСТВЕ:
-- Анализируй не только явную, но и неявную информацию
-- Выявляй противоречия и несоответствия
-- Создавай связное представление всей архитектуры
-- Оценивай полноту и качество документации
-
-Отвечай структурированным JSON согласно контексту анализа."""
+        return profiler_system_prompt
 
     async def process(self, input_data: Dict[str, Any], assessment_id: str) -> AgentTaskResult:
         """
@@ -2492,48 +2395,7 @@ class EnhancedProfilerAgent(AnalysisAgent):
 
     def _create_advanced_profile_prompt(self) -> str:
         """Создание продвинутого промпта для профилирования"""
-        return """
-        Проанализируй предоставленные данные и создай детальный профиль ИИ-агента.
-
-        ТРЕБОВАНИЯ К АНАЛИЗУ:
-        1. Синтезируй информацию из всех контекстов
-        2. Выяви связи между техническими и бизнес-аспектами
-        3. Оцени полноту и качество документации
-        4. Определи потенциальные риски и проблемы
-        5. Создай детальное саммари с глубоким анализом
-
-        ОБЯЗАТЕЛЬНЫЕ ПОЛЯ JSON:
-        {
-            "name": "название агента (если не найдено, используй 'AI Agent')",
-            "version": "версия агента (по умолчанию 1.0)",
-            "description": "описание назначения и функций агента",
-            "agent_type": "один из: chatbot, assistant, trader, scorer, analyzer, generator, other",
-            "llm_model": "используемая LLM модель (если найдена, иначе 'unknown')",
-            "autonomy_level": "один из: supervised, semi_autonomous, autonomous",
-            "data_access": ["массив типов данных: public, internal, confidential, critical"],
-            "external_apis": ["массив внешних API и интеграций"],
-            "target_audience": "целевая аудитория агента",
-            "operations_per_hour": число_или_null,
-            "revenue_per_operation": число_или_null,
-            "system_prompts": ["массив найденных системных промптов"],
-            "guardrails": ["массив найденных ограничений и правил"],
-            "source_files": ["типы проанализированных файлов"],
-            "detailed_summary": {
-                "overview": "Подробный обзор агента, его назначения и ключевых особенностей (минимум 300 слов)",
-                "technical_architecture": "Детальный анализ технической реализации, архитектуры, используемых технологий (минимум 250 слов)",
-                "operational_model": "Описание операционной модели, процессов работы, взаимодействия с пользователями (минимум 200 слов)",
-                "risk_analysis": "Выявленные риски, уязвимости, потенциальные проблемы с обоснованием (минимум 300 слов)",
-                "security_recommendations": "Конкретные рекомендации по улучшению безопасности и снижению рисков (минимум 150 слов)",
-                "conclusions": "Итоговые выводы и ключевые моменты для внимания (минимум 100 слов)"
-            }
-        }
-
-        ВАЖНО: 
-        - detailed_summary должно содержать глубокий анализ, а не поверхностные описания
-        - Используй найденную информацию для обоснования выводов
-        - Укажи конкретные источники рисков и рекомендации по их митигации
-        - Отвечай только валидным JSON без дополнительного текста
-        """
+        return json_profiler_extr_prompt
 
     def _validate_and_enhance_profile_data(self, llm_result: Dict[str, Any], preliminary_name: str,
                                            parsed_data: Dict[str, Any]) -> Dict[str, Any]:
