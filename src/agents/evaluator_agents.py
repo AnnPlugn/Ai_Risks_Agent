@@ -860,74 +860,6 @@ class SocialRiskEvaluator(EvaluationAgent):
 # ===============================
 
 
-
-def create_all_evaluator_agents(
-    llm_base_url: Optional[str] = None,
-    llm_model: Optional[str] = None,
-    temperature: Optional[float] = None
-) -> Dict[RiskType, EvaluationAgent]:
-    """
-    Создание всех 6 агентов-оценщиков
-    ОБНОВЛЕНО: Использует центральный конфигуратор
-    """
-    from .base_agent import create_agent_config
-    
-    # ИЗМЕНЕНО: Базовая конфигурация теперь использует центральный конфигуратор
-    base_config_params = {
-        "llm_base_url": llm_base_url,
-        "llm_model": llm_model,
-        "temperature": temperature,
-        "max_retries": 3,
-        "timeout_seconds": 120,
-        "use_risk_analysis_client": True  # Все оценщики используют специализированный клиент
-    }
-    
-    # Создаем конфигурации для каждого агента
-    configs = {
-        RiskType.ETHICAL: create_agent_config(
-            name="ethical_risk_evaluator",
-            description="Агент для оценки этических и дискриминационных рисков",
-            **base_config_params
-        ),
-        RiskType.STABILITY: create_agent_config(
-            name="stability_risk_evaluator", 
-            description="Агент для оценки рисков ошибок и нестабильности LLM",
-            **base_config_params
-        ),
-        RiskType.SECURITY: create_agent_config(
-            name="security_risk_evaluator",
-            description="Агент для оценки рисков безопасности данных и систем",
-            **base_config_params
-        ),
-        RiskType.AUTONOMY: create_agent_config(
-            name="autonomy_risk_evaluator",
-            description="Агент для оценки рисков автономности и управления",
-            **base_config_params
-        ),
-        RiskType.REGULATORY: create_agent_config(
-            name="regulatory_risk_evaluator",
-            description="Агент для оценки регуляторных и юридических рисков",
-            **base_config_params
-        ),
-        RiskType.SOCIAL: create_agent_config(
-            name="social_risk_evaluator",
-            description="Агент для оценки социальных и манипулятивных рисков",
-            **base_config_params
-        )
-    }
-    
-    # Создаем агентов-оценщиков (ВАЖНО: Сохраняем специализированные классы!)
-    evaluators = {
-        RiskType.ETHICAL: EthicalRiskEvaluator(configs[RiskType.ETHICAL]),
-        RiskType.STABILITY: StabilityRiskEvaluator(configs[RiskType.STABILITY]),
-        RiskType.SECURITY: SecurityRiskEvaluator(configs[RiskType.SECURITY]),
-        RiskType.AUTONOMY: AutonomyRiskEvaluator(configs[RiskType.AUTONOMY]),
-        RiskType.REGULATORY: RegulatoryRiskEvaluator(configs[RiskType.REGULATORY]),
-        RiskType.SOCIAL: SocialRiskEvaluator(configs[RiskType.SOCIAL])
-    }
-    
-    return evaluators
-
 def create_safe_evaluator_process_method(risk_type: RiskType, risk_description: str):
         """
         Создает безопасный метод process для любого агента-оценщика
@@ -1027,14 +959,78 @@ def create_safe_evaluator_process_method(risk_type: RiskType, risk_description: 
         return safe_process
 
 
+def create_all_evaluator_agents(
+        llm_base_url: Optional[str] = None,
+        llm_model: Optional[str] = None,
+        temperature: Optional[float] = None
+) -> Dict[RiskType, EvaluationAgent]:
+    """
+    Создание всех 6 агентов-оценщиков
+    ИСПРАВЛЕНО: Правильная работа с DeepSeek
+    """
+    from .base_agent import create_agent_config
+
+    # ИСПРАВЛЕНО: Проверяем текущий провайдер
+    from ..utils.llm_config_manager import get_llm_config_manager, LLMProvider
+    manager = get_llm_config_manager()
+    provider = manager.get_provider()
+
+    print(f"🔍 DEBUG create_all_evaluator_agents: Текущий провайдер: {provider.value}")
+
+    # Базовая конфигурация
+    base_config_params = {
+        "llm_base_url": llm_base_url,
+        "llm_model": llm_model,
+        "temperature": temperature,
+        "max_retries": 3,
+        "timeout_seconds": 120,
+        "use_risk_analysis_client": True  # КРИТИЧНО: Все оценщики используют специализированный клиент
+    }
+
+    # Создаем конфигурации для каждого агента
+    configs = {}
+    for risk_type in [RiskType.ETHICAL, RiskType.STABILITY, RiskType.SECURITY,
+                      RiskType.AUTONOMY, RiskType.REGULATORY, RiskType.SOCIAL]:
+        config = create_agent_config(
+            name=f"{risk_type.value}_risk_evaluator",
+            description=f"Агент для оценки {risk_type.value} рисков",
+            **base_config_params
+        )
+        configs[risk_type] = config
+
+        print(
+            f"✅ Создана конфигурация для {risk_type.value}: use_risk_analysis_client={config.use_risk_analysis_client}")
+
+    # Создаем агентов-оценщиков
+    evaluators = {
+        RiskType.ETHICAL: EthicalRiskEvaluator(configs[RiskType.ETHICAL]),
+        RiskType.STABILITY: StabilityRiskEvaluator(configs[RiskType.STABILITY]),
+        RiskType.SECURITY: SecurityRiskEvaluator(configs[RiskType.SECURITY]),
+        RiskType.AUTONOMY: AutonomyRiskEvaluator(configs[RiskType.AUTONOMY]),
+        RiskType.REGULATORY: RegulatoryRiskEvaluator(configs[RiskType.REGULATORY]),
+        RiskType.SOCIAL: SocialRiskEvaluator(configs[RiskType.SOCIAL])
+    }
+
+    # ДИАГНОСТИКА: Проверяем что у всех агентов правильный клиент
+    for risk_type, evaluator in evaluators.items():
+        client_type = type(evaluator.llm_client).__name__
+        print(f"🔍 {risk_type.value} оценщик использует клиент: {client_type}")
+
+        # Проверяем что клиент поддерживает evaluate_risk
+        if hasattr(evaluator.llm_client, 'evaluate_risk'):
+            print(f"✅ {risk_type.value} клиент поддерживает evaluate_risk")
+        else:
+            print(f"❌ {risk_type.value} клиент НЕ поддерживает evaluate_risk!")
+
+    return evaluators
 
 
 def create_evaluators_from_env() -> Dict[RiskType, EvaluationAgent]:
     """
     Создание агентов-оценщиков из переменных окружения
-    ОБНОВЛЕНО: Использует центральный конфигуратор
+    ИСПРАВЛЕНО: Использует центральный конфигуратор
     """
-    # ИЗМЕНЕНО: Используем центральный конфигуратор, убираем дублирование чтения env
+    print("🔍 DEBUG create_evaluators_from_env: Создаем агентов из env")
     return create_all_evaluator_agents()
 
 

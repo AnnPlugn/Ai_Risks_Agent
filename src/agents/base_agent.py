@@ -4,6 +4,11 @@
 Предоставляет общий интерфейс и функциональность для всех типов агентов
 """
 
+"""
+Базовый класс для всех агентов в системе оценки рисков ИИ-агентов
+ИСПРАВЛЕНО: Правильная работа с DeepSeek клиентами
+"""
+
 import asyncio
 import json
 import re
@@ -12,8 +17,9 @@ from typing import Dict, Any, Optional, List, Union
 from datetime import datetime
 from dataclasses import dataclass
 
-from ..utils.llm_client import LLMClient, LLMConfig, LLMMessage, RiskAnalysisLLMClient
-from ..utils.llm_config_manager import get_llm_config_manager
+from ..utils.llm_client import LLMClient, LLMConfig, LLMMessage, DeepSeekRiskAnalysisLLMClient, \
+    GigaChatRiskAnalysisLLMClient, RiskAnalysisLLMClient
+from ..utils.llm_config_manager import get_llm_config_manager, LLMProvider
 from ..utils.logger import get_logger, log_agent_execution, log_llm_call
 from ..models.risk_models import AgentTaskResult, ProcessingStatus
 
@@ -31,34 +37,15 @@ class AgentConfig:
 
 
 class BaseAgent(ABC):
-    """
-    Базовый класс для всех агентов системы оценки рисков
-    
-    Предоставляет:
-    - Подключение к LLM
-    - Логирование
-    - Обработка ошибок и повторы
-    - Валидация результатов
-    - Стандартный интерфейс для агентов
-    """
-    
+    """Базовый класс для всех агентов системы оценки рисков"""
+
     def __init__(self, config: AgentConfig):
         self.config = config
         self.logger = get_logger()
-        
-        # ИСПРАВЛЕНО: Используем фабрику для правильного создания клиента
-        from ..utils.llm_client import create_llm_client
-        
-        client_type = "risk_analysis" if config.use_risk_analysis_client else "standard"
-        
-        # Фабрика автоматически определит нужный тип клиента по провайдеру
-        self.llm_client = create_llm_client(
-            client_type=client_type,
-            base_url=config.llm_config.base_url,
-            model=config.llm_config.model,
-            temperature=config.llm_config.temperature
-        )
-        
+
+        # ИСПРАВЛЕНО: Правильная фабрика для DeepSeek
+        self.llm_client = self._create_appropriate_llm_client(config)
+
         # Статистика агента
         self.stats = {
             "total_requests": 0,
@@ -67,35 +54,57 @@ class BaseAgent(ABC):
             "total_execution_time": 0.0,
             "average_response_time": 0.0
         }
-    
+
+    def _create_appropriate_llm_client(self, config: AgentConfig):
+        """НОВЫЙ МЕТОД: Создает правильный LLM клиент для текущего провайдера"""
+
+        # Получаем актуальную информацию о провайдере
+        manager = get_llm_config_manager()
+        provider = manager.get_provider()
+
+        print(f"🔍 DEBUG BaseAgent: Создаем клиент для провайдера {provider.value}")
+        print(f"🔍 DEBUG BaseAgent: Нужен risk_analysis_client: {config.use_risk_analysis_client}")
+
+        if config.use_risk_analysis_client:
+            # Создаем специализированный клиент для анализа рисков
+            if provider == LLMProvider.DEEPSEEK:
+                print("✅ Создаем DeepSeekRiskAnalysisLLMClient")
+                return DeepSeekRiskAnalysisLLMClient(config.llm_config)
+            elif provider == LLMProvider.GIGACHAT:
+                print("✅ Создаем GigaChatRiskAnalysisLLMClient")
+                return GigaChatRiskAnalysisLLMClient(config.llm_config)
+            else:
+                print("✅ Создаем RiskAnalysisLLMClient (fallback)")
+                return RiskAnalysisLLMClient(config.llm_config)
+        else:
+            # Создаем стандартный клиент
+            from ..utils.llm_client import create_llm_client
+            return create_llm_client(
+                client_type="standard",
+                base_url=config.llm_config.base_url,
+                model=config.llm_config.model,
+                temperature=config.llm_config.temperature
+            )
+
     @property
     def name(self) -> str:
         """Имя агента"""
         return self.config.name
-    
+
     @property
     def description(self) -> str:
         """Описание агента"""
         return self.config.description
-    
+
     @abstractmethod
     async def process(
-        self, 
-        input_data: Dict[str, Any], 
-        assessment_id: str
+            self,
+            input_data: Dict[str, Any],
+            assessment_id: str
     ) -> AgentTaskResult:
-        """
-        Основной метод обработки для агента
-        
-        Args:
-            input_data: Входные данные для обработки
-            assessment_id: Идентификатор оценки
-            
-        Returns:
-            Результат работы агента
-        """
+        """Основной метод обработки для агента"""
         pass
-    
+
     @abstractmethod
     def get_system_prompt(self) -> str:
         """Получение системного промпта для агента"""
@@ -594,41 +603,50 @@ class AnalysisAgent(BaseAgent):
 
 
 class EvaluationAgent(BaseAgent):
-    """
-    Базовый класс для агентов-оценщиков рисков
-    Расширяет BaseAgent функциональностью для оценки рисков
-    """
-    
+    """Базовый класс для агентов-оценщиков рисков"""
+
     def __init__(self, config: AgentConfig):
-        # Оценщики должны использовать специализированный клиент
+        # КРИТИЧНО: Устанавливаем флаг ПЕРЕД вызовом super().__init__
         config.use_risk_analysis_client = True
         super().__init__(config)
-    
+
+        # ИСПРАВЛЕНО: Проверяем что создался правильный тип клиента
+        expected_types = (DeepSeekRiskAnalysisLLMClient, GigaChatRiskAnalysisLLMClient, RiskAnalysisLLMClient)
+
+        if not isinstance(self.llm_client, expected_types):
+            raise ValueError(
+                f"EvaluationAgent требует RiskAnalysisLLMClient или его наследников, "
+                f"получен: {type(self.llm_client)}"
+            )
+
+        print(f"✅ EvaluationAgent создан с клиентом: {type(self.llm_client).__name__}")
+
     async def evaluate_risk(
-        self,
-        risk_type: str,
-        agent_data: str,
-        evaluation_criteria: str,
-        assessment_id: str,
-        examples: Optional[str] = None
+            self,
+            risk_type: str,
+            agent_data: str,
+            evaluation_criteria: str,
+            assessment_id: str,
+            examples: Optional[str] = None
     ) -> Dict[str, Any]:
         """Оценка риска с использованием специализированного клиента"""
-        
+
         try:
-            if not isinstance(self.llm_client, RiskAnalysisLLMClient):
-                raise ValueError("Агент-оценщик должен использовать RiskAnalysisLLMClient")
-            
-            # ИСПРАВЛЕНИЕ: Передаем параметр examples в вызов
+            # ИСПРАВЛЕНО: Проверяем интерфейс клиента
+            if not hasattr(self.llm_client, 'evaluate_risk'):
+                raise ValueError(f"LLM клиент {type(self.llm_client)} не поддерживает evaluate_risk")
+
+            # Вызываем метод оценки риска
             result = await self.llm_client.evaluate_risk(
                 risk_type=risk_type,
                 agent_data=agent_data,
                 evaluation_criteria=evaluation_criteria,
-                examples=examples  # ИСПРАВЛЕНО: Добавлен параметр examples
+                examples=examples
             )
-            
-            # ИСПРАВЛЕНИЕ: Применяем дополнительную валидацию
+
+            # Валидация результата
             validated_result = self._ensure_required_fields(result)
-            
+
             # Логируем оценку
             self.logger.log_risk_evaluation(
                 self.name,
@@ -637,16 +655,15 @@ class EvaluationAgent(BaseAgent):
                 validated_result["total_score"],
                 validated_result["risk_level"]
             )
-            
+
             return validated_result
-            
+
         except Exception as e:
-            # ИСПРАВЛЕНИЕ: В случае любой ошибки возвращаем безопасные дефолтные данные
+            # В случае ошибки возвращаем безопасные дефолтные данные
             self.logger.bind_context(assessment_id, self.name).error(
                 f"❌ Ошибка оценки риска {risk_type}: {e}"
             )
-            
-            # Возвращаем дефолтные данные вместо exception
+
             return self._get_default_evaluation_data(f"Ошибка оценки риска: {str(e)}")
     
     def _get_required_result_fields(self) -> List[str]:
@@ -732,12 +749,11 @@ class EvaluationAgent(BaseAgent):
         return json_content
 
     def _ensure_required_fields(self, parsed_data: Dict[str, Any]) -> Dict[str, Any]:
-        """УЛУЧШЕННАЯ версия обеспечения обязательных полей"""
-        
-        # Шаг 1: Определяем обязательные поля с умными дефолтами
+        """Обеспечение обязательных полей с дефолтными значениями"""
+
         required_fields = {
             "probability_score": 3,
-            "impact_score": 3, 
+            "impact_score": 3,
             "total_score": 9,
             "risk_level": "medium",
             "probability_reasoning": "Обоснование вероятности не предоставлено LLM",
@@ -746,21 +762,18 @@ class EvaluationAgent(BaseAgent):
             "recommendations": [],
             "confidence_level": 0.7
         }
-        
-        # Шаг 2: Добавляем отсутствующие поля
+
+        # Добавляем отсутствующие поля
         for field, default_value in required_fields.items():
             if field not in parsed_data or parsed_data[field] is None:
                 parsed_data[field] = default_value
-                self.logger.bind_context("unknown", self.name).debug(
-                    f"🔧 Добавлено отсутствующее поле {field}: {default_value}"
-                )
-        
-        # Шаг 3: Валидируем и исправляем типы данных
+
+        # Валидируем и исправляем типы данных
         parsed_data = self._validate_and_fix_field_types(parsed_data)
-        
-        # Шаг 4: Валидируем бизнес-логику
+
+        # Валидируем бизнес-логику
         parsed_data = self._validate_business_logic(parsed_data)
-        
+
         return parsed_data
 
     def _validate_numeric_fields(self, data: Dict[str, Any]) -> Dict[str, Any]:
@@ -828,10 +841,10 @@ class EvaluationAgent(BaseAgent):
             data[field] = data[field][:10]
         
         return data
-    
+
     def _validate_and_fix_field_types(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Валидирует и исправляет типы полей"""
-        
+
         # Числовые поля (1-5)
         score_fields = ["probability_score", "impact_score"]
         for field in score_fields:
@@ -840,31 +853,25 @@ class EvaluationAgent(BaseAgent):
                 data[field] = max(1, min(5, value))  # Ограничиваем диапазон 1-5
             except (ValueError, TypeError):
                 data[field] = 3  # Средний балл
-                self.logger.bind_context("unknown", self.name).warning(
-                    f"🔧 Исправлен некорректный {field}: установлено значение 3"
-                )
-        
+
         # Confidence level (0.0-1.0)
         try:
             value = float(data["confidence_level"])
             data["confidence_level"] = max(0.0, min(1.0, value))
         except (ValueError, TypeError):
             data["confidence_level"] = 0.7
-        
+
         # Risk level (enum)
         valid_levels = ["low", "medium", "high"]
         if data.get("risk_level") not in valid_levels:
             data["risk_level"] = "medium"
-            self.logger.bind_context("unknown", self.name).warning(
-                "🔧 Исправлен некорректный risk_level: установлено 'medium'"
-            )
-        
+
         # Строковые поля
         string_fields = ["probability_reasoning", "impact_reasoning"]
         for field in string_fields:
             if not isinstance(data.get(field), str) or len(str(data[field]).strip()) < 5:
                 data[field] = f"Автоматически сгенерированное обоснование для {field}"
-        
+
         # Списковые поля
         list_fields = ["key_factors", "recommendations"]
         for field in list_fields:
@@ -873,18 +880,18 @@ class EvaluationAgent(BaseAgent):
             else:
                 # Очищаем список от пустых элементов
                 data[field] = [
-                    str(item).strip() for item in data[field] 
-                    if item and str(item).strip()
-                ][:10]  # Ограничиваем до 10 элементов
-        
+                                  str(item).strip() for item in data[field]
+                                  if item and str(item).strip()
+                              ][:10]  # Ограничиваем до 10 элементов
+
         return data
 
     def _validate_business_logic(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Валидирует бизнес-логику оценки риска"""
-        
+
         # Пересчитываем total_score для консистентности
         data["total_score"] = data["probability_score"] * data["impact_score"]
-        
+
         # Корректируем risk_level на основе total_score
         total_score = data["total_score"]
         if total_score <= 6:
@@ -893,17 +900,14 @@ class EvaluationAgent(BaseAgent):
             correct_level = "medium"
         else:
             correct_level = "high"
-        
+
         if data["risk_level"] != correct_level:
-            old_level = data["risk_level"]
             data["risk_level"] = correct_level
-            self.logger.bind_context("unknown", self.name).debug(
-                f"🔧 Скорректирован risk_level: {old_level} → {correct_level} (total_score: {total_score})"
-            )
-        
+
         return data
+
     def _get_default_evaluation_data(self, error_message: str) -> Dict[str, Any]:
-        """УЛУЧШЕННЫЕ безопасные дефолтные данные для оценки"""
+        """Безопасные дефолтные данные для оценки"""
         return {
             "probability_score": 3,
             "impact_score": 3,
@@ -913,7 +917,7 @@ class EvaluationAgent(BaseAgent):
             "impact_reasoning": f"LLM не смог предоставить обоснование. Ошибка: {error_message}",
             "key_factors": ["Недостаточно данных для анализа"],
             "recommendations": ["Провести дополнительный анализ", "Улучшить качество входных данных"],
-            "confidence_level": 0.3  # Низкая уверенность для fallback данных
+            "confidence_level": 0.3
         }
 
 # ===============================
@@ -921,31 +925,29 @@ class EvaluationAgent(BaseAgent):
 # ===============================
 
 def create_agent_config(
-    name: str,
-    description: str,
-    llm_base_url: Optional[str] = None,
-    llm_model: Optional[str] = None,
-    temperature: Optional[float] = None,
-    max_retries: Optional[int] = None,
-    timeout_seconds: Optional[int] = None,
-    use_risk_analysis_client: bool = False
+        name: str,
+        description: str,
+        llm_base_url: Optional[str] = None,
+        llm_model: Optional[str] = None,
+        temperature: Optional[float] = None,
+        max_retries: Optional[int] = None,
+        timeout_seconds: Optional[int] = None,
+        use_risk_analysis_client: bool = False
 ) -> AgentConfig:
-    """
-    Создание конфигурации агента
-    ОБНОВЛЕНО: Использует центральный конфигуратор
-    """
-    # ИЗМЕНЕНО: Получаем настройки из центрального конфигуратора
+    """Создание конфигурации агента с центральным конфигуратором"""
+
+    # Получаем настройки из центрального конфигуратора
     manager = get_llm_config_manager()
-    base_config = manager.get_config()  # Получаем полную конфигурацию
-    
+    base_config = manager.get_config()
+
     # Используем значения из конфигуратора или переопределяем
     actual_base_url = llm_base_url or base_config.base_url
     actual_model = llm_model or base_config.model
     actual_temperature = temperature if temperature is not None else base_config.temperature
     actual_max_retries = max_retries if max_retries is not None else base_config.max_retries
     actual_timeout = timeout_seconds if timeout_seconds is not None else base_config.timeout
-    
-    # ИСПРАВЛЕНО: Создаем LLM конфигурацию со ВСЕМИ полями включая provider
+
+    # Создаем LLM конфигурацию со ВСЕМИ полями
     llm_config = LLMConfig(
         base_url=actual_base_url,
         model=actual_model,
@@ -954,17 +956,16 @@ def create_agent_config(
         timeout=actual_timeout,
         max_retries=actual_max_retries,
         retry_delay=base_config.retry_delay,
-        
-        # КРИТИЧНО: Передаем провайдер и все специфичные поля
         provider=base_config.provider,
         cert_file=base_config.cert_file,
         key_file=base_config.key_file,
         top_p=base_config.top_p,
         verify_ssl_certs=base_config.verify_ssl_certs,
         profanity_check=base_config.profanity_check,
-        streaming=base_config.streaming
+        streaming=base_config.streaming,
+        api_key=base_config.api_key  # ДОБАВЛЕНО: API ключ для DeepSeek
     )
-    
+
     return AgentConfig(
         name=name,
         description=description,
@@ -977,15 +978,10 @@ def create_agent_config(
 
 
 def create_default_config_from_env() -> AgentConfig:
-    """
-    Создание конфигурации по умолчанию из переменных окружения
-    ОБНОВЛЕНО: Использует центральный конфигуратор
-    """
-    # ИЗМЕНЕНО: Используем центральный конфигуратор вместо прямого чтения env
+    """Создание конфигурации по умолчанию из центрального конфигуратора"""
     return create_agent_config(
         name="default_agent",
         description="Агент с настройками по умолчанию"
-        # Все остальные параметры берутся из центрального конфигуратора
     )
 
 

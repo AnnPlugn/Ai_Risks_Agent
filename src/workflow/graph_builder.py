@@ -1,14 +1,16 @@
-# src/workflow/graph_builder.py
-"""
-LangGraph workflow для системы оценки рисков ИИ-агентов
-Создает и настраивает мультиагентный граф для полного цикла оценки
-"""
-
 import asyncio
 from ..utils.llm_config_manager import get_llm_config_manager
 from typing import Dict, Any, List, Optional, Literal
 from datetime import datetime
+import sys
+from pathlib import Path
+from typing import Dict, Any, List, Optional
+from datetime import datetime
 
+# Добавляем путь к src в Python path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from ..utils.llm_config_manager import get_llm_config_manager
 from langgraph.graph import StateGraph, END
 from langgraph.graph.state import CompiledStateGraph
 
@@ -16,15 +18,7 @@ from ..models.risk_models import (
     WorkflowState, RiskType, ProcessingStatus, AgentRiskAssessment,
     AgentProfile, AgentTaskResult
 )
-from ..agents.profiler_agent import create_profiler_agent, create_profiler_node_function
-from ..agents.evaluator_agents import (
-    create_all_evaluator_agents, create_evaluator_nodes_for_langgraph_safe,
-    extract_risk_evaluations_from_results, calculate_overall_risk_score,
-    get_highest_risk_areas, create_critic_node_function_fixed, create_evaluators_from_env
-)
-from ..agents.critic_agent import (
-    create_critic_agent, create_quality_check_router
-)
+from ..agents.profiler_agent import create_profiler_from_env, create_profiler_node_function
 from ..agents.evaluator_agents import create_critic_node_function_fixed
 from ..utils.logger import get_langgraph_logger, log_graph_node, log_conditional_edge_func
 from ..models.database import get_db_manager

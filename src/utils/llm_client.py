@@ -1286,8 +1286,12 @@ def create_llm_client(
         temperature: Optional[float] = None
 ) -> LLMClient:
     """
-    Фабрика для создания LLM клиентов
+    ИСПРАВЛЕННАЯ фабрика для создания LLM клиентов
+    РАБОТАЕТ КОРРЕКТНО С DEEPSEEK
     """
+    print(f"🔍 DEBUG create_llm_client: Запрос на создание {client_type} клиента")
+
+    # Создаем переопределения для конфигурации
     overrides = {}
     if base_url is not None:
         overrides['base_url'] = base_url
@@ -1295,18 +1299,32 @@ def create_llm_client(
         overrides['model'] = model
     if temperature is not None:
         overrides['temperature'] = temperature
+
+    # Получаем конфигурацию из менеджера с переопределениями
     config = LLMConfig.from_manager(**overrides)
+
+    print(f"🔍 DEBUG create_llm_client: Провайдер из конфига: {config.provider.value}")
+    print(f"🔍 DEBUG create_llm_client: Тип клиента: {client_type}")
+
+    # ИСПРАВЛЕНО: Правильная логика создания клиентов для всех провайдеров
     if config.provider == LLMProvider.GIGACHAT:
+        print("🔍 DEBUG: Создаем GigaChat клиент")
         if client_type == "risk_analysis":
             return GigaChatRiskAnalysisLLMClient(config)
         else:
             return GigaChatLLMClient(config)
+
     elif config.provider == LLMProvider.DEEPSEEK:
+        print("🔍 DEBUG: Создаем DeepSeek клиент")
         if client_type == "risk_analysis":
+            print("✅ Создаем DeepSeekRiskAnalysisLLMClient")
             return DeepSeekRiskAnalysisLLMClient(config)
         else:
+            print("✅ Создаем DeepSeekLLMClient")
             return DeepSeekLLMClient(config)
-    else:
+
+    else:  # LM_STUDIO или другие
+        print(f"🔍 DEBUG: Создаем {config.provider.value} клиент")
         if client_type == "risk_analysis":
             return RiskAnalysisLLMClient(config)
         else:
@@ -1317,9 +1335,7 @@ _global_client: Optional[LLMClient] = None
 
 
 async def get_llm_client() -> LLMClient:
-    """
-    Получение глобального LLM клиента
-    """
+    """Получение глобального LLM клиента"""
     global _global_client
     if _global_client is None:
         try:
@@ -1328,6 +1344,8 @@ async def get_llm_client() -> LLMClient:
             print(f"   Провайдер: {config.provider.value}")
             print(f"   URL: {config.base_url}")
             print(f"   Модель: {config.model}")
+
+            # ИСПРАВЛЕНО: Используем фабрику для создания правильного клиента
             if config.provider == LLMProvider.GIGACHAT:
                 print("🤖 Создаем GigaChat клиент...")
                 _global_client = GigaChatLLMClient(config)
@@ -1337,6 +1355,7 @@ async def get_llm_client() -> LLMClient:
             else:
                 print(f"🤖 Создаем {config.provider.value} клиент...")
                 _global_client = LLMClient(config)
+
             print("🔍 Проверяем доступность LLM сервера...")
             is_available = await _global_client.health_check()
             if not is_available:
@@ -1349,6 +1368,7 @@ async def get_llm_client() -> LLMClient:
                 else:
                     error_msg += f"\nПроверьте:\n- URL: {config.base_url}\n- Запущен ли сервер?"
                 raise LLMError(error_msg)
+
             print(f"✅ {config.provider.value} клиент успешно создан и проверен")
         except Exception as e:
             print("❌ ОШИБКА СОЗДАНИЯ LLM КЛИЕНТА:")
@@ -1357,7 +1377,6 @@ async def get_llm_client() -> LLMClient:
             print_llm_diagnosis()
             raise e
     return _global_client
-
 
 def reset_global_client():
     global _global_client
