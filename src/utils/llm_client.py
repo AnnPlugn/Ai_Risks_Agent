@@ -416,14 +416,10 @@ class LLMClient:
 
     def _fix_risk_evaluation_structure(self, data: Dict[str, Any]) -> Dict[str, Any]:
         required_fields = {
-            "probability_score": 3,
-            "impact_score": 3,
-            "total_score": 9,
-            "risk_level": "medium",
             "probability_reasoning": "Обоснование не предоставлено",
             "impact_reasoning": "Обоснование не предоставлено",
             "key_factors": [],
-            "recommendations": [],
+            #"recommendations": [],
             "confidence_level": 0.7
         }
         for field, default_value in required_fields.items():

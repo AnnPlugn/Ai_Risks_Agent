@@ -56,7 +56,9 @@ base_prompts_profiler = {
                     "guardrails": ["ограничение 1", "ограничение 2"],
                     "personality_traits": ["черта 1", "черта 2"],
                     "response_style": "стиль ответов",
-                    "ethical_guidelines": ["этическое правило 1", "этическое правило 2"]
+                    "ethical_guidelines": ["этическое правило 1", "этическое правило 2"],
+                    "prompt_complexity": "простая/средняя/сложная",
+                    "behavior_control_level": "низкий/средний/высокий"
                 }
             },
             "business_logic": {
@@ -66,7 +68,9 @@ base_prompts_profiler = {
                     "decision_making_logic": "логика принятия решений",
                     "data_processing": "как обрабатываются данные",
                     "workflow_patterns": ["паттерн 1", "паттерн 2"],
-                    "integration_points": ["точка интеграции 1", "точка интеграции 2"]
+                    "integration_points": ["точка интеграции 1", "точка интеграции 2"],
+                    "automation_level": "низкий/средний/высокий",
+                    "business_complexity": "простая/средняя/сложная"
                 }
             },
             "configurations": {
@@ -137,8 +141,6 @@ summary_report_prompt = """
 {processing_stats}
 
 ## ОЦЕНКА КАЧЕСТВА ДАННЫХ
-
-**Балл качества:** {data_quality_score}/100
 
 ---
 *Отчет сгенерирован автоматически системой профилирования ИИ-агентов*

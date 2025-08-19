@@ -18,7 +18,7 @@ from datetime import datetime
 from dataclasses import dataclass
 
 from ..utils.llm_client import LLMClient, LLMConfig, LLMMessage, DeepSeekRiskAnalysisLLMClient, \
-    GigaChatRiskAnalysisLLMClient, RiskAnalysisLLMClient
+    GigaChatRiskAnalysisLLMClient, RiskAnalysisLLMClient, DeepSeekLLMClient, GigaChatLLMClient
 from ..utils.llm_config_manager import get_llm_config_manager, LLMProvider
 from ..utils.logger import get_logger, log_agent_execution, log_llm_call
 from ..models.risk_models import AgentTaskResult, ProcessingStatus
@@ -56,7 +56,7 @@ class BaseAgent(ABC):
         }
 
     def _create_appropriate_llm_client(self, config: AgentConfig):
-        """НОВЫЙ МЕТОД: Создает правильный LLM клиент для текущего провайдера"""
+        """ИСПРАВЛЕННЫЙ метод: Создает правильный LLM клиент для текущего провайдера"""
 
         # Получаем актуальную информацию о провайдере
         manager = get_llm_config_manager()
@@ -77,14 +77,16 @@ class BaseAgent(ABC):
                 print("✅ Создаем RiskAnalysisLLMClient (fallback)")
                 return RiskAnalysisLLMClient(config.llm_config)
         else:
-            # Создаем стандартный клиент
-            from ..utils.llm_client import create_llm_client
-            return create_llm_client(
-                client_type="standard",
-                base_url=config.llm_config.base_url,
-                model=config.llm_config.model,
-                temperature=config.llm_config.temperature
-            )
+            # ИСПРАВЛЕНО: Создаем стандартный клиент для профилирования
+            if provider == LLMProvider.DEEPSEEK:
+                print("✅ Создаем DeepSeekLLMClient (стандартный)")
+                return DeepSeekLLMClient(config.llm_config)
+            elif provider == LLMProvider.GIGACHAT:
+                print("✅ Создаем GigaChatLLMClient (стандартный)")
+                return GigaChatLLMClient(config.llm_config)
+            else:
+                print("✅ Создаем LLMClient (стандартный)")
+                return LLMClient(config.llm_config)
 
     @property
     def name(self) -> str:
@@ -263,14 +265,10 @@ class BaseAgent(ABC):
                 }
             elif "риск" in error_message.lower() or "risk" in error_message.lower():
                 return {
-                    "probability_score": 3,
-                    "impact_score": 3,
-                    "total_score": 9,
-                    "risk_level": "medium",
                     "probability_reasoning": f"Fallback оценка из-за ошибки LLM: {error_message[:200]}",
                     "impact_reasoning": f"Fallback оценка из-за ошибки LLM: {error_message[:200]}",
                     "key_factors": ["Ошибка получения данных от LLM"],
-                    "recommendations": ["Проверить качество промпта", "Повторить оценку", "Проверить настройки LLM"],
+                    #"recommendations": ["Проверить качество промпта", "Повторить оценку", "Проверить настройки LLM"],
                     "confidence_level": 0.1
                 }
             else:
@@ -620,6 +618,413 @@ class EvaluationAgent(BaseAgent):
             )
 
         print(f"✅ EvaluationAgent создан с клиентом: {type(self.llm_client).__name__}")
+
+    # ===== НОВЫЕ НАСЛЕДУЕМЫЕ МЕТОДЫ =====
+
+    def _format_enhanced_agent_data(
+            self,
+            agent_profile: Dict[str, Any],
+            llm_analysis_results: Dict[str, Any],
+            architecture_graph: str
+    ) -> str:
+        """БАЗОВЫЙ метод формирования расширенных данных агента для анализа рисков"""
+
+        # Базовая информация об агенте
+        basic_info = self._format_basic_agent_info(agent_profile)
+
+        # Детальное саммари с расширенным анализом
+        detailed_summary = self._format_detailed_summary(agent_profile.get('detailed_summary', {}))
+        if detailed_summary:
+            basic_info += detailed_summary
+
+        # LLM анализ результатов
+        llm_analysis = self._format_llm_analysis_results(llm_analysis_results)
+        if llm_analysis:
+            basic_info += llm_analysis
+
+        # Архитектурная диаграмма
+        architecture_analysis = self._format_architecture_graph(architecture_graph)
+        if architecture_analysis:
+            basic_info += architecture_analysis
+
+        # Метрики качества
+        quality_metrics = self._format_quality_metrics(agent_profile)
+        if quality_metrics:
+            basic_info += quality_metrics
+
+        return basic_info
+
+    def _format_basic_agent_info(self, agent_profile: Dict[str, Any]) -> str:
+        """Форматирование базовой информации об агенте"""
+        return f"""=== БАЗОВЫЙ ПРОФИЛЬ АГЕНТА ===
+Название: {agent_profile.get('name', 'Unknown')}
+Версия: {agent_profile.get('version', '1.0')}
+Тип агента: {agent_profile.get('agent_type', 'unknown')}
+LLM Модель: {agent_profile.get('llm_model', 'unknown')}
+Уровень автономности: {agent_profile.get('autonomy_level', 'supervised')}
+Доступ к данным: {', '.join(agent_profile.get('data_access', []))}
+Целевая аудитория: {agent_profile.get('target_audience', 'Не указано')}
+Операций в час: {agent_profile.get('operations_per_hour', 'Не указано')}
+Доход с операции: {agent_profile.get('revenue_per_operation', 'Не указано')} руб
+
+ОПИСАНИЕ АГЕНТА:
+{agent_profile.get('description', 'Описание отсутствует')}
+
+СИСТЕМНЫЕ ПРОМПТЫ:
+{chr(10).join(agent_profile.get('system_prompts', ['Системные промпты не найдены']))}
+
+ОГРАНИЧЕНИЯ БЕЗОПАСНОСТИ (GUARDRAILS):
+{chr(10).join(agent_profile.get('guardrails', ['Ограничения безопасности не найдены']))}
+
+ВНЕШНИЕ API И ИНТЕГРАЦИИ:
+{', '.join(agent_profile.get('external_apis', ['Внешние интеграции отсутствуют']))}
+
+ИСХОДНЫЕ ФАЙЛЫ:
+{', '.join(agent_profile.get('source_files', ['Информация об исходных файлах отсутствует']))}"""
+
+    def _format_detailed_summary(self, detailed_summary: Dict[str, Any]) -> str:
+        """Форматирование детального саммари с максимальной детализацией"""
+        if not detailed_summary:
+            return ""
+
+        summary_sections = ["\n\n=== ДЕТАЛЬНОЕ САММАРИ ПРОФАЙЛЕРА ==="]
+
+        # Обзор агента
+        if 'overview' in detailed_summary:
+            summary_sections.append(f"""
+📋 ОБЗОР АГЕНТА:
+{detailed_summary['overview']}""")
+
+        # Техническая архитектура
+        if 'technical_architecture' in detailed_summary:
+            summary_sections.append(f"""
+🏗️ ТЕХНИЧЕСКАЯ АРХИТЕКТУРА:
+{detailed_summary['technical_architecture']}""")
+
+        # Операционная модель
+        if 'operational_model' in detailed_summary:
+            summary_sections.append(f"""
+⚙️ ОПЕРАЦИОННАЯ МОДЕЛЬ:
+{detailed_summary['operational_model']}""")
+
+        # Анализ рисков (если есть)
+        if 'risk_analysis' in detailed_summary:
+            summary_sections.append(f"""
+⚠️ ПРЕДВАРИТЕЛЬНЫЙ АНАЛИЗ РИСКОВ:
+{detailed_summary['risk_analysis']}""")
+
+        # Рекомендации по безопасности
+        if 'security_recommendations' in detailed_summary:
+            summary_sections.append(f"""
+🔒 РЕКОМЕНДАЦИИ ПО БЕЗОПАСНОСТИ:
+{detailed_summary['security_recommendations']}""")
+
+        # Выводы профайлера
+        if 'conclusions' in detailed_summary:
+            summary_sections.append(f"""
+🎯 ВЫВОДЫ ПРОФАЙЛЕРА:
+{detailed_summary['conclusions']}""")
+
+        # Дополнительные разделы (если есть)
+        additional_sections = {
+            'business_logic': '💼 БИЗНЕС-ЛОГИКА',
+            'data_flow': '📊 ПОТОКИ ДАННЫХ',
+            'integration_points': '🔗 ТОЧКИ ИНТЕГРАЦИИ',
+            'monitoring_capabilities': '📈 ВОЗМОЖНОСТИ МОНИТОРИНГА',
+            'scalability_analysis': '📈 АНАЛИЗ МАСШТАБИРУЕМОСТИ',
+            'compliance_aspects': '📋 АСПЕКТЫ СООТВЕТСТВИЯ'
+        }
+
+        for section_key, section_title in additional_sections.items():
+            if section_key in detailed_summary:
+                summary_sections.append(f"""
+{section_title}:
+{detailed_summary[section_key]}""")
+
+        return '\n'.join(summary_sections)
+
+    def _format_llm_analysis_results(self, llm_analysis_results: Dict[str, Any]) -> str:
+        """Форматирование результатов LLM анализа контекстов"""
+        if not llm_analysis_results:
+            return ""
+
+        analysis_sections = ["\n\n=== РЕЗУЛЬТАТЫ LLM АНАЛИЗА КОНТЕКСТОВ ==="]
+
+        context_titles = {
+            'agent_overview': '🎯 ОБЗОР АГЕНТА',
+            'technical_architecture': '🏗️ ТЕХНИЧЕСКАЯ АРХИТЕКТУРА',
+            'prompts_and_instructions': '💬 ПРОМПТЫ И ИНСТРУКЦИИ',
+            'business_logic': '💼 БИЗНЕС-ЛОГИКА',
+            'configurations': '⚙️ КОНФИГУРАЦИИ',
+            'supporting_docs': '📚 ПОДДЕРЖИВАЮЩАЯ ДОКУМЕНТАЦИЯ'
+        }
+
+        for context_type, context_result in llm_analysis_results.items():
+            context_title = context_titles.get(context_type, context_type.replace('_', ' ').title())
+
+            if isinstance(context_result, dict) and 'aggregated_analysis' in context_result:
+                analysis = context_result['aggregated_analysis']
+                formatted_analysis = self._format_analysis_summary(analysis, detailed=True)
+
+                analysis_sections.append(f"""
+{context_title}:
+{formatted_analysis}
+
+Метаданные анализа:
+- Контекст: {context_type}
+- Всего чанков: {context_result.get('metadata', {}).get('total_chunks', 'Неизвестно')}
+- Успешных чанков: {context_result.get('metadata', {}).get('successful_chunks', 'Неизвестно')}""")
+
+            elif isinstance(context_result, dict) and 'error' in context_result:
+                analysis_sections.append(f"""
+{context_title}:
+❌ Ошибка анализа: {context_result['error']}""")
+
+        return '\n'.join(analysis_sections)
+
+    def _format_analysis_summary(self, analysis: Any, detailed: bool = False) -> str:
+        """Детальное форматирование результата анализа"""
+        if not analysis:
+            return "Данные анализа отсутствуют"
+
+        if isinstance(analysis, dict):
+            summary_parts = []
+
+            # Приоритетные поля для отображения
+            priority_fields = [
+                'summary', 'description', 'overview', 'key_findings', 'main_points',
+                'technical_details', 'security_aspects', 'risk_indicators', 'capabilities', 'limitations', 'dependencies'
+            ]
+
+            # Сначала обрабатываем приоритетные поля
+            for field in priority_fields:
+                if field in analysis:
+                    value = analysis[field]
+                    formatted_value = self._format_field_value(field, value, detailed)
+                    if formatted_value:
+                        summary_parts.append(formatted_value)
+
+            # Затем остальные поля
+            for key, value in analysis.items():
+                if key not in priority_fields and value:
+                    formatted_value = self._format_field_value(key, value, detailed)
+                    if formatted_value:
+                        summary_parts.append(formatted_value)
+
+            return '\n'.join(summary_parts) if summary_parts else "Нет данных для отображения"
+
+        # Если не словарь, возвращаем строковое представление
+        text_repr = str(analysis)
+        if detailed:
+            return text_repr[:1000] + ("..." if len(text_repr) > 1000 else "")
+        else:
+            return text_repr[:300] + ("..." if len(text_repr) > 300 else "")
+
+    def _format_field_value(self, field_name: str, value: Any, detailed: bool) -> str:
+        """Форматирование значения поля с учетом его типа"""
+        if not value:
+            return ""
+
+        field_title = field_name.replace('_', ' ').title()
+
+        if isinstance(value, str):
+            if detailed:
+                max_length = 500
+            else:
+                max_length = 200
+
+            if len(value) > max_length:
+                return f"{field_title}: {value[:max_length]}..."
+            else:
+                return f"{field_title}: {value}"
+
+        elif isinstance(value, list):
+            if detailed:
+                items = value[:10]  # Показываем до 10 элементов
+                formatted_items = [str(item)[:100] for item in items]
+            else:
+                items = value[:5]  # Показываем до 5 элементов
+                formatted_items = [str(item)[:50] for item in items]
+
+            items_text = ', '.join(formatted_items)
+            if len(value) > len(items):
+                items_text += f" ... (всего {len(value)} элементов)"
+
+            return f"{field_title}: {items_text}"
+
+        elif isinstance(value, dict):
+            if detailed:
+                dict_items = []
+                for k, v in list(value.items())[:8]:  # До 8 элементов словаря
+                    dict_items.append(f"{k}: {str(v)[:80]}")
+                return f"{field_title}: {{{', '.join(dict_items)}}}"
+            else:
+                return f"{field_title}: {str(value)[:150]}..."
+
+        else:
+            return f"{field_title}: {str(value)[:100]}"
+
+    def _format_architecture_graph(self, architecture_graph: str) -> str:
+        """Форматирование архитектурной диаграммы Mermaid"""
+        if not architecture_graph or not architecture_graph.strip():
+            return ""
+
+        return f"""
+
+=== 🏗️ АРХИТЕКТУРНАЯ ДИАГРАММА ===
+{architecture_graph}
+
+АНАЛИЗ АРХИТЕКТУРЫ:
+{self._analyze_mermaid_architecture(architecture_graph)}"""
+
+    def _analyze_mermaid_architecture(self, mermaid_content: str) -> str:
+        """Анализ архитектурной диаграммы на предмет рисков"""
+        if not mermaid_content:
+            return "Архитектурная диаграмма отсутствует"
+
+        analysis_points = []
+        lines = mermaid_content.split('\n')
+
+        # Подсчет компонентов
+        nodes = [line for line in lines if '-->' in line or '---' in line]
+        analysis_points.append(f"Обнаружено {len(nodes)} связей в архитектуре")
+
+        # Поиск потенциальных точек риска
+        risk_indicators = {
+            'API': 'Внешние API интеграции',
+            'External': 'Внешние зависимости',
+            'Database': 'Доступ к базам данных',
+            'User': 'Пользовательское взаимодействие',
+            'Auth': 'Системы аутентификации',
+            'Security': 'Компоненты безопасности'
+        }
+
+        found_components = []
+        for indicator, description in risk_indicators.items():
+            if any(indicator.lower() in line.lower() for line in lines):
+                found_components.append(f"- {description}")
+
+        if found_components:
+            analysis_points.append("Обнаруженные компоненты:")
+            analysis_points.extend(found_components)
+
+        # Анализ сложности
+        if len(nodes) > 10:
+            analysis_points.append("⚠️ Высокая сложность архитектуры (>10 связей)")
+        elif len(nodes) > 5:
+            analysis_points.append("⚡ Умеренная сложность архитектуры")
+        else:
+            analysis_points.append("✅ Простая архитектура")
+
+        return '\n'.join(analysis_points)
+
+    def _format_profiler_recommendations(self, recommendations: List[str]) -> str:
+        """Форматирование рекомендаций профайлера"""
+        if not recommendations:
+            return ""
+
+        # Группируем рекомендации по категориям
+        categorized_recs = self._categorize_recommendations(recommendations)
+
+        sections = ["\n\n=== 💡 РЕКОМЕНДАЦИИ ПРОФАЙЛЕРА ==="]
+
+        for category, recs in categorized_recs.items():
+            if recs:
+                sections.append(f"\n{category}:")
+                for rec in recs[:5]:  # Максимум 5 рекомендаций на категорию
+                    sections.append(f"  • {rec}")
+
+        # Если есть еще рекомендации, показываем их отдельно
+        total_shown = sum(min(5, len(recs)) for recs in categorized_recs.values())
+        if len(recommendations) > total_shown:
+            sections.append(f"\n... и еще {len(recommendations) - total_shown} рекомендаций")
+
+        return '\n'.join(sections)
+
+    def _categorize_recommendations(self, recommendations: List[str]) -> Dict[str, List[str]]:
+        """Категоризация рекомендаций по типам"""
+        categories = {
+            '🔒 Безопасность': [],
+            '⚙️ Техническая архитектура': [],
+            '📊 Мониторинг и контроль': [],
+            '📋 Соответствие требованиям': [],
+            '🎯 Общие рекомендации': []
+        }
+
+        security_keywords = ['безопасность', 'security', 'защита', 'уязвимость', 'шифрование']
+        tech_keywords = ['архитектура', 'техническ', 'код', 'разработка', 'интеграция']
+        monitoring_keywords = ['мониторинг', 'логирование', 'контроль', 'аудит', 'отслеживание']
+        compliance_keywords = ['соответствие', 'требования', 'регулятор', 'стандарт', 'политика']
+
+        for rec in recommendations:
+            rec_lower = rec.lower()
+
+            if any(keyword in rec_lower for keyword in security_keywords):
+                categories['🔒 Безопасность'].append(rec)
+            elif any(keyword in rec_lower for keyword in tech_keywords):
+                categories['⚙️ Техническая архитектура'].append(rec)
+            elif any(keyword in rec_lower for keyword in monitoring_keywords):
+                categories['📊 Мониторинг и контроль'].append(rec)
+            elif any(keyword in rec_lower for keyword in compliance_keywords):
+                categories['📋 Соответствие требованиям'].append(rec)
+            else:
+                categories['🎯 Общие рекомендации'].append(rec)
+
+        # Удаляем пустые категории
+        return {k: v for k, v in categories.items() if v}
+
+    def _format_quality_metrics(self, agent_profile: Dict[str, Any]) -> str:
+        """Форматирование метрик качества и производительности"""
+        metrics_info = []
+
+        # Базовые метрики из профиля
+        if 'created_at' in agent_profile:
+            metrics_info.append(f"Дата создания профиля: {agent_profile['created_at']}")
+
+        if 'updated_at' in agent_profile:
+            metrics_info.append(f"Дата обновления: {agent_profile['updated_at']}")
+
+        # Метрики сложности
+        complexity_metrics = []
+
+        system_prompts_count = len(agent_profile.get('system_prompts', []))
+        if system_prompts_count > 0:
+            complexity_metrics.append(f"Системных промптов: {system_prompts_count}")
+
+        guardrails_count = len(agent_profile.get('guardrails', []))
+        if guardrails_count > 0:
+            complexity_metrics.append(f"Ограничений безопасности: {guardrails_count}")
+
+        external_apis_count = len(agent_profile.get('external_apis', []))
+        if external_apis_count > 0:
+            complexity_metrics.append(f"Внешних API: {external_apis_count}")
+
+        data_access_count = len(agent_profile.get('data_access', []))
+        if data_access_count > 0:
+            complexity_metrics.append(f"Типов доступа к данным: {data_access_count}")
+
+        if metrics_info or complexity_metrics:
+            result = ["\n\n=== 📊 МЕТРИКИ КАЧЕСТВА И СЛОЖНОСТИ ==="]
+
+            if metrics_info:
+                result.extend(metrics_info)
+
+            if complexity_metrics:
+                result.append("\nМетрики сложности:")
+                result.extend([f"  • {metric}" for metric in complexity_metrics])
+
+                # Оценка общей сложности
+                total_complexity = system_prompts_count + guardrails_count + external_apis_count
+                if total_complexity > 15:
+                    result.append("  ⚠️ Высокая сложность агента")
+                elif total_complexity > 8:
+                    result.append("  ⚡ Умеренная сложность агента")
+                else:
+                    result.append("  ✅ Простая архитектура агента")
+
+            return '\n'.join(result)
+
+        return ""
 
     async def evaluate_risk(
             self,

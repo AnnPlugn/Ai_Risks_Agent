@@ -1238,11 +1238,45 @@ class OutputGenerator:
             )
         }
 
+    def _clean_risk_assessment_fields(self, llm_results: Dict[str, Any]) -> Dict[str, Any]:
+        """Очистка полей с оценками рисков из результатов LLM"""
+        cleaned_results = {}
+
+        risk_fields_to_remove = {
+            "probability_score", "impact_score", "total_score", "risk_level",
+            "probability_reasoning", "impact_reasoning", "confidence_level",
+            "quality_score", "is_acceptable"
+        }
+
+        for context_type, context_result in llm_results.items():
+            if isinstance(context_result, dict):
+                cleaned_context = {}
+
+                # Копируем основную структуру
+                for key, value in context_result.items():
+                    if key == "aggregated_analysis" and isinstance(value, dict):
+                        # Очищаем вложенный analysis от полей оценки рисков
+                        cleaned_analysis = {
+                            k: v for k, v in value.items()
+                            if k not in risk_fields_to_remove
+                        }
+                        cleaned_context[key] = cleaned_analysis
+                    elif key not in risk_fields_to_remove:
+                        cleaned_context[key] = value
+
+                cleaned_results[context_type] = cleaned_context
+            else:
+                cleaned_results[context_type] = context_result
+
+        return cleaned_results
+
     async def _generate_detailed_json_async(self, context: Dict[str, Any]) -> str:
         """Генерация детального JSON отчета"""
         agent_profile = context["agent_profile"]
         llm_results = context["llm_results"]
         processing_stages = context["processing_stages"]
+
+        cleaned_llm_results = self._clean_risk_assessment_fields(llm_results)
 
         detailed_report = {
             "metadata": {
@@ -1260,9 +1294,9 @@ class OutputGenerator:
                                             if not isinstance(r, dict) or "error" not in r]),
                 "failed_contexts": len([r for r in llm_results.values()
                                         if isinstance(r, dict) and "error" in r]),
-                "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results)
+                #"data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results)
             },
-            "recommendations": self._generate_recommendations(agent_profile, llm_results)
+            #"recommendations": self._generate_recommendations(agent_profile, llm_results)
         }
 
         return json.dumps(detailed_report, ensure_ascii=False, indent=2, default=str)
@@ -1302,7 +1336,7 @@ class OutputGenerator:
             "detailed_summary": self._format_detailed_summary(agent_profile.detailed_summary),
             "llm_analysis": self._format_llm_analysis(llm_results),
             "processing_stats": self._format_processing_stats(processing_stages),
-            "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results)
+            #"data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results)
         }
 
         return report_template.format(**template_data)
@@ -1444,7 +1478,7 @@ class OutputGenerator:
             "agent_type": agent_profile.agent_type.value,
             "agent_version": agent_profile.version,
             "autonomy_level": agent_profile.autonomy_level.value,
-            "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
+            #"data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
             "generation_date": context.get("generation_time", datetime.now()).strftime('%Y-%m-%d %H:%M:%S'),
             "system_prompts_count": len(agent_profile.system_prompts),
             "guardrails_count": len(agent_profile.guardrails),
@@ -1470,7 +1504,7 @@ class OutputGenerator:
             "autonomy_level": agent_profile.autonomy_level.value if hasattr(agent_profile.autonomy_level,
                                                                             'value') else str(
                 agent_profile.autonomy_level),
-            "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
+            #"data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
             "generation_date": context.get("generation_time", datetime.now()).strftime('%Y-%m-%d %H:%M:%S'),
             "system_prompts_count": len(agent_profile.system_prompts),
             "guardrails_count": len(agent_profile.guardrails),
@@ -1502,7 +1536,7 @@ class OutputGenerator:
                 "autonomy_level": agent_profile.autonomy_level.value if hasattr(agent_profile.autonomy_level,
                                                                                 'value') else str(
                     agent_profile.autonomy_level),
-                "data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
+                #"data_quality_score": self._calculate_data_quality_score(agent_profile, llm_results),
                 "generation_date": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
                 "system_prompts_count": len(agent_profile.system_prompts),
                 "guardrails_count": len(agent_profile.guardrails),
@@ -1517,7 +1551,7 @@ class OutputGenerator:
         graph_lines = [
             "%% Comprehensive architecture diagram for AI Agent",
             f"%% Agent: {template_data['agent_name']} (Type: {template_data['agent_type']}, Version: {template_data['agent_version']})",
-            f"%% Autonomy Level: {template_data['autonomy_level']}, Data Quality Score: {template_data['data_quality_score']}",
+            f"%% Autonomy Level: {template_data['autonomy_level']}",
             f"%% Generated: {template_data['generation_date']}",
             "graph TD",
             "    A[Пользователь] -->|Ввод запроса| B[ИИ-Агент]",
@@ -1551,7 +1585,6 @@ class OutputGenerator:
         # Add data access with data quality annotation
         if agent_profile.data_access:
             data_node = chr(node_counter)
-            graph_lines.append(f"    %% Data Access: Quality Score = {template_data['data_quality_score']}")
             graph_lines.append(f"    C -->|Доступ к данным| {data_node}[Данные]")
             for i, data_type in enumerate(agent_profile.data_access[:3], 1):
                 data_sub_node = f"{data_node}{i}"
@@ -1739,42 +1772,45 @@ class OutputGenerator:
 
         return "\n".join(log_lines)
 
-    def _calculate_data_quality_score(self, agent_profile: AgentProfile, llm_results: Dict[str, Any]) -> float:
-        """Расчет оценки качества данных"""
-        score = 0.0
-        max_score = 100.0
+    #def _calculate_data_quality_score(self, agent_profile: AgentProfile, llm_results: Dict[str, Any]) -> float:
+    #   """Расчет оценки качества данных"""
+    #    score = 0.0
+    #    max_score = 100.0
 
         # Базовая информация (30 баллов)
-        if agent_profile.name and agent_profile.name != "Unknown":
-            score += 10
-        if agent_profile.description and len(agent_profile.description) > 50:
-            score += 10
-        if agent_profile.agent_type and str(agent_profile.agent_type) != "other":
-            score += 10
+    #    if agent_profile.name and agent_profile.name != "Unknown":
+    #        score += 10
+    #    if agent_profile.description and len(agent_profile.description) > 50:
+    #        score += 10
+    #    if agent_profile.agent_type and str(agent_profile.agent_type) != "other":
+    #        score += 10
 
         # Техническая информация (25 баллов)
-        if agent_profile.llm_model and agent_profile.llm_model != "unknown":
-            score += 10
-        if agent_profile.external_apis:
-            score += 8
-        if len(agent_profile.data_access) > 0:
-            score += 7
+    #    if agent_profile.llm_model and agent_profile.llm_model != "unknown":
+    #        score += 10
+    #    if agent_profile.external_apis:
+    #        score += 8
+    #    if len(agent_profile.data_access) > 0:
+    #        score += 7
 
         # Промпты и ограничения (25 баллов)
-        if agent_profile.system_prompts:
-            score += 15
-        if agent_profile.guardrails:
-            score += 10
+    #    if agent_profile.system_prompts:
+    #        score += 15
+    #    if agent_profile.guardrails:
+    #        score += 10
 
         # Результаты LLM анализа (20 баллов)
-        if llm_results:
-            successful_contexts = len([r for r in llm_results.values() if not isinstance(r, dict) or "error" not in r])
-            total_contexts = len(llm_results)
-            if total_contexts > 0:
-                score += (successful_contexts / total_contexts) * 20
+    #    if llm_results:
+    #        successful_contexts = len([r for r in llm_results.values() if not isinstance(r, dict) or "error" not in r])
+    #        total_contexts = len(llm_results)
+    #        if total_contexts > 0:
+    #            score += (successful_contexts / total_contexts) * 20
 
-        return min(score, max_score)
-
+    #    return min(score, max_score)
+    def _calculate_data_quality_score(self, agent_profile: AgentProfile, llm_results: Dict[str, Any]) -> Optional[
+        float]:
+        """ИСПРАВЛЕНО: Возвращаем None вместо расчета оценки качества для профилирования"""
+        return None
 
 class EnhancedProfilerAgent(AnalysisAgent):
     """
@@ -1914,8 +1950,7 @@ class EnhancedProfilerAgent(AnalysisAgent):
                         "processing_stages": [asdict(stage) for stage in self.processing_stages],
                         "output_files": output_files,
                         "performance_metrics": self._calculate_performance_metrics(),
-                        "data_quality_score": self.output_generator._calculate_data_quality_score(agent_profile,
-                                                                                                  llm_results)
+                        #"data_quality_score": self.output_generator._calculate_data_quality_score(agent_profile,llm_results)
                     },
                     start_time=start_time,
                     end_time=end_time,

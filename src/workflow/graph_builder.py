@@ -278,7 +278,7 @@ class RiskAssessmentWorkflow:
         """Батч 1: Этические и социальные риски (параллельно)"""
 
         assessment_id = state["assessment_id"]
-        agent_profile = state.get("agent_profile", {})
+        agent_profile = state.get("profiling_result", {})
 
         self.graph_logger.log_workflow_step(
             assessment_id,
@@ -286,8 +286,28 @@ class RiskAssessmentWorkflow:
             "Запуск Батча 1: этические + социальные риски"
         )
 
-        # Подготавливаем входные данные
-        input_data = {"agent_profile": agent_profile}
+        # Извлекаем architecture_graph из outputs
+        architecture_graph = ""
+        output_files = agent_profile.get("output_files", [])
+        for file_path in output_files:
+            if 'architecture.mermaid' in file_path:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        architecture_graph = f.read()
+                    break
+                except Exception:
+                    continue
+
+        input_data = {
+            "agent_profile": agent_profile,
+            "llm_analysis_results": agent_profile.get("llm_analysis_results", {}),
+            "architecture_graph": architecture_graph
+        }
+
+        print(f"🔍 DEBUG: Передаем в evaluators расширенные данные:")
+        print(f"  - agent_profile: {bool(agent_profile)}")
+        print(f"  - llm_analysis_results: {len(input_data['llm_analysis_results'])}")
+        print(f"  - architecture_graph: {len(architecture_graph)} символов")
 
         try:
             # Запускаем 2 агента параллельно
@@ -346,7 +366,7 @@ class RiskAssessmentWorkflow:
         """Батч 2: Безопасность и стабильность (параллельно)"""
 
         assessment_id = state["assessment_id"]
-        agent_profile = state.get("agent_profile", {})
+        agent_profile = state.get("profiling_result", {})
 
         self.graph_logger.log_workflow_step(
             assessment_id,
@@ -354,7 +374,29 @@ class RiskAssessmentWorkflow:
             "Запуск Батча 2: безопасность + стабильность"
         )
 
-        input_data = {"agent_profile": agent_profile}
+
+        # Извлекаем architecture_graph из outputs
+        architecture_graph = ""
+        output_files = agent_profile.get("output_files", [])
+        for file_path in output_files:
+            if 'architecture.mermaid' in file_path:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        architecture_graph = f.read()
+                    break
+                except Exception:
+                    continue
+
+        input_data = {
+            "agent_profile": agent_profile,
+            "llm_analysis_results": agent_profile.get("llm_analysis_results", {}),
+            "architecture_graph": architecture_graph
+        }
+
+        print(f"🔍 DEBUG: Передаем в evaluators расширенные данные:")
+        print(f"  - agent_profile: {bool(agent_profile)}")
+        print(f"  - llm_analysis_results: {len(input_data['llm_analysis_results'])}")
+        print(f"  - architecture_graph: {len(architecture_graph)} символов")
 
         try:
             # Запускаем 2 агента параллельно
@@ -410,12 +452,32 @@ class RiskAssessmentWorkflow:
         """Батч 3: Автономность и регуляторные риски - РАБОЧАЯ ВЕРСИЯ"""
 
         assessment_id = state["assessment_id"]
-        agent_profile = state.get("agent_profile", {})
-
+        # Подготавливаем входные данные
+        agent_profile = state.get("profiling_result", {})
         print(f"🔍 BATCH_3 ЗАПУСТИЛСЯ для {assessment_id}")
 
-        # Подготавливаем входные данные
-        input_data = {"agent_profile": agent_profile}
+        # Извлекаем architecture_graph из outputs
+        architecture_graph = ""
+        output_files = agent_profile.get("output_files", [])
+        for file_path in output_files:
+            if 'architecture.mermaid' in file_path:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        architecture_graph = f.read()
+                    break
+                except Exception:
+                    continue
+
+        input_data = {
+            "agent_profile": agent_profile,
+            "llm_analysis_results": agent_profile.get("llm_analysis_results", {}),
+            "architecture_graph": architecture_graph
+        }
+
+        print(f"🔍 DEBUG: Передаем в evaluators расширенные данные:")
+        print(f"  - agent_profile: {bool(agent_profile)}")
+        print(f"  - llm_analysis_results: {len(input_data['llm_analysis_results'])}")
+        print(f"  - architecture_graph: {len(architecture_graph)} символов")
 
         try:
             print("🔍 ЗАПУСКАЕМ АГЕНТОВ...")
