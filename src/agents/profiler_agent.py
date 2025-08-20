@@ -2875,6 +2875,7 @@ def create_profiler_from_env() -> EnhancedProfilerAgent:
 
     return EnhancedProfilerAgent(config)
 
+
 def create_profiler_node_function(profiler: EnhancedProfilerAgent):
     """Создание функции узла для LangGraph"""
 
@@ -2893,7 +2894,6 @@ def create_profiler_node_function(profiler: EnhancedProfilerAgent):
                 })
                 return state
 
-            # Подготавливаем входные данные для профайлера
             input_data = {
                 "source_files": source_files,
                 "agent_name": agent_name
@@ -2903,14 +2903,18 @@ def create_profiler_node_function(profiler: EnhancedProfilerAgent):
             result = await profiler.process(input_data, assessment_id)
 
             if result.status == ProcessingStatus.COMPLETED:
-                # Извлекаем профиль агента из результата
-                agent_profile_data = result.result_data.get("agent_profile", {})
-
+                # ИСПРАВЛЕНО: Правильное сохранение в состояние
                 state.update({
-                    "agent_profile": agent_profile_data,
-                    "profiling_result": result.result_data,
-                    "current_step": "finalization"
+                    "agent_profile": result.result_data.get("agent_profile", {}),
+                    "profiling_result": result.result_data,  # Сохраняем ВСЕ данные профилирования
+                    "current_step": "evaluation_preparation"
                 })
+
+                print(f"🔍 DEBUG profiler_node: Сохранили в состояние:")
+                print(f"  - agent_profile: {bool(result.result_data.get('agent_profile'))}")
+                print(f"  - llm_analysis_results: {bool(result.result_data.get('llm_analysis_results'))}")
+                print(f"  - output_files: {len(result.result_data.get('output_files', []))}")
+
             else:
                 state.update({
                     "current_step": "error",

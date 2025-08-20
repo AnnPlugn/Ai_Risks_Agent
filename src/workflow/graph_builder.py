@@ -278,17 +278,15 @@ class RiskAssessmentWorkflow:
         """Батч 1: Этические и социальные риски (параллельно)"""
 
         assessment_id = state["assessment_id"]
-        agent_profile = state.get("profiling_result", {})
 
-        self.graph_logger.log_workflow_step(
-            assessment_id,
-            "batch_1_evaluation",
-            "Запуск Батча 1: этические + социальные риски"
-        )
+        # ИСПРАВЛЕНО: Правильное извлечение данных
+        profiling_result = state.get("profiling_result", {})
+        agent_profile = profiling_result.get("agent_profile", {})
+        llm_analysis_results = profiling_result.get("llm_analysis_results", {})
 
         # Извлекаем architecture_graph из outputs
         architecture_graph = ""
-        output_files = agent_profile.get("output_files", [])
+        output_files = profiling_result.get("output_files", [])
         for file_path in output_files:
             if 'architecture.mermaid' in file_path:
                 try:
@@ -298,16 +296,18 @@ class RiskAssessmentWorkflow:
                 except Exception:
                     continue
 
+        # КРИТИЧНО: Правильная структура входных данных
         input_data = {
             "agent_profile": agent_profile,
-            "llm_analysis_results": agent_profile.get("llm_analysis_results", {}),
+            "llm_analysis_results": llm_analysis_results,
             "architecture_graph": architecture_graph
         }
 
-        print(f"🔍 DEBUG: Передаем в evaluators расширенные данные:")
-        print(f"  - agent_profile: {bool(agent_profile)}")
-        print(f"  - llm_analysis_results: {len(input_data['llm_analysis_results'])}")
-        print(f"  - architecture_graph: {len(architecture_graph)} символов")
+        print(f"🔍 DEBUG batch_1: Передаем данные:")
+        print(f"  - agent_profile keys: {list(agent_profile.keys()) if agent_profile else 'empty'}")
+        print(f"  - llm_analysis_results keys: {list(llm_analysis_results.keys()) if llm_analysis_results else 'empty'}")
+        print(f"  - architecture_graph length: {len(architecture_graph)} symbols")
+
 
         try:
             # Запускаем 2 агента параллельно
@@ -366,18 +366,15 @@ class RiskAssessmentWorkflow:
         """Батч 2: Безопасность и стабильность (параллельно)"""
 
         assessment_id = state["assessment_id"]
-        agent_profile = state.get("profiling_result", {})
 
-        self.graph_logger.log_workflow_step(
-            assessment_id,
-            "batch_2_evaluation",
-            "Запуск Батча 2: безопасность + стабильность"
-        )
+        # ИСПРАВЛЕНО: Правильное извлечение данных
+        profiling_result = state.get("profiling_result", {})
+        agent_profile = profiling_result.get("agent_profile", {})
+        llm_analysis_results = profiling_result.get("llm_analysis_results", {})
 
-
-        # Извлекаем architecture_graph из outputs
+        # Извлекаем architecture_graph
         architecture_graph = ""
-        output_files = agent_profile.get("output_files", [])
+        output_files = profiling_result.get("output_files", [])
         for file_path in output_files:
             if 'architecture.mermaid' in file_path:
                 try:
@@ -389,7 +386,7 @@ class RiskAssessmentWorkflow:
 
         input_data = {
             "agent_profile": agent_profile,
-            "llm_analysis_results": agent_profile.get("llm_analysis_results", {}),
+            "llm_analysis_results": llm_analysis_results,
             "architecture_graph": architecture_graph
         }
 
@@ -449,16 +446,18 @@ class RiskAssessmentWorkflow:
 
     @log_graph_node("batch_3_evaluation")
     async def _batch_3_evaluation_node(self, state: WorkflowState) -> WorkflowState:
-        """Батч 3: Автономность и регуляторные риски - РАБОЧАЯ ВЕРСИЯ"""
+        """Батч 3: Автономность и регуляторные риски"""
 
         assessment_id = state["assessment_id"]
-        # Подготавливаем входные данные
-        agent_profile = state.get("profiling_result", {})
-        print(f"🔍 BATCH_3 ЗАПУСТИЛСЯ для {assessment_id}")
 
-        # Извлекаем architecture_graph из outputs
+        # ИСПРАВЛЕНО: Правильное извлечение данных
+        profiling_result = state.get("profiling_result", {})
+        agent_profile = profiling_result.get("agent_profile", {})
+        llm_analysis_results = profiling_result.get("llm_analysis_results", {})
+
+        # Извлекаем architecture_graph
         architecture_graph = ""
-        output_files = agent_profile.get("output_files", [])
+        output_files = profiling_result.get("output_files", [])
         for file_path in output_files:
             if 'architecture.mermaid' in file_path:
                 try:
@@ -470,7 +469,7 @@ class RiskAssessmentWorkflow:
 
         input_data = {
             "agent_profile": agent_profile,
-            "llm_analysis_results": agent_profile.get("llm_analysis_results", {}),
+            "llm_analysis_results": llm_analysis_results,
             "architecture_graph": architecture_graph
         }
 
@@ -795,7 +794,6 @@ class RiskAssessmentWorkflow:
         retry_count = state.get("retry_count", {})
 
         if not retry_needed:
-            # Если нет рисков для повтора, переходим к финализации
             state["current_step"] = "finalization"
             return state
 
@@ -819,9 +817,35 @@ class RiskAssessmentWorkflow:
 
         state["retry_count"] = retry_count
 
-        # СЕЛЕКТИВНЫЙ ПЕРЕЗАПУСК только нужных агентов
-        agent_profile = state.get("agent_profile", {})
-        input_data = {"agent_profile": agent_profile}
+        # ИСПРАВЛЕНО: Правильное извлечение ВСЕХ данных для повтора
+        profiling_result = state.get("profiling_result", {})
+        agent_profile = profiling_result.get("agent_profile", {})
+        llm_analysis_results = profiling_result.get("llm_analysis_results", {})
+
+        # Извлекаем architecture_graph из outputs
+        architecture_graph = ""
+        output_files = profiling_result.get("output_files", [])
+        for file_path in output_files:
+            if 'architecture.mermaid' in file_path:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        architecture_graph = f.read()
+                    break
+                except Exception:
+                    continue
+
+        # КРИТИЧНО: Полная структура входных данных как в батчах
+        input_data = {
+            "agent_profile": agent_profile,
+            "llm_analysis_results": llm_analysis_results,
+            "architecture_graph": architecture_graph
+        }
+
+        print(f"DEBUG retry_evaluation: Передаем полные данные:")
+        print(f"  - agent_profile keys: {list(agent_profile.keys()) if agent_profile else 'empty'}")
+        print(
+            f"  - llm_analysis_results keys: {list(llm_analysis_results.keys()) if llm_analysis_results else 'empty'}")
+        print(f"  - architecture_graph length: {len(architecture_graph)} symbols")
 
         retry_tasks = []
         for risk_type in retry_needed:
